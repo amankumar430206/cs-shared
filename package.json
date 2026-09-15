@@ -9,12 +9,12 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-    "./types": { "types": "./dist/types/index.d.ts", "import": "./dist/types/index.js" },
-    "./schemas": { "types": "./dist/schemas/index.d.ts", "import": "./dist/schemas/index.js" },
-    "./tokens": { "types": "./dist/tokens/index.d.ts", "import": "./dist/tokens/index.js" },
-    "./api": { "types": "./dist/api/index.d.ts", "import": "./dist/api/index.js" },
-    "./hooks": { "types": "./dist/hooks/index.d.ts", "import": "./dist/hooks/index.js" }
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./types": { "types": "./dist/types/index.d.ts", "default": "./dist/types/index.js" },
+    "./schemas": { "types": "./dist/schemas/index.d.ts", "default": "./dist/schemas/index.js" },
+    "./tokens": { "types": "./dist/tokens/index.d.ts", "default": "./dist/tokens/index.js" },
+    "./api": { "types": "./dist/api/index.d.ts", "default": "./dist/api/index.js" },
+    "./hooks": { "types": "./dist/hooks/index.d.ts", "default": "./dist/hooks/index.js" }
   },
   "files": ["dist"],
   "scripts": {
