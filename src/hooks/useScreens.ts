@@ -2,6 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tansta
 import { apiDelete, apiGet, apiGetPaginated, apiPatch, apiPost, apiUpload } from "../api/client";
 import type { DiscoveryScreen, Screen, ScreenCategory, ScreenListItem, ScreenPhoto, ScreenVerificationStatus } from "../types/screens";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
+import type { UploadFile } from "./useKyc";
 
 export function useCategoriesQuery() {
   return useQuery({
@@ -214,10 +215,11 @@ export function usePhotosQuery(screenId: string, enabled = true) {
 export function useUploadPhotoMutation(screenId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ photoType, file }: { photoType: string; file: File }) => {
+    mutationFn: ({ photoType, file }: { photoType: string; file: UploadFile }) => {
       const formData = new FormData();
       formData.append("photoType", photoType);
-      formData.append("file", file);
+      // React Native's FormData accepts the { uri, name, type } shape at runtime; DOM typings only know Blob.
+      formData.append("file", file as Blob);
       return apiUpload(`/screens/${screenId}/photos`, formData, getAccessToken());
     },
     onSuccess: () => {

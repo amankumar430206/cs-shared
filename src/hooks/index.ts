@@ -11,6 +11,7 @@ export * from "./usePayments";
 export * from "./useRefunds";
 export * from "./useRevenue";
 export * from "./useScreens";
+export * from "./useSettings";
 export * from "./useSupport";
 
 // Both useWallet (advertiser prepaid) and useRevenue (partner earnings) export
