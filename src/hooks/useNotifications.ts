@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiGetPaginated, apiPost, apiPut } from "../api/client";
 import { getAccessToken, useHasSession } from "../api/session";
 import type { Notification, NotificationPreferences } from "../types/notifications";
@@ -14,6 +14,18 @@ export function useNotificationsQuery(page: number) {
   return useQuery({
     queryKey: [...NOTIFICATIONS_LIST_KEY, page],
     queryFn: () => apiGetPaginated<Notification>(`/notifications?page=${page}`, getAccessToken()),
+    enabled: hasAccessToken,
+  });
+}
+
+// Page-at-a-time list for infinite scrolling; shares NOTIFICATIONS_LIST_KEY so mark-read invalidates it too.
+export function useNotificationsInfiniteQuery() {
+  const hasAccessToken = useHasSession();
+  return useInfiniteQuery({
+    queryKey: [...NOTIFICATIONS_LIST_KEY, "infinite"],
+    queryFn: ({ pageParam }) => apiGetPaginated<Notification>(`/notifications?page=${pageParam}`, getAccessToken()),
+    initialPageParam: 1,
+    getNextPageParam: (last) => (last.meta.page * last.meta.limit < last.meta.total ? last.meta.page + 1 : undefined),
     enabled: hasAccessToken,
   });
 }

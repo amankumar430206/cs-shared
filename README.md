@@ -47,7 +47,7 @@ same pass. Source mapping:
 - `api/client.ts`: toasts, redirect-on-expiry and `fetch` are injected; no `apiDownload` (CSV/Excel export is web-only); adds `apiFetchRaw` and `buildQuery`.
 - Session/tokens live in `api/session.ts` (`TokenStorage` adapter) instead of zustand + localStorage.
 - Hooks: `useAuthStore` replaced by `getAccessToken()` / `useHasSession()` / `session`; `download*Report` helpers removed.
-- `useNotifications`: REST only — the SSE stream and admin template hooks are web-only; adds `useInvalidateNotifications` and optional `refetchInterval` on the unread count.
+- `useNotifications`: REST only — the SSE stream and admin template hooks are web-only; adds `useInvalidateNotifications`, `useNotificationsInfiniteQuery` (infinite scroll) and optional `refetchInterval` on the unread count.
 - `types/devices.ts`: device-token player-simulator helpers (`deviceRequest`, activation register/status) removed.
 - `types/geo.ts`: uses `apiFetchRaw` instead of reading `API_BASE_URL` + the web auth store.
 - `types/auth.ts`: types only (token storage moved to `session`).
