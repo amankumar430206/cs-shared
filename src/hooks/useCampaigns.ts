@@ -2,6 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tansta
 import { apiDelete, apiGet, apiGetPaginated, apiPatch, apiPost, apiUpload } from "../api/client";
 import type { Campaign, CampaignBanner, CampaignStatus } from "../types/campaigns";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
+import type { UploadFile } from "./useKyc";
 
 export function useMyCampaignsQuery() {
   const hasAccessToken = useHasSession();
@@ -98,9 +99,10 @@ function invalidateCampaignViews(queryClient: ReturnType<typeof useQueryClient>,
 export function useUploadCampaignBannerMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ campaignId, file }: { campaignId: string; file: File }) => {
+    mutationFn: ({ campaignId, file }: { campaignId: string; file: UploadFile }) => {
       const formData = new FormData();
-      formData.append("file", file);
+      // React Native's FormData accepts the { uri, name, type } shape at runtime; DOM typings only know Blob.
+      formData.append("file", file as Blob);
       return apiUpload<CampaignBanner>(`/campaigns/${campaignId}/banners`, formData, getAccessToken());
     },
     onSuccess: (_data, { campaignId }) => invalidateCampaignViews(queryClient, campaignId),

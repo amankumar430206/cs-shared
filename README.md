@@ -50,6 +50,7 @@ same pass. Source mapping:
 - `useNotifications`: REST only — the SSE stream and admin template hooks are web-only; adds `useInvalidateNotifications`, `useNotificationsInfiniteQuery` (infinite scroll) and optional `refetchInterval` on the unread count.
 - `useKyc`: `useUploadDocumentMutation` accepts an `UploadFile` (a `Blob` or a React Native `{ uri, name, type }` reference) instead of only `File`.
 - `useScreens`: `useUploadPhotoMutation` accepts an `UploadFile` too.
+- `useCampaigns`: `useUploadCampaignBannerMutation` accepts an `UploadFile` too.
 - `useSettings` (new): `useScreenPhotoRequirementsQuery`, copied from cs-web's `hooks/useTheme.ts` (the admin update mutation stays web-only).
 - `types/devices.ts`: device-token player-simulator helpers (`deviceRequest`, activation register/status) removed.
 - `types/geo.ts`: uses `apiFetchRaw` instead of reading `API_BASE_URL` + the web auth store.
