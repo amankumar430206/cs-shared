@@ -48,6 +48,7 @@ same pass. Source mapping:
 - Session/tokens live in `api/session.ts` (`TokenStorage` adapter) instead of zustand + localStorage.
 - Hooks: `useAuthStore` replaced by `getAccessToken()` / `useHasSession()` / `session`; `download*Report` helpers removed.
 - `useNotifications`: REST only — the SSE stream and admin template hooks are web-only; adds `useInvalidateNotifications`, `useNotificationsInfiniteQuery` (infinite scroll) and optional `refetchInterval` on the unread count.
+- `useKyc`: `useUploadDocumentMutation` accepts an `UploadFile` (a `Blob` or a React Native `{ uri, name, type }` reference) instead of only `File`.
 - `types/devices.ts`: device-token player-simulator helpers (`deviceRequest`, activation register/status) removed.
 - `types/geo.ts`: uses `apiFetchRaw` instead of reading `API_BASE_URL` + the web auth store.
 - `types/auth.ts`: types only (token storage moved to `session`).

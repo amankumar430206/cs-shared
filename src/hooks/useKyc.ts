@@ -40,9 +40,12 @@ export function useSubmitKycMutation() {
   });
 }
 
+/** A browser File/Blob, or a React Native file reference (`{ uri, name, type }`). */
+export type UploadFile = Blob | { uri: string; name: string; type: string };
+
 interface UploadDocumentInput {
   documentType: string;
-  file: File;
+  file: UploadFile;
 }
 
 interface UploadDocumentResult {
@@ -57,7 +60,8 @@ export function useUploadDocumentMutation() {
     mutationFn: ({ documentType, file }: UploadDocumentInput) => {
       const formData = new FormData();
       formData.append("documentType", documentType);
-      formData.append("file", file);
+      // React Native's FormData accepts the { uri, name, type } shape at runtime; DOM typings only know Blob.
+      formData.append("file", file as Blob);
       return apiUpload<UploadDocumentResult>("/kyc/documents", formData, getAccessToken());
     },
     onSuccess: () => {
