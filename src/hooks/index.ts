@@ -8,6 +8,7 @@ export * from "./useKnowledgeBase";
 export * from "./useKyc";
 export * from "./useNotifications";
 export * from "./usePayments";
+export * from "./usePushTokens";
 export * from "./useRefunds";
 export * from "./useRevenue";
 export * from "./useScreens";
