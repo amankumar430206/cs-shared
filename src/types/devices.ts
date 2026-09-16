@@ -107,8 +107,17 @@ export interface ScreenLocation {
   screenName: string;
   city: string;
   state: string;
+  installationAddress?: string | null;
+  /** Where to plot — the player's reported GPS when known, else the registered position (see locationSource). */
   latitude: number;
   longitude: number;
+  locationSource?: "DEVICE" | "REGISTERED";
+  reportedLatitude?: number | null;
+  reportedLongitude?: number | null;
+  locationReportedAt?: string | null;
+  registeredLatitude?: number | null;
+  registeredLongitude?: number | null;
+  distanceFromRegisteredKm?: number | null;
   status: "ONLINE" | "OFFLINE";
   lastHeartbeatAt: string | null;
 }
