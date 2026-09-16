@@ -26,6 +26,8 @@ export interface NotificationPreferences {
   emailEnabled: boolean;
   smsEnabled: boolean;
   marketingEnabled: boolean;
+  /** Mobile push (cs-mobile). SECURITY notifications are pushed regardless. */
+  pushEnabled: boolean;
   /** Null when the user has never saved a preference (all-enabled defaults). */
   updatedAt: string | null;
 }
