@@ -77,7 +77,9 @@ export type ModeColors = { [K in keyof (typeof modes)["light"]]: string };
 export const spacingUnit = 4;
 export const spacing = (steps: number) => steps * spacingUnit;
 
-export const radii = { sm: 4, md: 8, lg: 12, xl: 16, full: 9999 } as const;
+// cs-web's components are square (shadcn \`rounded-none\` on cards, buttons, inputs, badges, skeletons),
+// so every step resolves to 0. \`full\` stays for things that are genuinely round (dots, avatars).
+export const radii = { sm: 0, md: 0, lg: 0, xl: 0, full: 9999 } as const;
 
 export const typography = {
   sizes: { xs: 12, sm: 14, base: 16, lg: 18, xl: 20, "2xl": 24, "3xl": 30 },
