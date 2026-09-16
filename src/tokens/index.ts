@@ -49,7 +49,7 @@ export const modes = {
     muted: neutral[100],
     mutedForeground: neutral[500],
     border: neutral[200],
-    /** cs-web's card outline: \`ring-1 ring-foreground/10\`. */
+    /** cs-web's card outline: `ring-1 ring-foreground/10`. */
     cardBorder: "rgba(15, 23, 42, 0.1)",
     ring: neutral[300],
     // cs-web's globals.css (the rendered truth, which diverges from its tokens.ts here): dark ink on
@@ -80,8 +80,8 @@ export type ModeColors = { [K in keyof (typeof modes)["light"]]: string };
 export const spacingUnit = 4;
 export const spacing = (steps: number) => steps * spacingUnit;
 
-// cs-web's components are square (shadcn \`rounded-none\` on cards, buttons, inputs, badges, skeletons),
-// so every step resolves to 0. \`full\` stays for things that are genuinely round (dots, avatars).
+// cs-web's components are square (shadcn `rounded-none` on cards, buttons, inputs, badges, skeletons),
+// so every step resolves to 0. `full` stays for things that are genuinely round (dots, avatars).
 export const radii = { sm: 0, md: 0, lg: 0, xl: 0, full: 9999 } as const;
 
 export const typography = {
