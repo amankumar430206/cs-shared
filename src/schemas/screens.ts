@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { INSTALLATION_ENVIRONMENTS, INTERNET_TYPES } from "../types/screens";
+import { INSTALLATION_ENVIRONMENTS, INTERNET_TYPES, SCREEN_ORIENTATIONS } from "../types/screens";
 
 const timeOfDay = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Enter a time as HH:MM (24-hour)");
 
@@ -27,6 +27,9 @@ export const screenFormSchema = z.object({
   categoryCode: z.string().min(1, "Select a category"),
   screenSize: z.string().min(1, "Enter a screen size").max(40),
   resolution: z.string().min(1, "Enter a resolution").max(40),
+  // Optional so older forms keep working — cs-api derives it from the
+  // resolution when omitted, and swaps the resolution to match when sent.
+  orientation: z.enum(SCREEN_ORIENTATIONS.map((o) => o.value) as [string, ...string[]]).optional(),
   os: z.string().min(1, "Enter the OS").max(60),
   // Not collected at registration — the physical device reports this once
   // activated (see LinkDeviceDialog / docs/DEVICE_PLAYER_API.md section 3a),

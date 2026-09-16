@@ -23,6 +23,10 @@ export interface Screen {
   categoryId: string;
   screenSize: string;
   resolution: string;
+  /** As-mounted shape — null when the resolution was never parseable (e.g. quick-registered screens). */
+  orientation?: ScreenOrientation | null;
+  resolutionWidth?: number | null;
+  resolutionHeight?: number | null;
   os: string;
   androidVersion: string;
   deviceSerialNumber: string;
@@ -139,6 +143,10 @@ export interface DiscoveryScreen {
   categoryId: string;
   screenSize: string;
   resolution: string;
+  /** As-mounted shape — null when the resolution was never parseable (e.g. quick-registered screens). */
+  orientation?: ScreenOrientation | null;
+  resolutionWidth?: number | null;
+  resolutionHeight?: number | null;
   city: string;
   state: string;
   gpsLatitude: number;
@@ -183,6 +191,49 @@ export const INTERNET_TYPES = [
   { value: "ETHERNET", label: "Ethernet" },
   { value: "MOBILE_DATA", label: "Mobile Data" },
 ] as const;
+
+// A screen's as-mounted orientation — see cs-api's 20260101000123 migration.
+// The resolution is always stored as-mounted too, so a portrait screen's
+// resolution reads e.g. 1080x1920.
+export const SCREEN_ORIENTATIONS = [
+  { value: "LANDSCAPE", label: "Landscape" },
+  { value: "PORTRAIT", label: "Portrait" },
+] as const;
+
+export type ScreenOrientation = (typeof SCREEN_ORIENTATIONS)[number]["value"];
+
+// "1920x1080" -> { width, height }; null for anything unparseable.
+export function parseResolution(resolution: string | null | undefined): { width: number; height: number } | null {
+  const match = resolution?.match(/^\s*(\d+)\s*x\s*(\d+)\s*$/i);
+  if (!match) return null;
+  const width = Number(match[1]);
+  const height = Number(match[2]);
+  return width > 0 && height > 0 ? { width, height } : null;
+}
+
+/** Rewrites a "WxH" resolution so it matches the orientation (portrait = taller than wide). Unparseable strings pass through unchanged. */
+export function orientResolution(resolution: string, orientation: ScreenOrientation): string {
+  const parsed = parseResolution(resolution);
+  if (!parsed) return resolution;
+  const { width, height } = parsed;
+  const isPortrait = height > width;
+  if ((orientation === "PORTRAIT") === isPortrait || width === height) return `${width}x${height}`;
+  return `${height}x${width}`;
+}
+
+/** The orientation to show for a screen — the stored value, else derived from its resolution, else null. */
+export function screenOrientationOf(screen: { orientation?: ScreenOrientation | null; resolution?: string | null }): ScreenOrientation | null {
+  if (screen.orientation) return screen.orientation;
+  const parsed = parseResolution(screen.resolution);
+  if (!parsed) return null;
+  return parsed.height > parsed.width ? "PORTRAIT" : "LANDSCAPE";
+}
+
+/** "Landscape" / "Portrait" for display, or null when the shape isn't known. */
+export function orientationLabel(screen: { orientation?: ScreenOrientation | null; resolution?: string | null }): string | null {
+  const orientation = screenOrientationOf(screen);
+  return orientation ? (SCREEN_ORIENTATIONS.find((o) => o.value === orientation)?.label ?? null) : null;
+}
 
 export const INSTALLATION_ENVIRONMENTS = [
   { value: "INDOOR", label: "Indoor" },
