@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGet, apiGetPaginated, apiPost } from "../api/client";
+import { apiGet, apiGetPaginated, apiPost, apiUpload } from "../api/client";
 import type { Creative, LiveScreen, PendingCreative } from "../types/creatives";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
+import type { UploadFile } from "./useKyc";
 
 function buildQuery(params: Record<string, string | number | undefined>) {
   const query = new URLSearchParams();
@@ -18,6 +19,42 @@ export function useCampaignCreativesQuery(campaignId: string) {
     queryKey: ["creatives", "campaign", campaignId],
     queryFn: () => apiGet<Creative[]>(`/creatives/campaigns/${campaignId}`, getAccessToken()),
     enabled: hasAccessToken && !!campaignId,
+  });
+}
+
+export interface UploadCreativeInput {
+  file: UploadFile;
+  /** Whole seconds, 1–120. Videos should send their real length. */
+  durationSeconds?: number;
+  label?: string;
+  /** Displayed pixel size as measured on the client — cs-api uses it for video (images are measured server-side). */
+  width?: number;
+  height?: number;
+}
+
+// POST /creatives/campaigns/:id — the ad itself, sent for admin review.
+// Distinct from useUploadCampaignBannerMutation (a campaign's marketing
+// thumbnail, never played on screens).
+export function useUploadCreativeMutation(campaignId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ file, durationSeconds, label, width, height }: UploadCreativeInput) => {
+      const formData = new FormData();
+      // React Native's FormData accepts the { uri, name, type } shape at runtime; DOM typings only know Blob.
+      formData.append("file", file as Blob);
+      if (durationSeconds) formData.append("durationSeconds", String(Math.min(120, Math.max(1, Math.round(durationSeconds)))));
+      if (label) formData.append("label", label);
+      if (width && height) {
+        formData.append("width", String(Math.round(width)));
+        formData.append("height", String(Math.round(height)));
+      }
+      return apiUpload<Creative>(`/creatives/campaigns/${campaignId}`, formData, getAccessToken());
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["creatives", "campaign", campaignId] });
+      queryClient.invalidateQueries({ queryKey: ["creatives", "mine"] });
+      queryClient.invalidateQueries({ queryKey: ["media"] });
+    },
   });
 }
 
