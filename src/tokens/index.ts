@@ -49,6 +49,8 @@ export const modes = {
     muted: neutral[100],
     mutedForeground: neutral[500],
     border: neutral[200],
+    /** cs-web's card outline: \`ring-1 ring-foreground/10\`. */
+    cardBorder: "rgba(15, 23, 42, 0.1)",
     ring: neutral[300],
     // cs-web's globals.css (the rendered truth, which diverges from its tokens.ts here): dark ink on
     // the orange primary, cream on the near-black secondary.
@@ -63,6 +65,7 @@ export const modes = {
     muted: neutral[800],
     mutedForeground: neutral[400],
     border: neutral[800],
+    cardBorder: "rgba(255, 252, 243, 0.1)",
     ring: neutral[700],
     // cs-web's globals.css (the rendered truth, which diverges from its tokens.ts here): dark ink on
     // the orange primary, cream on the near-black secondary.
