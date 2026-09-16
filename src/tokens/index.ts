@@ -50,8 +50,10 @@ export const modes = {
     mutedForeground: neutral[500],
     border: neutral[200],
     ring: neutral[300],
-    primaryForeground: neutral[0],
-    secondaryForeground: neutral[0],
+    // cs-web's globals.css (the rendered truth, which diverges from its tokens.ts here): dark ink on
+    // the orange primary, cream on the near-black secondary.
+    primaryForeground: brand.secondary,
+    secondaryForeground: brand.foreground,
   },
   dark: {
     background: neutral[950],
@@ -62,8 +64,10 @@ export const modes = {
     mutedForeground: neutral[400],
     border: neutral[800],
     ring: neutral[700],
-    primaryForeground: neutral[0],
-    secondaryForeground: neutral[0],
+    // cs-web's globals.css (the rendered truth, which diverges from its tokens.ts here): dark ink on
+    // the orange primary, cream on the near-black secondary.
+    primaryForeground: brand.secondary,
+    secondaryForeground: brand.foreground,
   },
 } as const;
 
