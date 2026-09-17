@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiGetPaginated, apiPatch, apiPost, apiPut } from "../api/client";
 import type {
   AssignmentTeam,
@@ -42,6 +42,24 @@ export function useMyTicketsQuery(page: number, status?: TicketStatus) {
   });
 }
 
+// Infinite-scroll variant for cs-mobile's ticket list; shares the ["support", "mine"] prefix so every existing
+// invalidation (create, reply, reopen…) refreshes it too.
+export function useMyTicketsInfiniteQuery(status?: TicketStatus) {
+  const hasAccessToken = useHasSession();
+  return useInfiniteQuery({
+    queryKey: ["support", "mine", "infinite", status ?? null],
+    queryFn: ({ pageParam }) => {
+      const query = new URLSearchParams({ page: String(pageParam) });
+      if (status) query.set("status", status);
+      return apiGetPaginated<Ticket>(`/support/tickets/mine?${query.toString()}`, getAccessToken());
+    },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.meta.page * lastPage.meta.limit < lastPage.meta.total ? lastPage.meta.page + 1 : undefined,
+    enabled: hasAccessToken,
+  });
+}
+
 export interface AdminTicketFilters {
   status?: TicketStatus;
   category?: TicketCategory;
@@ -65,12 +83,14 @@ export function useAdminTicketsQuery(page: number, filters: AdminTicketFilters =
   });
 }
 
-export function useTicketDetailQuery(ticketId: string) {
+// refetchInterval: cs-mobile has no SSE stream, so an open thread polls for new replies instead.
+export function useTicketDetailQuery(ticketId: string, options: { refetchInterval?: number } = {}) {
   const hasAccessToken = useHasSession();
   return useQuery({
     queryKey: ["support", "ticket", ticketId],
     queryFn: () => apiGet<TicketDetail>(`/support/tickets/${ticketId}`, getAccessToken()),
     enabled: hasAccessToken && !!ticketId,
+    refetchInterval: options.refetchInterval,
   });
 }
 
