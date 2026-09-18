@@ -7,6 +7,7 @@ export * from "./useDevices";
 export * from "./useKnowledgeBase";
 export * from "./useKyc";
 export * from "./useNotifications";
+export * from "./usePartnerAds";
 export * from "./usePayments";
 export * from "./usePushTokens";
 export * from "./useRefunds";
