@@ -10,6 +10,7 @@ export * from "./geo";
 export * from "./knowledgeBase";
 export * from "./kyc";
 export * from "./notifications";
+export * from "./partnerAds";
 export * from "./partnerTypes";
 export * from "./payments";
 export * from "./refunds";
