@@ -1,0 +1,663 @@
+{
+  "common": {
+    "continue": "Continue",
+    "back": "Back",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "done": "Done",
+    "remove": "Remove",
+    "view": "View",
+    "loading": "Loading…",
+    "retry": "Try again",
+    "optional": "Optional",
+    "perDay": "/day",
+    "perMonth": "/month",
+    "estimated": "Estimated",
+    "help": "Help",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "hi": "हिंदी",
+    "switchTo": "Switch language"
+  },
+  "campaignStatus": {
+    "DRAFT": {
+      "label": "Draft",
+      "description": "You haven't finished this campaign yet."
+    },
+    "PAYMENT_PENDING": {
+      "label": "Payment pending",
+      "description": "Your campaign is ready. Complete the payment to launch it."
+    },
+    "PAYMENT_RECEIVED": {
+      "label": "Payment received",
+      "description": "We've received your payment. Upload your ad if you haven't yet."
+    },
+    "UNDER_REVIEW": {
+      "label": "Under review",
+      "description": "Our team is checking your ad. This usually takes a few hours."
+    },
+    "APPROVED": {
+      "label": "Approved",
+      "description": "Your ad is approved."
+    },
+    "SCHEDULED": {
+      "label": "Scheduled",
+      "description": "Your ad will start playing on the start date."
+    },
+    "LIVE": {
+      "label": "Live",
+      "description": "Your ad is playing on screens right now."
+    },
+    "PAUSED": {
+      "label": "Paused",
+      "description": "Your campaign is stopped for now."
+    },
+    "COMPLETED": {
+      "label": "Completed",
+      "description": "Your campaign has finished. Your report is ready."
+    },
+    "REJECTED": {
+      "label": "Rejected",
+      "description": "Your ad needs changes. Please upload a new one."
+    },
+    "CANCELLED": {
+      "label": "Cancelled",
+      "description": "This campaign was cancelled."
+    }
+  },
+  "glossary": {
+    "ad": "Ad",
+    "yourAd": "Your ad",
+    "screens": "Screens",
+    "estimatedViews": "Estimated views",
+    "plays": "Plays",
+    "playsPerDay": "Plays per day",
+    "campaignId": "Campaign ID",
+    "proofOfPlay": "Proof of Play"
+  },
+  "objective": {
+    "BRAND_AWARENESS": "Brand Awareness",
+    "PRODUCT_LAUNCH": "Product Launch",
+    "OFFER_PROMOTION": "Offer / Promotion",
+    "STORE_TRAFFIC": "Store Traffic",
+    "EVENT_PROMOTION": "Event",
+    "NEW_BUSINESS_LAUNCH": "New Business Launch",
+    "LEAD_GENERATION": "Lead Generation",
+    "OTHER": "Other",
+    "STORE_PROMOTION": "Store Promotion",
+    "POLITICAL_CAMPAIGN": "Political Campaign",
+    "PUBLIC_AWARENESS": "Public Awareness",
+    "RECRUITMENT": "Recruitment",
+    "GOVERNMENT_ANNOUNCEMENT": "Government Announcement",
+    "FESTIVAL_CAMPAIGN": "Festival Campaign",
+    "SEASONAL_PROMOTION": "Seasonal Promotion"
+  },
+  "builder": {
+    "title": "Create a campaign",
+    "subtitle": "Five simple steps. Your work is saved as you go.",
+    "steps": {
+      "aria": "Campaign steps",
+      "1": "Details",
+      "2": "Your ad",
+      "3": "Screens",
+      "4": "Schedule",
+      "5": "Review & pay"
+    },
+    "summary": {
+      "screens": "Screens",
+      "plays": "Plays",
+      "views": "Est. views",
+      "total": "Total"
+    },
+    "details": {
+      "name": "Campaign name",
+      "nameHint": "Only you see this. Example: Diwali Campaign 2026",
+      "namePlaceholder": "e.g. Diwali Campaign 2026",
+      "brand": "Brand or business name",
+      "brandHint": "The name people know you by.",
+      "brandPlaceholder": "e.g. Tajbari",
+      "objective": "What is this campaign for?",
+      "objectiveHint": "Pick the one that fits best.",
+      "description": "Anything else we should know?",
+      "descriptionHint": "A short note about your offer or event.",
+      "descriptionPlaceholder": "e.g. 20% off on all sweets this Diwali",
+      "saveFailed": "Couldn't save. Please try again.",
+      "errors": {
+        "nameRequired": "Please give your campaign a name.",
+        "nameTooLong": "That name is too long.",
+        "brandTooLong": "That brand name is too long.",
+        "objectiveRequired": "Please pick what this campaign is for.",
+        "descriptionTooLong": "Please keep this under 1,000 characters."
+      }
+    },
+    "upload": {
+      "dropTitle": "Tap to upload your ad",
+      "dropHint": "Or drag a picture or video here.",
+      "formats": "{formats} · up to {mb} MB · videos up to {seconds} seconds",
+      "uploading": "Uploading…",
+      "uploaded": "Your ad is uploaded.",
+      "uploadFailed": "Upload failed. Please try again.",
+      "wrongFormat": "This file type isn't supported. Use {formats}.",
+      "tooBig": "This file is bigger than {mb} MB.",
+      "tooLong": "Videos can be at most {seconds} seconds long.",
+      "allGood": "Your ad looks good",
+      "allGoodHint": "It's ready to go on screens.",
+      "needsAttention": "Your ad can run, but check this",
+      "needsAttentionHint": "It may not look its best on screen.",
+      "checks": {
+        "format": {
+          "ok": "Format: {format}",
+          "warn": "Format: {format}"
+        },
+        "size": {
+          "ok": "File size: {mb} MB",
+          "warn": "File size: {mb} MB — too big"
+        },
+        "resolution": {
+          "ok": "Picture quality: {width} × {height}",
+          "warn": "Picture quality is low ({width} × {height}) — it may look blurry"
+        },
+        "orientation": {
+          "ok": "Shape: {shape}",
+          "warn": "Shape: {shape}"
+        },
+        "length": {
+          "ok": "Length: {seconds} seconds",
+          "warn": "Length: {seconds} seconds — too long"
+        }
+      },
+      "shapes": {
+        "landscape": "Wide (landscape)",
+        "portrait": "Tall (portrait)",
+        "square": "Square"
+      },
+      "reviewNote": "Our team checks every ad before it goes live, usually within a few hours.",
+      "replace": "Replace ad"
+    },
+    "screens": {
+      "pickOne": "Select at least one screen",
+      "fit": {
+        "fits": "Your ad fits this screen",
+        "bars": "Your ad fits, with thin empty edges",
+        "rotated": "Action required: your ad's shape doesn't match this screen",
+        "rotatedSummary": "{count, plural, one {# screen doesn't match your ad's shape} other {# screens don't match your ad's shape}}"
+      }
+    },
+    "schedule": {
+      "datesTitle": "When should your ad run?",
+      "datesHint": "Pick a start and end date.",
+      "days": "{count, plural, one {# day} other {# days}}",
+      "datesInvalid": "Please pick dates from today onwards.",
+      "lengthTitle": "How long is your ad on screen?",
+      "lengthVideo": "Your video is {seconds} seconds long.",
+      "lengthHint": "How many seconds should your picture show each time?",
+      "seconds": "{seconds} sec",
+      "frequencyTitle": "How often should it play?",
+      "frequencyHint": "We turn this into plays on every screen for you.",
+      "less": "Less often",
+      "more": "More often",
+      "capNote": "Some of your screens show one ad at a time, so your ad already plays all day there — you're not charged extra for them.",
+      "saveFailed": "Couldn't save. Please try again.",
+      "levels": {
+        "popular": "Popular",
+        "plays": "At least {count} plays a day",
+        "priceMultiplier": "{times}× the price of Standard",
+        "STANDARD": {
+          "title": "Standard",
+          "description": "Your ad plays regularly through the day."
+        },
+        "HIGH": {
+          "title": "High visibility",
+          "description": "Twice as often — more people see it."
+        },
+        "CUSTOM": {
+          "title": "Custom",
+          "description": "Choose exactly how often."
+        }
+      }
+    },
+    "review": {
+      "campaign": "Campaign",
+      "ad": "Your ad",
+      "adLength": "{seconds} seconds on screen each time",
+      "screens": "{count, plural, one {# screen} other {# screens}}",
+      "locations": "In: {places}",
+      "schedule": "Dates & frequency",
+      "delivery": "What you get",
+      "plays": "Plays (at least)",
+      "views": "Estimated views",
+      "estimateNote": "Views are an estimate based on how many people pass each screen. You'll see the real number of plays after your campaign runs.",
+      "cost": "Price",
+      "mediaCost": "Screen cost",
+      "platformFee": "CASTADI platform fee",
+      "gst": "GST",
+      "gstNone": "Not applicable",
+      "total": "Total to pay",
+      "noHiddenCharges": "No hidden charges.",
+      "payWith": "Pay with",
+      "payOnline": "UPI, card or net banking",
+      "payOnlineHint": "Secure payment by Razorpay",
+      "payWallet": "CASTADI wallet",
+      "walletBalance": "Balance: {amount}",
+      "walletShort": "Balance {amount} — not enough",
+      "confirm": "I confirm that the campaign details and my ad are correct.",
+      "editCampaign": "Edit campaign",
+      "processing": "Please wait…",
+      "submitForApproval": "Submit campaign",
+      "payAndLaunch": "Pay {amount} & launch",
+      "verifyFailed": "We received your payment but couldn't confirm it. Please contact support — don't pay again.",
+      "paymentCancelled": "Payment not completed. Your campaign is saved — you can pay any time.",
+      "payFailed": "Couldn't start the payment. Please try again."
+    },
+    "launched": {
+      "paid": {
+        "title": "Your campaign is booked!",
+        "subtitle": "Payment received. We'll check your ad and put it on screens."
+      },
+      "requested": {
+        "title": "Your campaign is submitted",
+        "subtitle": "Our team will confirm the payment and check your ad."
+      },
+      "campaignId": "Campaign ID",
+      "nextSteps": "What happens next",
+      "steps": {
+        "paymentReceived": "Payment received",
+        "submitted": "Campaign submitted",
+        "paymentApproval": "Payment confirmation",
+        "adApproval": "Ad check by our team",
+        "scheduling": "Scheduled on your screens",
+        "live": "Your ad goes live"
+      },
+      "notifyNote": "We'll send you a notification at every step.",
+      "viewCampaign": "View campaign",
+      "backToDashboard": "Go to dashboard"
+    },
+    "continueSetup": {
+      "title": "This campaign isn't live yet",
+      "needsAd": "Upload your ad to continue.",
+      "needsScreens": "Choose your screens and dates to continue.",
+      "needsPayment": "Everything is ready — just review and pay.",
+      "cta": "Continue"
+    }
+  },
+  "listing": {
+    "locationCategory": {
+      "PREMIUM_COMMERCIAL": "Premium commercial",
+      "HIGH_STREET": "High street",
+      "BUSINESS_DISTRICT": "Business district",
+      "RESIDENTIAL": "Residential",
+      "TRANSIT": "Transit",
+      "RETAIL": "Retail",
+      "TOURIST": "Tourist",
+      "INSTITUTIONAL": "Institutional"
+    },
+    "audience": {
+      "STUDENTS": "Students",
+      "PROFESSIONALS": "Professionals",
+      "FAMILIES": "Families",
+      "SHOPPERS": "Shoppers",
+      "COMMUTERS": "Commuters",
+      "TOURISTS": "Tourists"
+    },
+    "traffic": {
+      "PEDESTRIAN": "Mostly people walking",
+      "VEHICLE": "Mostly vehicles",
+      "BOTH": "People and vehicles"
+    },
+    "displayType": {
+      "LCD": "LCD",
+      "LED": "LED",
+      "DIGITAL_BILLBOARD": "Digital billboard"
+    },
+    "facing": {
+      "ROAD_FACING": "Faces the road",
+      "INDOOR_FACING": "Faces inside"
+    }
+  },
+  "marketplace": {
+    "title": "Explore screens",
+    "subtitle": "Find screens by area, landmark or city, then pick the ones you want.",
+    "advertisersOnly": "Screens are only available to advertiser accounts.",
+    "save": "Save this screen",
+    "unsave": "Remove from saved",
+    "results": "{count, plural, one {# screen} other {# screens}}",
+    "listView": "List",
+    "mapView": "Map",
+    "noResults": "No screens found here",
+    "noResultsHint": "Try another area, a bigger distance, or fewer filters.",
+    "showMore": "Show more screens",
+    "card": {
+      "digitalDisplay": "Digital display",
+      "available": "Available",
+      "unavailable": "Busy",
+      "km": "{km} km away",
+      "footfall": "Daily footfall",
+      "perDayValue": "{value}/day",
+      "peak": "Peak hours",
+      "hours": "On",
+      "plays": "Est. plays",
+      "view": "View screen",
+      "select": "Select",
+      "selected": "Selected"
+    },
+    "filters": {
+      "button": "Filters",
+      "title": "Filters",
+      "subtitle": "Pick what matters to you. Results update as you tap.",
+      "location": "Type of location",
+      "venue": "Venue",
+      "audience": "Who's there",
+      "traffic": "Traffic",
+      "pedestrian": "Lots of people walking",
+      "vehicle": "Lots of vehicles",
+      "screen": "Screen",
+      "indoor": "Indoor",
+      "outdoor": "Outdoor",
+      "size": "Screen size",
+      "sizeLabel": "{range} inch",
+      "budget": "Budget per day",
+      "anyPrice": "Any price",
+      "upTo": "Up to {amount} a day",
+      "dates": "Free on these dates",
+      "datesHint": "Only show screens with room for your dates.",
+      "clear": "Clear filters",
+      "clearAll": "Clear search and filters",
+      "show": "Show screens",
+      "showCount": "{count, plural, one {Show # screen} other {Show # screens}}"
+    },
+    "search": {
+      "placeholder": "Area, landmark, city or PIN code",
+      "nearMe": "Near me",
+      "nearMeLabel": "your location",
+      "locating": "Finding you…",
+      "around": "Around {place}",
+      "clearPlace": "Clear place",
+      "within": "Within",
+      "km": "{km} km"
+    },
+    "selection": {
+      "count": "{count, plural, one {# screen selected} other {# screens selected}}",
+      "empty": "No screens selected yet",
+      "useGroup": "Use a saved group",
+      "yourGroups": "Your screen groups",
+      "groupAdded": "Added {count} screens from {name}",
+      "groupLoadFailed": "Couldn't load that group.",
+      "addSaved": "Add my saved screens ({count})",
+      "saveGroup": "Save as a group",
+      "saveGroupTitle": "Save these screens as a group",
+      "saveGroupHint": "Give your {count} screens a name, then pick them all in one tap next time.",
+      "groupPlaceholder": "e.g. Patna premium locations",
+      "groupSaved": "Saved \"{name}\"",
+      "groupSaveFailed": "Couldn't save the group.",
+      "remove": "Remove {name}"
+    },
+    "cart": {
+      "selected": "{count, plural, one {# screen selected} other {# screens selected}}",
+      "perDay": "{amount} a day in total",
+      "clear": "Clear",
+      "continue": "Create campaign"
+    }
+  },
+  "screenDetail": {
+    "back": "Back to screens",
+    "advertisersOnly": "Screen details are only available to advertiser accounts.",
+    "loadFailed": "Couldn't load this screen.",
+    "digitalDisplay": "Digital display",
+    "price": "Price",
+    "plays": "Estimated plays",
+    "playsNote": "for a 15-second ad",
+    "priceNote": "You'll see the full price for your dates, with fees and GST, before you pay.",
+    "select": "Select this screen",
+    "selected": "Selected",
+    "viewLive": "View live screen",
+    "perDay": "{value}/day",
+    "seconds": "{count} seconds",
+    "meters": "{count} m",
+    "indoor": "Indoor",
+    "outdoor": "Outdoor",
+    "tabs": {
+      "details": "Details",
+      "liveAds": "Live ads"
+    },
+    "sections": {
+      "overview": "Screen",
+      "location": "Location",
+      "audience": "Audience & traffic",
+      "visibility": "Visibility",
+      "delivery": "Bookings on this screen"
+    },
+    "estimatesNote": "Footfall and audience are the screen owner's estimates.",
+    "deliveryHint": "Busy days are marked. You choose your dates when you create the campaign.",
+    "browseMore": "Browse more screens",
+    "fields": {
+      "size": "Size",
+      "resolution": "Resolution",
+      "shape": "Shape",
+      "type": "Type",
+      "environment": "Placed",
+      "brightness": "Brightness",
+      "hours": "On",
+      "venue": "Venue",
+      "landmark": "Landmark",
+      "area": "Area",
+      "city": "City",
+      "pincode": "PIN code",
+      "locationCategory": "Type of location",
+      "footfall": "Daily footfall",
+      "weekendFootfall": "Weekend footfall",
+      "traffic": "Traffic",
+      "peak": "Peak hours",
+      "dwell": "People stay about",
+      "audience": "Who's there",
+      "facing": "Facing",
+      "viewingDistance": "Seen from up to",
+      "angle": "Visible across",
+      "obstructions": "Anything blocking it",
+      "night": "Visible at night"
+    }
+  },
+  "savedScreens": {
+    "title": "Saved screens",
+    "subtitle": "Your favourite screens and screen groups, ready for your next campaign.",
+    "groups": "Screen groups",
+    "noGroups": "No groups yet. While choosing screens for a campaign, tap \"Save as a group\" to reuse them later.",
+    "saved": "Saved screens",
+    "noSaved": "Tap the heart on any screen to save it here.",
+    "explore": "Explore screens",
+    "screenCount": "{count, plural, one {# screen} other {# screens}}",
+    "useInCampaign": "Use in a new campaign",
+    "rename": "Rename",
+    "save": "Save",
+    "delete": "Delete",
+    "deleteTitle": "Delete \"{name}\"?",
+    "deleteHint": "The screens themselves aren't affected — only this group is removed.",
+    "loadFailed": "Couldn't load that group.",
+    "renameFailed": "Couldn't rename the group."
+  },
+  "listingEditor": {
+    "title": "Listing details",
+    "hint": "Advertisers see these on your screen's card. Screens with more details are shown first. Changes go live right away.",
+    "where": "Where exactly",
+    "landmark": "Nearest landmark",
+    "landmarkPlaceholder": "e.g. Near Boring Road crossing",
+    "area": "Area / locality",
+    "areaPlaceholder": "e.g. Boring Road",
+    "pincode": "PIN code",
+    "locationCategory": "Type of location",
+    "audience": "Who passes by",
+    "traffic": "Traffic",
+    "peakFrom": "Busiest from",
+    "peakTo": "Busiest until",
+    "weekendFootfall": "Weekend footfall / day",
+    "dwell": "People stay (seconds)",
+    "displayType": "Screen type",
+    "sizeInches": "Size (inches)",
+    "brightness": "Brightness (nits)",
+    "viewingDistance": "Seen from (metres)",
+    "angle": "Visible across (degrees)",
+    "facing": "Facing",
+    "visibleAtNight": "Visible at night",
+    "obstructions": "Anything blocking the view?",
+    "obstructionsPlaceholder": "e.g. A tree partly covers it from the left",
+    "save": "Save details",
+    "saving": "Saving…",
+    "saved": "Listing details saved.",
+    "saveFailed": "Couldn't save. Please try again."
+  },
+  "commandCenter": {
+    "liveTitle": "Live performance",
+    "completedTitle": "Campaign completed",
+    "dayOf": "Day {day} of {total}",
+    "tiles": {
+      "screens": "Screens",
+      "online": "Online now",
+      "plays": "Ad plays",
+      "views": "Estimated views",
+      "spend": "Spent so far",
+      "remaining": "Remaining",
+      "delivery": "Delivery",
+      "paid": "Amount paid"
+    },
+    "downloadReport": "Download campaign report",
+    "downloading": "Downloading…",
+    "downloadFailed": "Couldn't download. Please try again.",
+    "estimateNote": "Plays are counted by the screens themselves. Views are an estimate from each screen's footfall.",
+    "byScreen": "Screen by screen",
+    "table": {
+      "screen": "Screen",
+      "status": "Status",
+      "plays": "Plays",
+      "views": "Est. views"
+    },
+    "screenStatus": {
+      "ONLINE": "Online",
+      "OFFLINE": "Offline",
+      "NOT_CONNECTED": "Not connected yet"
+    },
+    "offline": {
+      "title": "{screen} is offline",
+      "body": "It has been offline for {minutes} minutes. CASTADI is monitoring the issue.",
+      "impact": "About {plays} plays may be affected so far — we'll make good on them under our policy."
+    },
+    "progress": {
+      "title": "What's happening with your campaign",
+      "steps": {
+        "paid": "Payment received",
+        "adCheck": "Ad check",
+        "scheduled": "Scheduled",
+        "live": "Live"
+      },
+      "rejected": "Your ad needs changes before it can run. Please upload a new one — your payment and screens are kept.",
+      "replaceAd": "Upload a new ad",
+      "hint": {
+        "PAYMENT_RECEIVED": "Upload your ad so our team can check it.",
+        "UNDER_REVIEW": "Our team is checking your ad. This usually takes a few hours.",
+        "APPROVED": "Your ad is approved. We're putting it on your screens.",
+        "SCHEDULED": "All set. Your ad starts playing on your start date.",
+        "LIVE": "Your ad is playing now."
+      }
+    }
+  },
+  "proofOfPlay": {
+    "title": "Proof of Play",
+    "subtitle": "Every day, on every screen, how many times your ad played in full.",
+    "pdf": "Download PDF",
+    "csv": "CSV",
+    "downloading": "Downloading…",
+    "downloadFailed": "Couldn't download. Please try again.",
+    "empty": "Nothing has played yet. Plays show up here as soon as your ad starts running.",
+    "totals": "{plays} verified plays on {screens, plural, one {# screen} other {# screens}} over {days, plural, one {# day} other {# days}}",
+    "date": "Date",
+    "screen": "Screen",
+    "plays": "Plays",
+    "status": "Status",
+    "verified": "Verified",
+    "notVerified": "Not verified",
+    "showMore": "Show more ({count} left)",
+    "pageSubtitle": "Download proof that your ads played, for every campaign that has run.",
+    "noneYet": "None of your campaigns has played yet. Proof of Play appears here once one goes live.",
+    "createCampaign": "Create a campaign"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "create": "Create Campaign",
+    "screens": "Explore Screens",
+    "campaigns": "My Campaigns",
+    "analytics": "Analytics",
+    "proofOfPlay": "Proof of Play",
+    "billing": "Wallet & Billing",
+    "saved": "Saved Screens",
+    "company": "Company Profile",
+    "notifications": "Notifications"
+  },
+  "dashboard": {
+    "create": "Create a campaign",
+    "createHint": "Pick screens, upload your ad and pay — in 5 simple steps.",
+    "intro": {
+      "title": "How CASTADI works",
+      "subtitle": "Put your ad on digital screens near your customers in three steps.",
+      "close": "Close",
+      "choose": {
+        "title": "Choose screens",
+        "body": "Find screens by area or landmark and see who passes by."
+      },
+      "upload": {
+        "title": "Upload your ad and pay",
+        "body": "A picture or video, your dates, how often it plays — one clear price."
+      },
+      "track": {
+        "title": "See it run",
+        "body": "Track plays live and download proof that your ad played."
+      }
+    },
+    "tiles": {
+      "active": "Live campaigns",
+      "scheduled": "Coming up",
+      "completed": "Completed",
+      "spend": "Total spend",
+      "plays": "Total ad plays",
+      "views": "Estimated views",
+      "screensNow": "Screens running now"
+    },
+    "pending": {
+      "title": "Waiting for you",
+      "DRAFT": {
+        "what": "You haven't finished setting this up.",
+        "cta": "Continue"
+      },
+      "PAYMENT_PENDING": {
+        "what": "Ready to go — just pay to launch it.",
+        "cta": "Pay now"
+      },
+      "PAYMENT_RECEIVED": {
+        "what": "Paid — upload your ad so it can run.",
+        "cta": "Upload ad"
+      },
+      "REJECTED": {
+        "what": "Your ad needs changes before it can run.",
+        "cta": "Upload new ad"
+      }
+    },
+    "recent": {
+      "title": "Your campaigns",
+      "all": "See all",
+      "empty": "No campaigns yet. Create your first one above."
+    }
+  },
+  "company": {
+    "title": "Company profile",
+    "subtitle": "Your business details, team, account and help.",
+    "tabs": {
+      "business": "Business & KYC",
+      "team": "Team",
+      "account": "My account",
+      "help": "Help & support"
+    }
+  }
+}

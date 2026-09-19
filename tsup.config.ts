@@ -8,6 +8,7 @@ export default defineConfig({
     "src/tokens/index.ts",
     "src/api/index.ts",
     "src/hooks/index.ts",
+    "src/i18n/index.ts",
   ],
   format: ["esm"],
   dts: true,

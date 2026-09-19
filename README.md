@@ -14,6 +14,7 @@ remains the reference implementation until it is migrated.
 | `@castadi/shared/schemas` | zod schemas mirroring cs-api Joi validators |
 | `@castadi/shared/hooks` | `useQuery`/`useMutation` hooks per domain |
 | `@castadi/shared/tokens` | brand colors, light/dark modes, numeric spacing/radii/type scales, `resolveTheme` |
+| `@castadi/shared/i18n` | the English/Hindi UI catalogs (`messages.en`/`messages.hi`), `LOCALES`, `coerceLocale` |
 
 ## Platform setup
 ```ts
@@ -42,12 +43,17 @@ same pass. Source mapping:
 | `src/api/client.ts` | `src/lib/apiClient.ts` |
 | `src/api/queryClient.ts` | `src/lib/queryClient.ts` |
 | `src/tokens/index.ts` | `src/design-system/{colors,tokens}.ts` |
+| `src/i18n/{en,hi}.json` | `src/i18n/messages/{en,hi}.json` |
+| `src/types/{checkout,delivery,money,screenListing,adChecks}.ts` | `src/lib/*.ts` (same names) |
+| `src/types/orientation.ts` | the fit maths from `src/lib/orientation.ts` (parse/orient helpers live in `./screens`) |
+| `src/hooks/marketplaceFilters.ts` | `src/components/marketplace/marketplaceFilters.ts` |
 
 ### Known intentional differences
 - `api/client.ts`: toasts, redirect-on-expiry and `fetch` are injected; no `apiDownload` (CSV/Excel export is web-only); adds `apiFetchRaw` and `buildQuery`.
 - Session/tokens live in `api/session.ts` (`TokenStorage` adapter) instead of zustand + localStorage.
 - Hooks: `useAuthStore` replaced by `getAccessToken()` / `useHasSession()` / `session`; `download*Report` helpers removed.
 - `useNotifications`: REST only — the SSE stream and admin template hooks are web-only; adds `useInvalidateNotifications`, `useNotificationsInfiniteQuery` (infinite scroll) and optional `refetchInterval` on the unread count.
+- `useAnalytics`: no downloads — `proofOfPlayExportPath` / `campaignReportPath` give the paths; each platform fetches and saves the file itself.
 - `useKyc`: `useUploadDocumentMutation` accepts an `UploadFile` (a `Blob` or a React Native `{ uri, name, type }` reference) instead of only `File`.
 - `useScreens`: `useUploadPhotoMutation` accepts an `UploadFile` too.
 - `useCampaigns`: `useUploadCampaignBannerMutation` accepts an `UploadFile` too.
