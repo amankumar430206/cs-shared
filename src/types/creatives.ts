@@ -14,6 +14,9 @@ export interface Creative {
   contentType: string;
   fileSize: number;
   durationSeconds: number | null;
+  /** Displayed pixel size, measured by cs-api from the file itself — null for older uploads. */
+  width?: number | null;
+  height?: number | null;
   storageProvider: StorageProvider;
   label: string | null;
   tags: string[];

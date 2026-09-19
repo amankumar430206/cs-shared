@@ -3,7 +3,8 @@ import { getTodayIST } from "./date";
 
 export interface PriceLineItem {
   screenId: string;
-  pricePerDay: number;
+  /** The advertiser-facing daily rate (partner base + CASTADI markup) — what each day actually costs. */
+  listedDailyRate: number;
   days: number;
   screenPrice: number;
   platformCharge: number;
@@ -32,7 +33,8 @@ export interface Booking {
   slotStartHour: number | null;
   slotEndHour: number | null;
   status: BookingStatus;
-  pricePerDay: number;
+  /** Advertiser-facing daily rate for this booking. */
+  listedDailyRate: number;
   days: number;
   screenPrice: number;
   platformCharge: number;

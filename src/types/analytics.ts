@@ -6,6 +6,11 @@ export interface AdvertiserAnalytics {
     totalCampaigns: number;
     totalSpend: number;
     activeScreens: number;
+    /** Verified plays across every campaign. */
+    totalPlays: number;
+    estimatedViews: number;
+    /** Screens showing one of this advertiser's campaigns today. */
+    screensRunningNow: number;
   };
   spendTrend: { date: string; amount: number }[];
   campaignsByStatus: { status: string; count: number }[];
@@ -67,19 +72,39 @@ export interface CampaignScreenStat {
   state: string;
   estimatedDailyImpressions: number;
   live: boolean;
+  /** NOT_CONNECTED: the screen's player has never checked in. */
+  status: "ONLINE" | "OFFLINE" | "NOT_CONNECTED";
+  /** Landmark or area, when the partner filled it in. */
+  place: string | null;
   playCount: number;
   completedCount: number;
+  estimatedViews: number;
   successRate: number;
+  /** Set while the screen is silent during its paid run: how long, and the plays that's costing. */
+  offline: { minutes: number; since: string; estimatedMissedPlays: number } | null;
 }
 
 export interface CampaignAnalytics {
   campaignId: string;
+  code: string;
   name: string;
   status: string;
   startDate: string;
   endDate: string;
   durationDays: number;
+  daysElapsed: number;
   completionPercent: number;
+  /** Verified plays x people likely to see each play (footfall-based). */
+  estimatedViews: number;
+  /** The guaranteed minimum plays for the days run so far. */
+  expectedPlaysToDate: number;
+  /** Verified plays vs that minimum, capped at 100 — null before the run starts. */
+  deliveryPercent: number | null;
+  offlineScreens: CampaignScreenStat[];
+  paidAmount: number;
+  /** Paid amount spread evenly over the run — what's been used so far. */
+  spend: number;
+  remaining: number;
   activeScreens: number;
   liveScreens: number;
   estimatedDailyViews: number;
@@ -193,4 +218,24 @@ export interface TaxLedgerFilters {
   startDate?: string;
   endDate?: string;
   entryType?: TaxLedgerEntryType;
+}
+
+export interface ProofOfPlayEntry {
+  date: string;
+  screenId: string;
+  screenName: string;
+  city: string;
+  plays: number;
+  notCompleted: number;
+  secondsPlayed: number;
+  firstPlayedAt: string;
+  lastPlayedAt: string;
+  creatives: string | null;
+  status: "VERIFIED" | "NOT_VERIFIED";
+}
+
+export interface ProofOfPlay {
+  campaign: { id: string; code: string; name: string; startDate: string; endDate: string };
+  totals: { plays: number; screens: number; days: number };
+  entries: ProofOfPlayEntry[];
 }

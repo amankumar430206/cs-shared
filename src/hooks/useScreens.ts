@@ -240,10 +240,23 @@ export function useDeleteScreenPhotoMutation(screenId: string) {
 }
 
 export interface ScreenSearchFilters {
+  /** Screen name, area, landmark, address, city or PIN. */
   search?: string;
   city?: string;
   state?: string;
+  pincode?: string;
+  /** One venue code or several, comma-separated. */
   categoryCode?: string;
+  /** Comma-separated lists (see types/screenListing.ts). */
+  locationCategory?: string;
+  audience?: string;
+  traffic?: string;
+  displayType?: string;
+  environment?: string;
+  sizeBucket?: string;
+  /** Only screens with room for these dates — send both. */
+  availableFrom?: string;
+  availableTo?: string;
   minPrice?: string;
   maxPrice?: string;
   live?: string;

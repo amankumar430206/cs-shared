@@ -1,3 +1,4 @@
+import type { ScreenListingDetails } from "./screenListing";
 // Types mirroring cs-api's modules/screens responses.
 
 export interface ScreenCategory {
@@ -17,7 +18,7 @@ export type ScreenVerificationStatus = "PENDING" | "UNDER_REVIEW" | "ACTIVE" | "
 // to as two separately-hardcoded copies.
 export const EDITABLE_SCREEN_STATUSES: ScreenVerificationStatus[] = ["PENDING", "REJECTED", "ACTIVE"];
 
-export interface Screen {
+export interface Screen extends ScreenListingDetails {
   id: string;
   screenName: string;
   categoryId: string;
@@ -137,7 +138,7 @@ export interface DiscoveryScreenPhoto {
   downloadUrl: string;
 }
 
-export interface DiscoveryScreen {
+export interface DiscoveryScreen extends ScreenListingDetails {
   id: string;
   screenName: string;
   categoryId: string;
@@ -167,6 +168,8 @@ export interface DiscoveryScreen {
   deviceId: string | null;
   /** Only present when the search was a "near me" query (lat/lng passed). */
   distanceKm?: number;
+  /** Guaranteed plays a day for a 15s ad at Standard frequency — the card's "Estimated plays" figure. */
+  estimatedPlaysPerDay: number;
 }
 
 export interface ScreenPhoto {
