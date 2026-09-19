@@ -10,6 +10,7 @@ import type {
   CampaignTrend,
   GeographicRow,
   PartnerAnalytics,
+  ProofOfPlay,
   RefundTrend,
   RevenueGranularity,
   ScreenAnalytics,
@@ -137,3 +138,19 @@ export function useAdminTaxLedgerQuery(page: number, filters: TaxLedgerFilters) 
   });
 }
 
+
+export function useProofOfPlayQuery(campaignId: string, enabled = true) {
+  const hasAccessToken = useHasSession();
+  return useQuery({
+    queryKey: ["analytics", "proof-of-play", campaignId],
+    queryFn: () => apiGet<ProofOfPlay>(`/analytics/campaign/${campaignId}/proof-of-play`, getAccessToken()),
+    enabled: hasAccessToken && !!campaignId && enabled,
+  });
+}
+
+/** API path of a campaign's Proof of Play download (fetch with the session token). */
+export const proofOfPlayExportPath = (campaignId: string, format: "pdf" | "csv") =>
+  `/analytics/campaign/${campaignId}/proof-of-play/export?format=${format}`;
+
+/** API path of a campaign's report PDF. */
+export const campaignReportPath = (campaignId: string) => `/analytics/campaign/${campaignId}/report`;
