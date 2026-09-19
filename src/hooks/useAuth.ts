@@ -128,7 +128,7 @@ export function useChangePasswordMutation() {
 export function useUpdateProfileMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (input: { fullName: string }) =>
+    mutationFn: (input: { fullName?: string; preferredLanguage?: "en" | "hi" }) =>
       apiPatch<CurrentUser>("/auth/me", input, getAccessToken()),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth", "me"] });

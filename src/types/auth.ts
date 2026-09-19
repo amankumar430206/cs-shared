@@ -12,6 +12,8 @@ export interface CurrentUser {
   email: string;
   mobile_number: string;
   status: string;
+  /** UI language saved on the account ("en" | "hi"). */
+  preferred_language?: "en" | "hi";
   advertiser?: {
     id: string;
     business_name: string;
