@@ -1,4 +1,5 @@
 export * from "./auth";
+export * from "./builder";
 export * from "./campaigns";
 export * from "./kyc";
 export * from "./onboarding";

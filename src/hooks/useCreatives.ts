@@ -114,3 +114,19 @@ export function useRejectCreativeMutation() {
     },
   });
 }
+
+// Ported from cs-web src/hooks/useMedia.ts useApplyMediaMutation — keep in sync.
+// Re-attaches an already-uploaded file to a campaign as a new ad (the builder
+// uses it to change a still image's on-screen time without re-uploading).
+export function useApplyMediaMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ mediaId, campaignId, durationSeconds }: { mediaId: string; campaignId: string; durationSeconds?: number }) =>
+      apiPost<Creative>(`/media/${mediaId}/apply`, { campaignId, durationSeconds }, getAccessToken()),
+    onSuccess: (_data, { campaignId }) => {
+      queryClient.invalidateQueries({ queryKey: ["creatives", "campaign", campaignId] });
+      queryClient.invalidateQueries({ queryKey: ["creatives", "mine"] });
+      queryClient.invalidateQueries({ queryKey: ["media"] });
+    },
+  });
+}

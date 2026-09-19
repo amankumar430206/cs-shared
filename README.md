@@ -47,6 +47,7 @@ same pass. Source mapping:
 | `src/types/{checkout,delivery,money,screenListing,adChecks}.ts` | `src/lib/*.ts` (same names) |
 | `src/types/orientation.ts` | the fit maths from `src/lib/orientation.ts` (parse/orient helpers live in `./screens`) |
 | `src/hooks/marketplaceFilters.ts` | `src/components/marketplace/marketplaceFilters.ts` |
+| `useApplyMediaMutation` in `src/hooks/useCreatives.ts` | `useApplyMediaMutation` in `src/hooks/useMedia.ts` |
 
 ### Known intentional differences
 - `api/client.ts`: toasts, redirect-on-expiry and `fetch` are injected; no `apiDownload` (CSV/Excel export is web-only); adds `apiFetchRaw` and `buildQuery`.
