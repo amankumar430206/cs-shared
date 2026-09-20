@@ -1,8 +1,9 @@
 // Ported from cs-web src/hooks/useCheckout.ts — keep in sync.
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiDelete, apiGet, apiPatch, apiPost } from "../api/client";
-import type { Campaign } from "../types/campaigns";
+import { apiDelete, apiGet, apiPatch, apiPost, apiPut, apiUpload } from "../api/client";
+import type { Campaign, CampaignDocument, CampaignDocumentType } from "../types/campaigns";
 import type { CampaignQuote, CheckoutResult, DeliveryConfig, PaymentMethod, PaymentsConfig, QuoteInput } from "../types/checkout";
+import type { UploadFile } from "./useKyc";
 import { getAccessToken, useHasSession } from "../api/session";
 
 // Price + delivery for the builder's summary bar and review step. Keeps the
@@ -58,6 +59,39 @@ export function useRemoveCreativeMutation() {
     onSuccess: (_data, { campaignId }) => {
       queryClient.invalidateQueries({ queryKey: ["creatives", "campaign", campaignId] });
     },
+  });
+}
+
+/** Attach (or replace) a campaign's quotation / receipt — high-value flow. */
+export function useUploadCampaignDocumentMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ campaignId, type, file }: { campaignId: string; type: CampaignDocumentType; file: UploadFile }) => {
+      const formData = new FormData();
+      // React Native's FormData accepts the { uri, name, type } shape at runtime; DOM typings only know Blob.
+      formData.append("file", file as Blob);
+      return apiUpload<CampaignDocument>(`/campaigns/${campaignId}/documents/${type}`, formData, getAccessToken());
+    },
+    onSuccess: (_data, { campaignId }) => queryClient.invalidateQueries({ queryKey: ["campaigns", campaignId] }),
+  });
+}
+
+export function useRemoveCampaignDocumentMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ campaignId, type }: { campaignId: string; type: CampaignDocumentType }) =>
+      apiDelete(`/campaigns/${campaignId}/documents/${type}`, getAccessToken()),
+    onSuccess: (_data, { campaignId }) => queryClient.invalidateQueries({ queryKey: ["campaigns", campaignId] }),
+  });
+}
+
+/** Admin: set the approval switch and the quotation threshold. */
+export function useUpdatePaymentsConfigMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (patch: Partial<Pick<PaymentsConfig, "requireAdminApproval" | "quotationRequiredAbove">>) =>
+      apiPut<PaymentsConfig>("/settings/payments", patch, getAccessToken()),
+    onSuccess: (config) => queryClient.setQueryData(["settings", "payments"], config),
   });
 }
 

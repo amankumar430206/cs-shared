@@ -64,12 +64,28 @@ export interface Campaign {
   thumbnailUrl: string | null;
   /** Every banner, in upload order — only present on a single-campaign detail fetch, not the list views (which only need the thumbnail). */
   banners?: CampaignBanner[];
+  /** Quotation / receipt for high-value campaigns — only present on a single-campaign detail fetch. */
+  documents?: CampaignDocuments;
 }
 
 export interface CampaignBanner {
   id: string;
   downloadUrl: string;
 }
+
+export interface CampaignDocument {
+  filename: string;
+  contentType?: string;
+  uploadedAt?: string;
+  downloadUrl: string;
+}
+
+export interface CampaignDocuments {
+  QUOTATION: CampaignDocument | null;
+  RECEIPT: CampaignDocument | null;
+}
+
+export type CampaignDocumentType = "QUOTATION" | "RECEIPT";
 
 // Mirrors cs-api's campaigns.validators.js MAX_BANNERS_PER_CAMPAIGN.
 export const MAX_CAMPAIGN_BANNERS = 2;

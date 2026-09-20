@@ -49,6 +49,8 @@ export interface DeliveryConfig {
 export interface PaymentsConfig {
   /** When on, "Pay & Launch" raises a payment request an admin approves instead of paying straight away. */
   requireAdminApproval: boolean;
+  /** Rupee amount at/above which a campaign must carry a client quotation and is routed to admin approval. null = off. */
+  quotationRequiredAbove: number | null;
 }
 
 export type PaymentMethod = "RAZORPAY" | "WALLET";
