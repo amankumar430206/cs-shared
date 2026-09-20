@@ -102,12 +102,12 @@
     "title": "Create a campaign",
     "subtitle": "Five simple steps. Your work is saved as you go.",
     "steps": {
-      "aria": "Campaign steps",
       "1": "Details",
       "2": "Your ad",
       "3": "Screens",
       "4": "Schedule",
-      "5": "Review & pay"
+      "5": "Review & pay",
+      "aria": "Campaign steps"
     },
     "summary": {
       "screens": "Screens",
@@ -253,7 +253,22 @@
       "payAndLaunch": "Pay {amount} & launch",
       "verifyFailed": "We received your payment but couldn't confirm it. Please contact support — don't pay again.",
       "paymentCancelled": "Payment not completed. Your campaign is saved — you can pay any time.",
-      "payFailed": "Couldn't start the payment. Please try again."
+      "payFailed": "Couldn't start the payment. Please try again.",
+      "documents": {
+        "title": "Documents",
+        "quotationTitle": "Client quotation",
+        "quotationHint": "Campaigns over {amount} need the client quotation attached before they go for approval.",
+        "quotationRequired": "Attach the quotation to continue.",
+        "receiptTitle": "Payment receipt",
+        "receiptHint": "Optional — attach it if the client has already paid.",
+        "add": "Attach a file",
+        "replace": "Replace",
+        "remove": "Remove",
+        "uploading": "Uploading…",
+        "formats": "PDF, JPG or PNG · up to 10 MB",
+        "uploadFailed": "Couldn't upload. Please try again.",
+        "approvalNote": "Because this is a large campaign, our team will check the quotation before it goes live."
+      }
     },
     "launched": {
       "paid": {
