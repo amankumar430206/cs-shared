@@ -18,6 +18,7 @@ export * from "./orientation";
 export * from "./partnerAds";
 export * from "./partnerTypes";
 export * from "./payments";
+export * from "./quotations";
 export * from "./refunds";
 export * from "./revenue";
 export * from "./screens";
