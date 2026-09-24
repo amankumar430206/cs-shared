@@ -64,7 +64,8 @@ export interface Quotation {
   campaignName: string | null;
   campaignCode: string | null;
   campaignStatus: string | null;
-  advertiserId: string;
+  /** Admin responses only. */
+  advertiserId?: string;
   advertiserName: string | null;
   status: QuotationStatus;
   revision: number;
@@ -79,7 +80,8 @@ export interface Quotation {
   /** Admin-controlled: the advertiser may reopen / re-propose only while this is on. */
   revisionAllowed: boolean;
   orderSnapshot: QuotationOrderSnapshot;
-  paymentId: string | null;
+  /** Admin responses only (advertisers use payment.id). */
+  paymentId?: string | null;
   completedAt: string | null;
   /** List rows only: the uploaded payment receipt, if any (signed link). */
   receipt?: { filename: string; downloadUrl: string } | null;
