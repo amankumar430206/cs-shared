@@ -14,6 +14,8 @@ export type QuotationAction =
   | "REOPENED"
   | "RECEIPT_SUBMITTED"
   | "PAYMENT_REJECTED"
+  | "REVISION_OPENED"
+  | "REVISION_CLOSED"
   | "COMPLETED"
   | "CANCELLED";
 
@@ -43,6 +45,16 @@ export interface QuotationOrderSnapshot {
     platformCharge: number;
     taxAmount: number;
     totalAmount: number;
+    lineItems?: {
+      screenId: string;
+      shares: number;
+      listedDailyRate: number;
+      days: number;
+      screenPrice: number;
+      platformCharge: number;
+      taxAmount: number;
+      totalAmount: number;
+    }[];
   };
 }
 
@@ -64,6 +76,8 @@ export interface Quotation {
   currentAmount: number;
   /** The approved amount differs from the order's list total. */
   isRevised: boolean;
+  /** Admin-controlled: the advertiser may reopen / re-propose only while this is on. */
+  revisionAllowed: boolean;
   orderSnapshot: QuotationOrderSnapshot;
   paymentId: string | null;
   completedAt: string | null;
@@ -81,6 +95,14 @@ export interface QuotationDetail extends Quotation {
     totalAmount: number;
     listAmount: number | null;
   } | null;
+  billing: {
+    businessName: string | null;
+    gstNumber: string | null;
+    address: string | null;
+    billingState: string | null;
+    billingPincode: string | null;
+  };
+  screens: { id: string; name: string; city: string; state: string }[];
 }
 
 export const OPEN_QUOTATION_STATUSES: QuotationStatus[] = ["SUBMITTED", "COUNTERED", "APPROVED", "REJECTED", "PAYMENT_SUBMITTED"];
