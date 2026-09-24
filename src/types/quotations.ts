@@ -96,6 +96,10 @@ export interface QuotationDetail extends Quotation {
     referenceNumber: string | null;
     totalAmount: number;
     listAmount: number | null;
+    settlementMode: string | null;
+    createdAt: string;
+    /** Issued once the quotation is completed (payment SUCCESSFUL). */
+    invoice: { id: string; invoiceNumber: string; issuedAt: string } | null;
   } | null;
   billing: {
     businessName: string | null;
