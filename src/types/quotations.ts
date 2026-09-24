@@ -81,6 +81,8 @@ export interface Quotation {
   orderSnapshot: QuotationOrderSnapshot;
   paymentId: string | null;
   completedAt: string | null;
+  /** List rows only: the uploaded payment receipt, if any (signed link). */
+  receipt?: { filename: string; downloadUrl: string } | null;
   createdAt: string;
   updatedAt: string;
 }
