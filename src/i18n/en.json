@@ -107,7 +107,9 @@
       "3": "Screens",
       "4": "Schedule",
       "5": "Review & pay",
-      "aria": "Campaign steps"
+      "aria": "Campaign steps",
+      "progress": "Step {current} of {total}",
+      "next": "Next: {step}"
     },
     "summary": {
       "screens": "Screens",
@@ -133,8 +135,26 @@
         "nameTooLong": "That name is too long.",
         "brandTooLong": "That brand name is too long.",
         "objectiveRequired": "Please pick what this campaign is for.",
-        "descriptionTooLong": "Please keep this under 1,000 characters."
-      }
+        "descriptionTooLong": "Please keep this under 1,000 characters.",
+        "targetAudienceOtherTooLong": "Please keep this under 160 characters.",
+        "preferredCitiesTooMany": "You can add up to 10 cities.",
+        "preferredScreenTypesTooMany": "You can pick up to 10 screen types.",
+        "totalBudgetInvalid": "Please enter a valid amount.",
+        "targetAgeRangeIncomplete": "Enter both a minimum and a maximum age.",
+        "targetAgeRangeInvalid": "The maximum age must be at or above the minimum."
+      },
+      "targetAudience": "Who is this for?",
+      "targetAudienceHint": "Pick as many as apply — helps you plan, doesn't limit who sees your ad.",
+      "targetAudienceOtherPlaceholder": "Describe who you're targeting",
+      "ageMin": "Min age",
+      "ageMax": "Max age",
+      "preferredCities": "Preferred cities",
+      "preferredCitiesHint": "Cities you'd like to focus on, for your own planning.",
+      "preferredCitiesPlaceholder": "Type a city and press Enter",
+      "preferredScreenTypes": "Preferred screen types",
+      "preferredScreenTypesHint": "The kinds of screens you'd like to focus on.",
+      "budget": "Budget",
+      "budgetHint": "Just for your own reference — what you actually pay is set at checkout."
     },
     "upload": {
       "dropTitle": "Tap to upload your ad",
@@ -178,7 +198,11 @@
         "square": "Square"
       },
       "reviewNote": "Our team checks every ad before it goes live, usually within a few hours.",
-      "replace": "Replace ad"
+      "replace": "Replace ad",
+      "addAnother": "Add another ad",
+      "count": "{count}/{max} ads added",
+      "atCap": "You've reached the {max}-ad limit for this campaign.",
+      "mixedLength": "This video is {seconds}s, but your other video is {expected}s. Videos on the same campaign must all be the same length."
     },
     "screens": {
       "pickOne": "Select at least one screen",
@@ -187,6 +211,36 @@
         "bars": "Your ad fits, with thin empty edges",
         "rotated": "Action required: your ad's shape doesn't match this screen",
         "rotatedSummary": "{count, plural, one {# screen doesn't match your ad's shape} other {# screens don't match your ad's shape}}"
+      },
+      "match": {
+        "allRun": "{count, plural, one {Your ad will run on this screen} other {Your ad will run on all # screens}}",
+        "capacity": "Up to {count, plural, one {# ad} other {# ads}} at a time",
+        "bestMatch": "Best match",
+        "scoreOf": "{score}/100",
+        "emptyHint": "Pick screens from the list to preview your ad on them and compare their stats.",
+        "compare": "Compare screens",
+        "comparisonTitle": "Compare your screens",
+        "comparisonHint": "{count, plural, one {# screen} other {# screens}}, best match first",
+        "checkAvailability": "Check availability",
+        "availabilityTitle": "Screen availability",
+        "availabilityHint": "{count, plural, one {# screen} other {# screens}} — pick dates above to check for conflicts.",
+        "datesTitle": "Check Availability",
+        "datesHint": "Pick tentative dates now — we'll check every screen you've picked against them, and you can fine-tune this in the next step.",
+        "availabilityBlocked": "Fix the availability conflict above, or adjust your dates, to continue.",
+        "perDay": "{value}/day",
+        "colScreen": "Screen",
+        "colMatch": "Match",
+        "colFit": "Ad fit",
+        "colReach": "Reach",
+        "colPrice": "Price",
+        "colHours": "Hours",
+        "colShape": "Shape",
+        "reason": {
+          "fillsScreen": "Your ad fills the screen",
+          "highReach": "High footfall",
+          "bestValue": "Best value for money",
+          "shapeMismatch": "Plays with bars (different shape)"
+        }
       }
     },
     "schedule": {
@@ -220,7 +274,11 @@
           "title": "Custom",
           "description": "Choose exactly how often."
         }
-      }
+      },
+      "availabilityTitle": "Check Availability",
+      "availabilityHint": "We check every screen you picked against these exact dates before you pay.",
+      "availabilityToggle": "{count, plural, one {View calendar} other {View calendars}}",
+      "availabilityBlocked": "Fix the availability conflict above to continue."
     },
     "review": {
       "campaign": "Campaign",
@@ -238,7 +296,7 @@
       "platformFee": "CASTADI platform fee",
       "gst": "GST",
       "gstNone": "Not applicable",
-      "total": "Total to pay",
+      "total": "Total to Pay",
       "noHiddenCharges": "No hidden charges.",
       "payWith": "Pay with",
       "payOnline": "UPI, card or net banking",
@@ -260,15 +318,25 @@
         "quotationHint": "Campaigns over {amount} need the client quotation attached before they go for approval.",
         "quotationRequired": "Attach the quotation to continue.",
         "receiptTitle": "Payment receipt",
-        "receiptHint": "Optional — attach it if the client has already paid.",
+        "receiptHint": "Attach proof of what you paid — our team verifies it before this campaign goes live.",
         "add": "Attach a file",
         "replace": "Replace",
         "remove": "Remove",
         "uploading": "Uploading…",
         "formats": "PDF, JPG or PNG · up to 10 MB",
         "uploadFailed": "Couldn't upload. Please try again.",
-        "approvalNote": "Because this is a large campaign, our team will check the quotation before it goes live."
-      }
+        "approvalNote": "Because this is a large campaign, our team will check the quotation before it goes live.",
+        "optionalHint": "Optional — attach a client quotation if you have one.",
+        "verificationNote": "Because you've already paid, our team will verify your receipt before this campaign goes live."
+      },
+      "adsTitle": "{count, plural, one {Your ad} other {Your ads (#)}}",
+      "bookingDates": "Booking dates: {range}",
+      "slotHours": "{start}–{end}",
+      "alreadyPaid": "I've already paid",
+      "alreadyPaidHint": "Paid the team directly — attach your receipt",
+      "submitForVerification": "Submit for verification",
+      "listTotal": "List Price",
+      "revisedQuotation": "Revised Quotation Amount"
     },
     "launched": {
       "paid": {
@@ -291,7 +359,8 @@
       },
       "notifyNote": "We'll send you a notification at every step.",
       "viewCampaign": "View campaign",
-      "backToDashboard": "Go to dashboard"
+      "backToDashboard": "Go to dashboard",
+      "approvalEta": "Approval usually takes up to 2 hours."
     },
     "continueSetup": {
       "title": "This campaign isn't live yet",
