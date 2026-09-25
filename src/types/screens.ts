@@ -130,7 +130,10 @@ export interface ScreenOwnerDetails {
 }
 
 /** The shape GET /screens/me/list and /screens/admin/list actually return — every Screen field except deviceToken, which only a single-screen fetch carries. */
-export type ScreenListItem = Omit<Screen, "deviceToken">;
+export type ScreenListItem = Omit<Screen, "deviceToken"> & {
+  /** First marketplace photo for list thumbnails — null when the screen has no photos yet. */
+  thumbnailUrl: string | null;
+};
 
 export interface DiscoveryScreenPhoto {
   id: string;
