@@ -12,6 +12,7 @@ export * from "./usePartnerAds";
 export * from "./usePayments";
 export * from "./usePlaces";
 export * from "./usePushTokens";
+export * from "./useQuotations";
 export * from "./useRefunds";
 export * from "./useRevenue";
 export * from "./useSavedScreens";
