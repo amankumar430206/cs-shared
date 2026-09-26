@@ -581,7 +581,7 @@
     "weekendFootfall": "Weekend footfall / day",
     "dwell": "People stay (seconds)",
     "displayType": "Screen type",
-    "sizeInches": "Size (inches)",
+    "sizeInches": "Size (inches, H × W)",
     "brightness": "Brightness (nits)",
     "viewingDistance": "Seen from (metres)",
     "angle": "Visible across (degrees)",
