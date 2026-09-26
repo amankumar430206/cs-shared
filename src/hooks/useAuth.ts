@@ -95,12 +95,49 @@ export function useVerifyOtpMutation() {
   });
 }
 
-// There's no forgot-password/resend-otp backend call anymore — sending
-// (and resending) an OTP is a direct client-side call to MSG91's widget
-// (see lib/msg91Widget.ts's sendWidgetOtp/retryWidgetOtp), with no cs-api
-// involvement at all. That's also what keeps the enumeration-safety
-// property (nothing account-specific happens until reset-password below,
-// same reasoning cs-api's auth.service.js documents).
+// --- Self-managed verification (SMS OTP + email magic-link) --------------
+// Widget-free activation path — cs-api generates the OTP / magic-link JWT
+// and sends it via its own SMS / email transport. Used because the MSG91
+// OTP Widget's server-side verifyAccessToken returns 418 for this account,
+// and because mobile can't embed the web widget natively.
+
+export function useSendMobileOtpMutation() {
+  return useMutation({
+    mutationFn: (userId: string) => apiPost<{ status: string }>("/auth/send-mobile-otp", { userId }),
+  });
+}
+
+export function useVerifyMobileOtpMutation() {
+  const setSession = session.setTokens;
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { userId: string; code: string }) =>
+      apiPost<TokenPair>("/auth/verify-mobile-otp", input),
+    onSuccess: async (tokens) => {
+      setSession(tokens);
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
+    },
+  });
+}
+
+export function useSendEmailLinkMutation() {
+  return useMutation({
+    mutationFn: (userId: string) => apiPost<{ status: string }>("/auth/send-email-link", { userId }),
+  });
+}
+
+export function useVerifyEmailMutation() {
+  const setSession = session.setTokens;
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (token: string) => apiPost<TokenPair>("/auth/verify-email", { token }),
+    onSuccess: async (tokens) => {
+      setSession(tokens);
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
+    },
+  });
+}
+
 interface ResetPasswordInput {
   identifier: string;
   accessToken: string;
