@@ -138,6 +138,25 @@ export function useVerifyEmailMutation() {
   });
 }
 
+export function useSendEmailOtpMutation() {
+  return useMutation({
+    mutationFn: (userId: string) => apiPost<{ status: string }>("/auth/send-email-otp", { userId }),
+  });
+}
+
+export function useVerifyEmailOtpMutation() {
+  const setSession = session.setTokens;
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { userId: string; code: string }) =>
+      apiPost<TokenPair>("/auth/verify-email-otp", input),
+    onSuccess: async (tokens) => {
+      setSession(tokens);
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
+    },
+  });
+}
+
 interface ResetPasswordInput {
   identifier: string;
   accessToken: string;
