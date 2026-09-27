@@ -137,6 +137,7 @@ export type ScreenListItem = Omit<Screen, "deviceToken"> & {
 
 export interface DiscoveryScreenPhoto {
   id: string;
+  /** One of DISCOVERY_PHOTO_TYPES, or SURROUNDING_VIDEO_TYPE for the one video entry — check against that constant to render it as a video instead of an image. */
   photoType: string;
   downloadUrl: string;
 }
@@ -165,7 +166,7 @@ export interface DiscoveryScreen extends ScreenListingDetails {
   availability: boolean;
   /** True if this screen's player has sent a heartbeat within the last 5 minutes. */
   isLive: boolean;
-  /** Marketplace-facing still photos, oldest first. Never includes the installation video. */
+  /** Marketplace-facing discovery media, oldest first: 3 photos of the screen plus one surrounding-area video. Never includes installation/verification media (installed view, device serial photo, installation video) — see SURROUNDING_VIDEO_TYPE/DISCOVERY_PHOTO_TYPES. */
   photos: DiscoveryScreenPhoto[];
   /** Not a credential (that's deviceToken, owner/admin-only) — an opaque id for GET /devices/:deviceId/preview/mine. */
   deviceId: string | null;
@@ -259,15 +260,27 @@ export const SCREEN_SIZE_PRESETS = [
   { value: "55-4k", label: '55" — 3840x2160 (4K)', screenSize: "55 inch", resolution: "3840x2160" },
 ] as const;
 
-export const PHOTO_TYPES = [
+// Advertiser-facing discovery photos — the screen itself, shown on the
+// marketplace. Required before a screen can be submitted for review.
+export const DISCOVERY_PHOTO_TYPES = [
   { value: "FRONT_VIEW", label: "Front view" },
   { value: "SIDE_VIEW", label: "Side view" },
-  { value: "INSTALLED_VIEW", label: "Installed view" },
   { value: "SURROUNDING_AREA", label: "Surrounding area" },
+] as const;
+// Installation/verification-only photos — admin/screen-partner only, never
+// shown to an advertiser (may include the device's serial number or other
+// install detail that's none of their business). Optional.
+export const INSTALLATION_PHOTO_TYPES = [
+  { value: "INSTALLED_VIEW", label: "Installed view" },
   { value: "DEVICE_SERIAL_PHOTO", label: "Device serial number" },
 ] as const;
+export const PHOTO_TYPES = [...DISCOVERY_PHOTO_TYPES, ...INSTALLATION_PHOTO_TYPES];
 
-// Onboarding spec's "Short Video (10-20 sec)" — reuses the same upload
-// endpoint/table as photos (backend enforces mime type video/mp4 + 20MB cap
-// for this one type specifically).
+// Two video slots, same upload endpoint/table as photos (backend enforces
+// mime type video/mp4 + 20MB cap for both). SURROUNDING_VIDEO_TYPE is
+// discovery media — required, advertiser-visible, a short video of the
+// screen's surroundings for better marketplace discovery.
+// VIDEO_PHOTO_TYPE ("installation video") is verification-only — optional,
+// admin/screen-partner only, same split as the still photos above.
 export const VIDEO_PHOTO_TYPE = "INSTALLATION_VIDEO";
+export const SURROUNDING_VIDEO_TYPE = "SURROUNDING_VIDEO";
