@@ -50,7 +50,7 @@ export interface Screen extends ScreenListingDetails {
   priceAdjustmentAmount: number;
   isPriceAdjusted: boolean;
   priceAdjustedAt: string | null;
-  /** Admin-only markup added on top of pricePerDay to produce the advertiser-facing listed rate — one of 5/10/15/20. */
+  /** Admin-only markup added on top of pricePerDay to produce the advertiser-facing listed rate — 5 to 50 in steps of 5. */
   markupPercent: number;
   /** Admin override of the revenueModel's commission preset — null means "use the preset". */
   commissionOverridePercent: number | null;
