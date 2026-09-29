@@ -33,6 +33,8 @@ export interface Booking {
   slotStartHour: number | null;
   slotEndHour: number | null;
   status: BookingStatus;
+  /** Only on GET /bookings/campaign/:id — the booked screen's name. */
+  screenName?: string | null;
   /** Advertiser-facing daily rate for this booking. */
   listedDailyRate: number;
   days: number;
