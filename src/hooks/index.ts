@@ -11,6 +11,7 @@ export * from "./useNotifications";
 export * from "./usePartnerAds";
 export * from "./usePayments";
 export * from "./usePlaces";
+export * from "./useProofRequests";
 export * from "./usePushTokens";
 export * from "./useQuotations";
 export * from "./useRefunds";

@@ -861,5 +861,69 @@
       "viewInCampaign": "View in Campaign",
       "search": "Search campaign or code"
     }
+  },
+  "proofRequests": {
+    "status": {
+      "PENDING": "Requested",
+      "SUBMITTED": "Photo sent",
+      "VERIFIED": "Verified",
+      "OVERDUE": "Overdue",
+      "WAIVED": "Waived"
+    },
+    "source": {
+      "AUTO_GO_LIVE": "Automatic request",
+      "ADVERTISER": "Requested by advertiser",
+      "PARTNER": "Sent by screen partner"
+    },
+    "due": {
+      "overdue": "Overdue",
+      "hours": "Due in {count}h",
+      "days": "Due in {count}d"
+    },
+    "matched": "Matches a logged playback",
+    "screen": {
+      "empty": "No ad is playing on this screen today, so there is nothing to photograph.",
+      "noRequest": "No request",
+      "answer": "Upload photo",
+      "volunteer": "Send a photo anyway",
+      "advertiserNote": "Advertiser note"
+    },
+    "upload": {
+      "choose": "Take or choose photo",
+      "caption": "Optional note (e.g. 3pm slot, MG Road stop)",
+      "submit": "Send photo",
+      "uploading": "Sending…",
+      "cancel": "Cancel",
+      "done": "Photo sent",
+      "failed": "Could not send the photo. Please try again.",
+      "badType": "Use a JPG or PNG photo.",
+      "tooLarge": "Photo is too large (max {mb}MB).",
+      "lockedHint": "Once sent, a photo cannot be edited or deleted."
+    },
+    "campaign": {
+      "title": "Proof of play: photos",
+      "subtitle": "Photos of your ad running on each screen, sent by the screen partner. Ask for a fresh one any time.",
+      "empty": "Your ad is not live on a screen yet. Photo proof appears here once it is.",
+      "noneYet": "No photo yet. It is requested automatically once your ad starts playing.",
+      "request": "Ask for a photo",
+      "alreadyRequested": "Photo requested",
+      "notePlaceholder": "Optional note (e.g. evening slot)",
+      "send": "Send request",
+      "sending": "Sending…",
+      "requested": "Request sent to the screen partner",
+      "requestFailed": "Could not send the request."
+    },
+    "dashboard": {
+      "partnerTitle": "Photos to send",
+      "advertiserTitle": "Photo proof of your ads",
+      "adminTitle": "Overdue photo proof",
+      "counts": "{open} open, {overdue} overdue",
+      "waive": "Waive",
+      "waiveReason": "Reason for waiving",
+      "waiveConfirm": "Waive request",
+      "cancel": "Cancel",
+      "waived": "Request waived",
+      "waiveFailed": "Could not waive the request."
+    }
   }
 }
