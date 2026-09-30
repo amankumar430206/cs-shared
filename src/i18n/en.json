@@ -682,7 +682,8 @@
     "billing": "Wallet & Billing",
     "saved": "Saved Screens",
     "company": "Company Profile",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "quotations": "Quotations"
   },
   "dashboard": {
     "create": "Create a campaign",
