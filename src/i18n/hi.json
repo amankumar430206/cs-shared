@@ -278,7 +278,11 @@
       "availabilityTitle": "क्या आपकी स्क्रीनें इन तारीख़ों के लिए खाली हैं?",
       "availabilityHint": "भुगतान से पहले हम आपकी चुनी हर स्क्रीन को इन्हीं तारीख़ों पर जाँचते हैं।",
       "availabilityToggle": "{count, plural, one {कैलेंडर देखें} other {कैलेंडर देखें}}",
-      "availabilityBlocked": "जारी रखने के लिए ऊपर दी गई उपलब्धता की समस्या ठीक करें।"
+      "availabilityBlocked": "जारी रखने के लिए ऊपर दी गई उपलब्धता की समस्या ठीक करें।",
+      "capacityConflict": "\"{screenName}\" इन तारीख़ों के लिए भरी हुई है",
+      "capacityDetail": "यह स्क्रीन एक समय में {max} विज्ञापन दिखा सकती है। {occupied} स्लॉट पहले से अन्य कैंपेन के लिए बुक हैं, और आपके कैंपेन को {yours} चाहिए।",
+      "capacityBadge": "{occupied} / {max} भरे",
+      "removeScreen": "यह स्क्रीन हटाएँ"
     },
     "review": {
       "campaign": "कैंपेन",

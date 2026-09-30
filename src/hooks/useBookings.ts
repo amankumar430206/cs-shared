@@ -1,6 +1,14 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiGetPaginated, apiPatch, apiPost } from "../api/client";
-import type { AdvertiserBooking, Booking, BookingStatus, CreateBookingResult, PartnerBooking, PriceBreakdown } from "../types/bookings";
+import type {
+  AdvertiserBooking,
+  AvailabilityCheckResult,
+  Booking,
+  BookingStatus,
+  CreateBookingResult,
+  PartnerBooking,
+  PriceBreakdown,
+} from "../types/bookings";
 import type { DiscoveryScreen } from "../types/screens";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
 
@@ -320,5 +328,19 @@ export function useRejectSelfReservationMutation() {
     mutationFn: ({ id, reason }: { id: string; screenId: string; reason: string }) =>
       apiPost<SelfReservation>(`/bookings/self-reservations/${id}/reject`, { reason }, getAccessToken()),
     onSuccess: (_data, { screenId }) => invalidateSelfReservationViews(queryClient, screenId),
+  });
+}
+
+// Advisory dry run of cs-api's reservation checks (screen active, no overlap
+// on this campaign, ad capacity) for the chosen screens + dates, so the
+// builder can flag a conflict before checkout. Ported from cs-web's
+// useCheckAvailabilityQuery — keep in sync. A query keyed on the inputs (it's
+// triggered by picking dates, not by a user action).
+export function useCheckAvailabilityQuery(params: { campaignId: string; screenIds: string[]; startDate: string; endDate: string } | null) {
+  const hasAccessToken = useHasSession();
+  return useQuery({
+    queryKey: ["bookings", "check-availability", params],
+    queryFn: () => apiPost<AvailabilityCheckResult>("/bookings/check-availability", params, getAccessToken()),
+    enabled: hasAccessToken && !!params && params.screenIds.length > 0 && !!params.startDate && !!params.endDate,
   });
 }

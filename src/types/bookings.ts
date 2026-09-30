@@ -88,3 +88,22 @@ export function liveWindowStatus(booking: Pick<Booking, "status" | "startDate" |
   if (today > end) return "ended";
   return campaignStatus === "ACTIVE" ? "live" : "upcoming";
 }
+
+/** One screen that can't take this campaign for the chosen dates (cs-api bookings checkAvailability). */
+export interface AvailabilityConflict {
+  screenId: string;
+  screenName: string | null;
+  reason: string;
+  /** The window the reason is about — an overlapping booking's own dates, or the full requested range for a capacity conflict. Null for an inactive screen. */
+  conflictStartDate: string | null;
+  conflictEndDate: string | null;
+  /** Capacity conflicts only. */
+  maxAdCapacity?: number;
+  occupiedSlots?: number;
+  yourAdsWeight?: number;
+}
+
+export interface AvailabilityCheckResult {
+  ok: boolean;
+  conflicts: AvailabilityConflict[];
+}

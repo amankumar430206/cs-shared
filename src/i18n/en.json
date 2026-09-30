@@ -278,7 +278,11 @@
       "availabilityTitle": "Check Availability",
       "availabilityHint": "We check every screen you picked against these exact dates before you pay.",
       "availabilityToggle": "{count, plural, one {View calendar} other {View calendars}}",
-      "availabilityBlocked": "Fix the availability conflict above to continue."
+      "availabilityBlocked": "Fix the availability conflict above to continue.",
+      "capacityConflict": "\"{screenName}\" is full for these dates",
+      "capacityDetail": "This screen can show {max} ads at a time. {occupied} slots are already taken by other campaigns, and your campaign needs {yours}.",
+      "capacityBadge": "{occupied} / {max} filled",
+      "removeScreen": "Remove this screen"
     },
     "review": {
       "campaign": "Campaign",
