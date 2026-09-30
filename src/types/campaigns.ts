@@ -60,6 +60,8 @@ export interface Campaign {
   screenCount?: number;
   /** Same, narrowed to bookings whose date range covers today — "live right now," not just booked. */
   liveScreenCount?: number;
+  /** Of the live screens, how many have a device reporting in right now. Absent on older responses — treat as online. */
+  onlineScreenCount?: number;
   /** The oldest-uploaded banner's signed URL, for a list row's thumbnail — null if none uploaded yet. Present on every list/detail response. */
   thumbnailUrl: string | null;
   /** Every banner, in upload order — only present on a single-campaign detail fetch, not the list views (which only need the thumbnail). */

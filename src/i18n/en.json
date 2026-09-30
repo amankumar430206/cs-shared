@@ -713,7 +713,7 @@
       "spend": "Total spend",
       "plays": "Total ad plays",
       "views": "Estimated views",
-      "screensNow": "Screens running now"
+      "screensNow": "Screens online / scheduled today"
     },
     "pending": {
       "title": "Waiting for you",

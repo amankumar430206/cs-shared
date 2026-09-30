@@ -11,6 +11,8 @@ export interface AdvertiserAnalytics {
     estimatedViews: number;
     /** Screens showing one of this advertiser's campaigns today. */
     screensRunningNow: number;
+    /** Of the screens running now, how many have a device online. Absent on older responses. */
+    screensOnlineNow?: number;
   };
   spendTrend: { date: string; amount: number }[];
   campaignsByStatus: { status: string; count: number }[];

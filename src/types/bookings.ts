@@ -44,6 +44,8 @@ export interface Booking {
   totalAmount: number;
   reservedUntil: string;
   createdAt: string;
+  /** Whether the booked screen's device has reported in within 5 minutes — "Live" is schedule-based, this says if it's actually playing. Absent on older responses. */
+  screenDeviceOnline?: boolean;
 }
 
 export interface CreateBookingResult {
