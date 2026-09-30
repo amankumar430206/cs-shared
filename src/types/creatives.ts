@@ -51,6 +51,8 @@ export interface LiveScreen {
   deviceId: string | null;
   /** True if this screen's player has sent a heartbeat within the last 5 minutes. */
   isLive: boolean;
+  /** Managed offline — the partner plays the booked creatives from manual downloads (no heartbeat, so isLive is false). */
+  isSelfManaged: boolean;
   campaignId: string;
   campaignName: string;
   creative: {

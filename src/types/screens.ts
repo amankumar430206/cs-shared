@@ -62,7 +62,7 @@ export interface Screen extends ScreenListingDetails {
   storage: string | null;
   /** How many concurrent campaigns this screen's ad rotation can hold for the same date before it reads as fully booked. Defaults to 1 (exclusive). */
   maxAdCapacity: number;
-  /** Partner plays downloaded ads on their own hardware — no device link, live status or proof-of-play; never shown to advertisers. */
+  /** Managed offline: the device has no internet, so the partner downloads the booked creatives from the CMS and plays them by hand. Still bookable and visible to advertisers (cs-api 20260101000143). */
   isSelfManaged: boolean;
   /** Admin-only override of how often this screen's player polls /sync — null means "use the platform-wide default" (see useSyncPollingQuery in useTheme.ts). */
   syncIntervalMinutes: number | null;
