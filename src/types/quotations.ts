@@ -126,3 +126,7 @@ export function quotationMatchesOrder(q: Quotation, order: { screenIds: string[]
     q.orderSnapshot.endDate === order.endDate.slice(0, 10)
   );
 }
+
+/** The quotation's reference number — same on the PDF, cs-web and the app: QT-<campaign code>-R<revision>. */
+export const quotationNumber = (q: Pick<Quotation, "campaignCode" | "id" | "revision">) =>
+  `QT-${q.campaignCode ?? q.id.slice(0, 8).toUpperCase()}-R${q.revision}`;

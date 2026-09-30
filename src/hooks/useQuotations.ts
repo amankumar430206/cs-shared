@@ -101,3 +101,6 @@ export function usePayQuotationMutation() {
     onSuccess: onDone,
   });
 }
+
+/** Server-rendered quotation PDF for one of the caller's quotations (download + share on mobile). */
+export const quotationPdfPath = (quotationId: string) => `/quotations/mine/${quotationId}/pdf`;

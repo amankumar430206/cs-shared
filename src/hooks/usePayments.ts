@@ -187,3 +187,6 @@ export function useVerifyPaymentMutation() {
     },
   });
 }
+
+/** Server-rendered tax invoice PDF for one of the caller's invoices. */
+export const invoicePdfPath = (invoiceId: string) => `/payments/invoices/${invoiceId}/pdf`;
