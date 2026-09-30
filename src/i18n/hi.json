@@ -340,7 +340,8 @@
       "alreadyPaidHint": "टीम को सीधे भुगतान किया — अपनी रसीद जोड़ें",
       "submitForVerification": "पुष्टि के लिए भेजें",
       "listTotal": "सूची मूल्य",
-      "revisedQuotation": "संशोधित कोटेशन राशि"
+      "revisedQuotation": "संशोधित कोटेशन राशि",
+      "viewMore": "{count, plural, one {# और देखें} other {# और देखें}}"
     },
     "launched": {
       "paid": {

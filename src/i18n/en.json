@@ -340,7 +340,8 @@
       "alreadyPaidHint": "Paid the team directly — attach your receipt",
       "submitForVerification": "Submit for verification",
       "listTotal": "List Price",
-      "revisedQuotation": "Revised Quotation Amount"
+      "revisedQuotation": "Revised Quotation Amount",
+      "viewMore": "{count, plural, one {View # more} other {View # more}}"
     },
     "launched": {
       "paid": {
