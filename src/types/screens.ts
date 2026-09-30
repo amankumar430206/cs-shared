@@ -16,7 +16,8 @@ export type ScreenVerificationStatus = "PENDING" | "UNDER_REVIEW" | "ACTIVE" | "
 // UNDER_REVIEW stays locked. Single source of truth so the "Edit details"
 // button and the edit page's own guard can't drift apart the way they used
 // to as two separately-hardcoded copies.
-export const EDITABLE_SCREEN_STATUSES: ScreenVerificationStatus[] = ["PENDING", "REJECTED", "ACTIVE"];
+// UNDER_REVIEW included (mirrors cs-web / cs-api's UPDATABLE_STATUSES): editing mid-review updates the pending submission.
+export const EDITABLE_SCREEN_STATUSES: ScreenVerificationStatus[] = ["PENDING", "REJECTED", "ACTIVE", "UNDER_REVIEW"];
 
 export interface Screen extends ScreenListingDetails {
   id: string;

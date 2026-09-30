@@ -60,6 +60,9 @@ export const screenFormSchema = z.object({
   // the same date — see cs-api's 20260101000073 migration. Blank uses the
   // server default (1, exclusive).
   maxAdCapacity: optionalCapacity,
+  // Partner plays downloaded ads on their own hardware instead of the CASTADI
+  // Ad Player — see cs-api's 20260101000143 migration. Mirrors cs-web.
+  isSelfManaged: z.boolean().optional(),
 })
   // Only the HH:MM pattern was checked before — nothing compared the two,
   // so "22:00"-"08:00" saved fine and rendered to advertisers as what reads
