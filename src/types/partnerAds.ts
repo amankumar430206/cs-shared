@@ -23,6 +23,9 @@ export interface PartnerAd {
   reviewedAt: string | null;
   createdAt: string;
   downloadUrl?: string;
+  /** Small WebP copies (see types/imageVariants.ts); null/absent for videos and older images. */
+  thumbUrl?: string | null;
+  previewUrl?: string | null;
 }
 
 export interface PartnerAdWithContext extends PartnerAd {

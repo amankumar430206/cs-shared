@@ -45,6 +45,7 @@ same pass. Source mapping:
 | `src/tokens/index.ts` | `src/design-system/{colors,tokens}.ts` |
 | `src/i18n/{en,hi}.json` | `src/i18n/messages/{en,hi}.json` |
 | `src/types/{checkout,delivery,money,screenListing,adChecks}.ts` | `src/lib/*.ts` (same names) |
+| `src/types/imageVariants.ts` | `src/lib/imageVariants.ts` (`thumbSrc` / `previewSrc` for the API's `thumbUrl` / `previewUrl`) |
 | `src/types/orientation.ts` | the fit maths from `src/lib/orientation.ts` (parse/orient helpers live in `./screens`) |
 | `src/hooks/marketplaceFilters.ts` | `src/components/marketplace/marketplaceFilters.ts` |
 | `useApplyMediaMutation` in `src/hooks/useCreatives.ts` | `useApplyMediaMutation` in `src/hooks/useMedia.ts` |

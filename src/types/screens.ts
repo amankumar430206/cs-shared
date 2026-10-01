@@ -143,6 +143,9 @@ export interface DiscoveryScreenPhoto {
   /** One of DISCOVERY_PHOTO_TYPES, or SURROUNDING_VIDEO_TYPE for the one video entry — check against that constant to render it as a video instead of an image. */
   photoType: string;
   downloadUrl: string;
+  /** Small WebP copies (see types/imageVariants.ts); null/absent for videos and older images. */
+  thumbUrl?: string | null;
+  previewUrl?: string | null;
 }
 
 export interface DiscoveryScreen extends ScreenListingDetails {
@@ -185,6 +188,9 @@ export interface ScreenPhoto {
   originalFilename: string;
   uploadedAt: string;
   downloadUrl: string;
+  /** Small WebP copies (see types/imageVariants.ts); null/absent for videos and older images. */
+  thumbUrl?: string | null;
+  previewUrl?: string | null;
 }
 
 // Mirrors cs-api/src/modules/screens/screens.validators.js REVENUE_MODELS —

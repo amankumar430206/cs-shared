@@ -27,6 +27,9 @@ export interface ProofRequestPhoto {
   capturedAt: string;
   uploadedAt: string;
   downloadUrl: string;
+  /** Small WebP copies (see types/imageVariants.ts); null/absent for videos and older images. */
+  thumbUrl?: string | null;
+  previewUrl?: string | null;
 }
 
 export interface CampaignProofRequest extends ProofRequest {

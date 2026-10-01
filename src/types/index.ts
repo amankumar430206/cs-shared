@@ -11,6 +11,7 @@ export * from "./delivery";
 export * from "./devices";
 export * from "./format";
 export * from "./geo";
+export * from "./imageVariants";
 export * from "./knowledgeBase";
 export * from "./kyc";
 export * from "./money";

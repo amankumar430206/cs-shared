@@ -25,6 +25,9 @@ export interface Creative {
   submittedAt: string;
   reviewedAt: string | null;
   downloadUrl: string;
+  /** Small WebP copies (see types/imageVariants.ts); null/absent for videos and older images. */
+  thumbUrl?: string | null;
+  previewUrl?: string | null;
   /** The Media Library asset backing this creative — every creative is linked to one now, whether it started as a direct campaign upload or a library asset applied to a campaign. */
   mediaAssetId: string | null;
   /** Optional time-of-day restriction — the creative only rotates into a screen's playlist while the current hour falls in [slotStartHour, slotEndHour). Both null means no restriction. */
@@ -61,5 +64,7 @@ export interface LiveScreen {
     contentType: string;
     durationSeconds: number | null;
     downloadUrl: string;
+    thumbUrl?: string | null;
+    previewUrl?: string | null;
   };
 }

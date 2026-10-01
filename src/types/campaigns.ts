@@ -73,6 +73,9 @@ export interface Campaign {
 export interface CampaignBanner {
   id: string;
   downloadUrl: string;
+  /** Small WebP copies (see types/imageVariants.ts); null/absent for videos and older images. */
+  thumbUrl?: string | null;
+  previewUrl?: string | null;
 }
 
 export interface CampaignDocument {
