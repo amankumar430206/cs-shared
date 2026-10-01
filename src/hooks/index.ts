@@ -1,4 +1,5 @@
 export * from "./useAnalytics";
+export * from "./useReports";
 export * from "./useAuth";
 export * from "./useBookings";
 export * from "./useCampaigns";
