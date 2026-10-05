@@ -45,8 +45,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "prepare": "tsup"
+    "test": "vitest run"
   },
   "peerDependencies": {
     "@tanstack/react-query": "^5.0.0",

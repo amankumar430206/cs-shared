@@ -1,0 +1,2833 @@
+var common = {
+	"continue": "Continue",
+	back: "Back",
+	edit: "Edit",
+	save: "Save",
+	cancel: "Cancel",
+	close: "Close",
+	done: "Done",
+	remove: "Remove",
+	view: "View",
+	loading: "Loading…",
+	retry: "Try again",
+	optional: "Optional",
+	perDay: "/day",
+	perMonth: "/month",
+	estimated: "Estimated",
+	help: "Help",
+	yes: "Yes",
+	no: "No"
+};
+var language = {
+	label: "Language",
+	en: "English",
+	hi: "हिंदी",
+	switchTo: "Switch language"
+};
+var campaignStatus = {
+	DRAFT: {
+		label: "Draft",
+		description: "You haven't finished this campaign yet."
+	},
+	PAYMENT_PENDING: {
+		label: "Payment pending",
+		description: "Your campaign is ready. Complete the payment to launch it."
+	},
+	PAYMENT_RECEIVED: {
+		label: "Payment received",
+		description: "We've received your payment. Upload your ad if you haven't yet."
+	},
+	UNDER_REVIEW: {
+		label: "Under review",
+		description: "Our team is checking your ad. This usually takes a few hours."
+	},
+	APPROVED: {
+		label: "Approved",
+		description: "Your ad is approved."
+	},
+	SCHEDULED: {
+		label: "Scheduled",
+		description: "Your ad will start playing on the start date."
+	},
+	LIVE: {
+		label: "Live",
+		description: "Your ad is playing on screens right now."
+	},
+	PAUSED: {
+		label: "Paused",
+		description: "Your campaign is stopped for now."
+	},
+	COMPLETED: {
+		label: "Completed",
+		description: "Your campaign has finished. Your report is ready."
+	},
+	REJECTED: {
+		label: "Rejected",
+		description: "Your ad needs changes. Please upload a new one."
+	},
+	CANCELLED: {
+		label: "Cancelled",
+		description: "This campaign was cancelled."
+	}
+};
+var glossary = {
+	ad: "Ad",
+	yourAd: "Your ad",
+	screens: "Screens",
+	estimatedViews: "Estimated views",
+	plays: "Plays",
+	playsPerDay: "Plays per day",
+	campaignId: "Campaign ID",
+	proofOfPlay: "Proof of Play"
+};
+var objective = {
+	BRAND_AWARENESS: "Brand Awareness",
+	PRODUCT_LAUNCH: "Product Launch",
+	OFFER_PROMOTION: "Offer / Promotion",
+	STORE_TRAFFIC: "Store Traffic",
+	EVENT_PROMOTION: "Event",
+	NEW_BUSINESS_LAUNCH: "New Business Launch",
+	LEAD_GENERATION: "Lead Generation",
+	OTHER: "Other",
+	STORE_PROMOTION: "Store Promotion",
+	POLITICAL_CAMPAIGN: "Political Campaign",
+	PUBLIC_AWARENESS: "Public Awareness",
+	RECRUITMENT: "Recruitment",
+	GOVERNMENT_ANNOUNCEMENT: "Government Announcement",
+	FESTIVAL_CAMPAIGN: "Festival Campaign",
+	SEASONAL_PROMOTION: "Seasonal Promotion"
+};
+var builder = {
+	title: "Create a campaign",
+	subtitle: "Five simple steps. Your work is saved as you go.",
+	steps: {
+		"1": "Details",
+		"2": "Your ad",
+		"3": "Screens",
+		"4": "Schedule",
+		"5": "Review & pay",
+		aria: "Campaign steps",
+		progress: "Step {current} of {total}",
+		next: "Next: {step}"
+	},
+	summary: {
+		screens: "Screens",
+		plays: "Plays",
+		views: "Est. views",
+		total: "Total"
+	},
+	details: {
+		name: "Campaign name",
+		nameHint: "Only you see this. Example: Diwali Campaign 2026",
+		namePlaceholder: "e.g. Diwali Campaign 2026",
+		brand: "Brand or business name",
+		brandHint: "The name people know you by.",
+		brandPlaceholder: "e.g. Tajbari",
+		objective: "What is this campaign for?",
+		objectiveHint: "Pick the one that fits best.",
+		description: "Anything else we should know?",
+		descriptionHint: "A short note about your offer or event.",
+		descriptionPlaceholder: "e.g. 20% off on all sweets this Diwali",
+		saveFailed: "Couldn't save. Please try again.",
+		errors: {
+			nameRequired: "Please give your campaign a name.",
+			nameTooLong: "That name is too long.",
+			brandTooLong: "That brand name is too long.",
+			objectiveRequired: "Please pick what this campaign is for.",
+			descriptionTooLong: "Please keep this under 1,000 characters.",
+			targetAudienceOtherTooLong: "Please keep this under 160 characters.",
+			preferredCitiesTooMany: "You can add up to 10 cities.",
+			preferredScreenTypesTooMany: "You can pick up to 10 screen types.",
+			totalBudgetInvalid: "Please enter a valid amount.",
+			targetAgeRangeIncomplete: "Enter both a minimum and a maximum age.",
+			targetAgeRangeInvalid: "The maximum age must be at or above the minimum."
+		},
+		targetAudience: "Who is this for?",
+		targetAudienceHint: "Pick as many as apply — helps you plan, doesn't limit who sees your ad.",
+		targetAudienceOtherPlaceholder: "Describe who you're targeting",
+		ageMin: "Min age",
+		ageMax: "Max age",
+		preferredCities: "Preferred cities",
+		preferredCitiesHint: "Cities you'd like to focus on, for your own planning.",
+		preferredCitiesPlaceholder: "Type a city and press Enter",
+		preferredScreenTypes: "Preferred screen types",
+		preferredScreenTypesHint: "The kinds of screens you'd like to focus on.",
+		budget: "Budget",
+		budgetHint: "Just for your own reference — what you actually pay is set at checkout."
+	},
+	upload: {
+		dropTitle: "Tap to upload your ad",
+		dropHint: "Or drag a picture or video here.",
+		formats: "{formats} · up to {mb} MB · videos up to {seconds} seconds",
+		uploading: "Uploading…",
+		uploaded: "Your ad is uploaded.",
+		uploadFailed: "Upload failed. Please try again.",
+		wrongFormat: "This file type isn't supported. Use {formats}.",
+		tooBig: "This file is bigger than {mb} MB.",
+		tooLong: "Videos can be at most {seconds} seconds long.",
+		allGood: "Your ad looks good",
+		allGoodHint: "It's ready to go on screens.",
+		needsAttention: "Your ad can run, but check this",
+		needsAttentionHint: "It may not look its best on screen.",
+		checks: {
+			format: {
+				ok: "Format: {format}",
+				warn: "Format: {format}"
+			},
+			size: {
+				ok: "File size: {mb} MB",
+				warn: "File size: {mb} MB — too big"
+			},
+			resolution: {
+				ok: "Picture quality: {width} × {height}",
+				warn: "Picture quality is low ({width} × {height}) — it may look blurry"
+			},
+			orientation: {
+				ok: "Shape: {shape}",
+				warn: "Shape: {shape}"
+			},
+			length: {
+				ok: "Length: {seconds} seconds",
+				warn: "Length: {seconds} seconds — too long"
+			}
+		},
+		shapes: {
+			landscape: "Wide (landscape)",
+			portrait: "Tall (portrait)",
+			square: "Square"
+		},
+		reviewNote: "Our team checks every ad before it goes live, usually within a few hours.",
+		replace: "Replace ad",
+		addAnother: "Add another ad",
+		count: "{count}/{max} ads added",
+		atCap: "You've reached the {max}-ad limit for this campaign.",
+		mixedLength: "This video is {seconds}s, but your other video is {expected}s. Videos on the same campaign must all be the same length."
+	},
+	screens: {
+		pickOne: "Select at least one screen",
+		fit: {
+			fits: "Your ad fits this screen",
+			bars: "Your ad fits, with thin empty edges",
+			rotated: "Action required: your ad's shape doesn't match this screen",
+			rotatedSummary: "{count, plural, one {# screen doesn't match your ad's shape} other {# screens don't match your ad's shape}}"
+		},
+		match: {
+			allRun: "{count, plural, one {Your ad will run on this screen} other {Your ad will run on all # screens}}",
+			capacity: "Up to {count, plural, one {# ad} other {# ads}} at a time",
+			bestMatch: "Best match",
+			scoreOf: "{score}/100",
+			emptyHint: "Pick screens from the list to preview your ad on them and compare their stats.",
+			compare: "Compare screens",
+			comparisonTitle: "Compare your screens",
+			comparisonHint: "{count, plural, one {# screen} other {# screens}}, best match first",
+			checkAvailability: "Check availability",
+			availabilityTitle: "Screen availability",
+			availabilityHint: "{count, plural, one {# screen} other {# screens}} — pick dates above to check for conflicts.",
+			datesTitle: "Check Availability",
+			datesHint: "Pick tentative dates now — we'll check every screen you've picked against them, and you can fine-tune this in the next step.",
+			availabilityBlocked: "Fix the availability conflict above, or adjust your dates, to continue.",
+			perDay: "{value}/day",
+			colScreen: "Screen",
+			colMatch: "Match",
+			colFit: "Ad fit",
+			colReach: "Reach",
+			colPrice: "Price",
+			colHours: "Hours",
+			colShape: "Shape",
+			reason: {
+				fillsScreen: "Your ad fills the screen",
+				highReach: "High footfall",
+				bestValue: "Best value for money",
+				shapeMismatch: "Plays with bars (different shape)"
+			}
+		}
+	},
+	schedule: {
+		datesTitle: "Check Availability",
+		datesHint: "Pick a start and end date.",
+		days: "{count, plural, one {# day} other {# days}}",
+		datesInvalid: "Please pick dates from today onwards.",
+		lengthTitle: "Ad Duration",
+		lengthVideo: "Your video is {seconds} seconds long.",
+		lengthHint: "How many seconds should your picture show each time?",
+		seconds: "{seconds} sec",
+		frequencyTitle: "How often should it play?",
+		frequencyHint: "We turn this into plays on every screen for you.",
+		less: "Less often",
+		more: "More often",
+		capNote: "Some of your screens show one ad at a time, so your ad already plays all day there — you're not charged extra for them.",
+		saveFailed: "Couldn't save. Please try again.",
+		levels: {
+			popular: "Popular",
+			plays: "At least {count} plays a day",
+			priceMultiplier: "{times}× the price of Standard",
+			STANDARD: {
+				title: "Standard",
+				description: "Your ad plays regularly through the day."
+			},
+			HIGH: {
+				title: "High visibility",
+				description: "Twice as often — more people see it."
+			},
+			CUSTOM: {
+				title: "Custom",
+				description: "Choose exactly how often."
+			}
+		},
+		availabilityTitle: "Check Availability",
+		availabilityHint: "We check every screen you picked against these exact dates before you pay.",
+		availabilityToggle: "{count, plural, one {View calendar} other {View calendars}}",
+		availabilityBlocked: "Fix the availability conflict above to continue.",
+		capacityConflict: "\"{screenName}\" is full for these dates",
+		capacityDetail: "This screen can show {max} ads at a time. {occupied} slots are already taken by other campaigns, and your campaign needs {yours}.",
+		capacityBadge: "{occupied} / {max} filled",
+		removeScreen: "Remove this screen"
+	},
+	review: {
+		campaign: "Campaign",
+		ad: "Your ad",
+		adLength: "{seconds} seconds on screen each time",
+		screens: "{count, plural, one {# screen} other {# screens}}",
+		locations: "In: {places}",
+		schedule: "Dates & frequency",
+		delivery: "What you get",
+		plays: "Plays (at least)",
+		views: "Estimated views",
+		estimateNote: "Views are an estimate based on how many people pass each screen. You'll see the real number of plays after your campaign runs.",
+		cost: "Price",
+		mediaCost: "Screen cost",
+		platformFee: "CASTADI platform fee",
+		gst: "GST",
+		gstNone: "Not applicable",
+		total: "Total to Pay",
+		noHiddenCharges: "No hidden charges.",
+		payWith: "Pay with",
+		payOnline: "UPI, card or net banking",
+		payOnlineHint: "Secure payment by Razorpay",
+		payWallet: "CASTADI wallet",
+		walletBalance: "Balance: {amount}",
+		walletShort: "Balance {amount} — not enough",
+		confirm: "I confirm that the campaign details and my ad are correct.",
+		editCampaign: "Edit campaign",
+		processing: "Please wait…",
+		submitForApproval: "Submit campaign",
+		payAndLaunch: "Pay {amount} & launch",
+		verifyFailed: "We received your payment but couldn't confirm it. Please contact support — don't pay again.",
+		paymentCancelled: "Payment not completed. Your campaign is saved — you can pay any time.",
+		payFailed: "Couldn't start the payment. Please try again.",
+		documents: {
+			title: "Documents",
+			quotationTitle: "Client quotation",
+			quotationHint: "Campaigns over {amount} need the client quotation attached before they go for approval.",
+			quotationRequired: "Attach the quotation to continue.",
+			receiptTitle: "Payment receipt",
+			receiptHint: "Attach proof of what you paid — our team verifies it before this campaign goes live.",
+			add: "Attach a file",
+			replace: "Replace",
+			remove: "Remove",
+			uploading: "Uploading…",
+			formats: "PDF, JPG or PNG · up to 10 MB",
+			uploadFailed: "Couldn't upload. Please try again.",
+			approvalNote: "Because this is a large campaign, our team will check the quotation before it goes live.",
+			optionalHint: "Optional — attach a client quotation if you have one.",
+			verificationNote: "Because you've already paid, our team will verify your receipt before this campaign goes live."
+		},
+		adsTitle: "{count, plural, one {Your ad} other {Your ads (#)}}",
+		bookingDates: "Booking dates: {range}",
+		slotHours: "{start}–{end}",
+		alreadyPaid: "I've already paid",
+		alreadyPaidHint: "Paid the team directly — attach your receipt",
+		submitForVerification: "Submit for verification",
+		listTotal: "List Price",
+		revisedQuotation: "Revised Quotation Amount",
+		viewMore: "{count, plural, one {View # more} other {View # more}}"
+	},
+	launched: {
+		paid: {
+			title: "Your campaign is booked!",
+			subtitle: "Payment received. We'll check your ad and put it on screens."
+		},
+		requested: {
+			title: "Your campaign is submitted",
+			subtitle: "Our team will confirm the payment and check your ad."
+		},
+		campaignId: "Campaign ID",
+		nextSteps: "What happens next",
+		steps: {
+			paymentReceived: "Payment received",
+			submitted: "Campaign submitted",
+			paymentApproval: "Payment confirmation",
+			adApproval: "Ad check by our team",
+			scheduling: "Scheduled on your screens",
+			live: "Your ad goes live"
+		},
+		notifyNote: "We'll send you a notification at every step.",
+		viewCampaign: "View campaign",
+		backToDashboard: "Go to dashboard",
+		approvalEta: "Approval usually takes up to 2 hours."
+	},
+	continueSetup: {
+		title: "This campaign isn't live yet",
+		needsAd: "Upload your ad to continue.",
+		needsScreens: "Choose your screens and dates to continue.",
+		needsPayment: "Everything is ready — just review and pay.",
+		cta: "Continue"
+	}
+};
+var listing = {
+	locationCategory: {
+		PREMIUM_COMMERCIAL: "Premium commercial",
+		HIGH_STREET: "High street",
+		BUSINESS_DISTRICT: "Business district",
+		RESIDENTIAL: "Residential",
+		TRANSIT: "Transit",
+		RETAIL: "Retail",
+		TOURIST: "Tourist",
+		INSTITUTIONAL: "Institutional"
+	},
+	audience: {
+		STUDENTS: "Students",
+		PROFESSIONALS: "Professionals",
+		FAMILIES: "Families",
+		SHOPPERS: "Shoppers",
+		COMMUTERS: "Commuters",
+		TOURISTS: "Tourists"
+	},
+	traffic: {
+		PEDESTRIAN: "Mostly people walking",
+		VEHICLE: "Mostly vehicles",
+		BOTH: "People and vehicles"
+	},
+	displayType: {
+		LCD: "LCD",
+		LED: "LED",
+		DIGITAL_BILLBOARD: "Digital billboard"
+	},
+	facing: {
+		ROAD_FACING: "Faces the road",
+		INDOOR_FACING: "Faces inside"
+	}
+};
+var marketplace = {
+	title: "Explore screens",
+	subtitle: "Find screens by area, landmark or city, then pick the ones you want.",
+	advertisersOnly: "Screens are only available to advertiser accounts.",
+	save: "Save this screen",
+	unsave: "Remove from saved",
+	results: "{count, plural, one {# screen} other {# screens}}",
+	listView: "List",
+	mapView: "Map",
+	noResults: "No screens found here",
+	noResultsHint: "Try another area, a bigger distance, or fewer filters.",
+	showMore: "Show more screens",
+	card: {
+		digitalDisplay: "Digital display",
+		available: "Available",
+		unavailable: "Busy",
+		km: "{km} km away",
+		footfall: "Daily footfall",
+		perDayValue: "{value}/day",
+		peak: "Peak hours",
+		hours: "On",
+		plays: "Est. plays",
+		view: "View screen",
+		select: "Select",
+		selected: "Selected"
+	},
+	filters: {
+		button: "Filters",
+		title: "Filters",
+		subtitle: "Pick what matters to you. Results update as you tap.",
+		location: "Type of location",
+		venue: "Venue",
+		audience: "Who's there",
+		traffic: "Traffic",
+		pedestrian: "Lots of people walking",
+		vehicle: "Lots of vehicles",
+		screen: "Screen",
+		indoor: "Indoor",
+		outdoor: "Outdoor",
+		size: "Screen size",
+		sizeLabel: "{range} inch",
+		budget: "Budget per day",
+		anyPrice: "Any price",
+		upTo: "Up to {amount} a day",
+		dates: "Availability",
+		datesHint: "Only show screens with room for your dates.",
+		clear: "Clear filters",
+		clearAll: "Clear search and filters",
+		show: "Show screens",
+		showCount: "{count, plural, one {Show # screen} other {Show # screens}}"
+	},
+	search: {
+		placeholder: "Area, landmark, city or PIN code",
+		nearMe: "Near me",
+		nearMeLabel: "your location",
+		locating: "Finding you…",
+		around: "Around {place}",
+		clearPlace: "Clear place",
+		within: "Within",
+		km: "{km} km"
+	},
+	selection: {
+		count: "{count, plural, one {# screen selected} other {# screens selected}}",
+		empty: "No screens selected yet",
+		useGroup: "Use a saved group",
+		yourGroups: "Your screen groups",
+		groupAdded: "Added {count} screens from {name}",
+		groupLoadFailed: "Couldn't load that group.",
+		addSaved: "Add my saved screens ({count})",
+		saveGroup: "Save as a group",
+		saveGroupTitle: "Save these screens as a group",
+		saveGroupHint: "Give your {count} screens a name, then pick them all in one tap next time.",
+		groupPlaceholder: "e.g. Patna premium locations",
+		groupSaved: "Saved \"{name}\"",
+		groupSaveFailed: "Couldn't save the group.",
+		remove: "Remove {name}"
+	},
+	cart: {
+		selected: "{count, plural, one {# screen selected} other {# screens selected}}",
+		perDay: "{amount} a day in total",
+		clear: "Clear",
+		"continue": "Create campaign"
+	}
+};
+var screenDetail = {
+	back: "Back to screens",
+	advertisersOnly: "Screen details are only available to advertiser accounts.",
+	loadFailed: "Couldn't load this screen.",
+	digitalDisplay: "Digital display",
+	price: "Price",
+	plays: "Estimated plays",
+	playsNote: "for a 15-second ad",
+	priceNote: "You'll see the full price for your dates, with fees and GST, before you pay.",
+	select: "Select this screen",
+	selected: "Selected",
+	viewLive: "View live screen",
+	perDay: "{value}/day",
+	seconds: "{count} seconds",
+	meters: "{count} m",
+	indoor: "Indoor",
+	outdoor: "Outdoor",
+	tabs: {
+		details: "Details",
+		liveAds: "Live ads"
+	},
+	sections: {
+		overview: "Screen",
+		location: "Location",
+		audience: "Audience & traffic",
+		visibility: "Visibility",
+		delivery: "Bookings on this screen"
+	},
+	estimatesNote: "Footfall and audience are the screen owner's estimates.",
+	deliveryHint: "Busy days are marked. You choose your dates when you create the campaign.",
+	browseMore: "Browse more screens",
+	fields: {
+		size: "Size",
+		resolution: "Resolution",
+		shape: "Shape",
+		type: "Type",
+		environment: "Placed",
+		brightness: "Brightness",
+		hours: "On",
+		venue: "Venue",
+		landmark: "Landmark",
+		area: "Area",
+		city: "City",
+		pincode: "PIN code",
+		locationCategory: "Type of location",
+		footfall: "Daily footfall",
+		weekendFootfall: "Weekend footfall",
+		traffic: "Traffic",
+		peak: "Peak hours",
+		dwell: "People stay about",
+		audience: "Who's there",
+		facing: "Facing",
+		viewingDistance: "Seen from up to",
+		angle: "Visible across",
+		obstructions: "Anything blocking it",
+		night: "Visible at night"
+	}
+};
+var savedScreens = {
+	title: "Saved screens",
+	subtitle: "Your favourite screens and screen groups, ready for your next campaign.",
+	groups: "Screen groups",
+	noGroups: "No groups yet. While choosing screens for a campaign, tap \"Save as a group\" to reuse them later.",
+	saved: "Saved screens",
+	noSaved: "Tap the heart on any screen to save it here.",
+	explore: "Explore screens",
+	screenCount: "{count, plural, one {# screen} other {# screens}}",
+	useInCampaign: "Use in a new campaign",
+	rename: "Rename",
+	save: "Save",
+	"delete": "Delete",
+	deleteTitle: "Delete \"{name}\"?",
+	deleteHint: "The screens themselves aren't affected — only this group is removed.",
+	loadFailed: "Couldn't load that group.",
+	renameFailed: "Couldn't rename the group."
+};
+var listingEditor = {
+	title: "Listing details",
+	hint: "Advertisers see these on your screen's card. Screens with more details are shown first. Changes go live right away.",
+	where: "Where exactly",
+	landmark: "Nearest landmark",
+	landmarkPlaceholder: "e.g. Near Boring Road crossing",
+	area: "Area / locality",
+	areaPlaceholder: "e.g. Boring Road",
+	pincode: "PIN code",
+	locationCategory: "Type of location",
+	audience: "Who passes by",
+	traffic: "Traffic",
+	peakFrom: "Busiest from",
+	peakTo: "Busiest until",
+	weekendFootfall: "Weekend footfall / day",
+	dwell: "People stay (seconds)",
+	displayType: "Screen type",
+	sizeInches: "Size (inches, H × W)",
+	brightness: "Brightness (nits)",
+	viewingDistance: "Seen from (metres)",
+	angle: "Visible across (degrees)",
+	facing: "Facing",
+	visibleAtNight: "Visible at night",
+	obstructions: "Anything blocking the view?",
+	obstructionsPlaceholder: "e.g. A tree partly covers it from the left",
+	save: "Save details",
+	saving: "Saving…",
+	saved: "Listing details saved.",
+	saveFailed: "Couldn't save. Please try again."
+};
+var commandCenter = {
+	liveTitle: "Live performance",
+	completedTitle: "Campaign completed",
+	dayOf: "Day {day} of {total}",
+	tiles: {
+		screens: "Screens",
+		online: "Online now",
+		plays: "Ad plays",
+		views: "Estimated views",
+		spend: "Spent so far",
+		remaining: "Remaining",
+		delivery: "Delivery",
+		paid: "Amount paid"
+	},
+	downloadReport: "Download campaign report",
+	downloading: "Downloading…",
+	downloadFailed: "Couldn't download. Please try again.",
+	estimateNote: "Plays are counted by the screens themselves. Views are an estimate from each screen's footfall.",
+	byScreen: "Screen by screen",
+	table: {
+		screen: "Screen",
+		status: "Status",
+		plays: "Plays",
+		views: "Est. views"
+	},
+	screenStatus: {
+		ONLINE: "Online",
+		OFFLINE: "Offline",
+		NOT_CONNECTED: "Not connected yet"
+	},
+	offline: {
+		title: "{screen} is offline",
+		body: "It has been offline for {minutes} minutes. CASTADI is monitoring the issue.",
+		impact: "About {plays} plays may be affected so far — we'll make good on them under our policy."
+	},
+	progress: {
+		title: "What's happening with your campaign",
+		steps: {
+			paid: "Payment received",
+			adCheck: "Ad check",
+			scheduled: "Scheduled",
+			live: "Live"
+		},
+		rejected: "Your ad needs changes before it can run. Please upload a new one — your payment and screens are kept.",
+		replaceAd: "Upload a new ad",
+		hint: {
+			PAYMENT_RECEIVED: "Upload your ad so our team can check it.",
+			UNDER_REVIEW: "Our team is checking your ad. This usually takes a few hours.",
+			APPROVED: "Your ad is approved. We're putting it on your screens.",
+			SCHEDULED: "All set. Your ad starts playing on your start date.",
+			LIVE: "Your ad is playing now."
+		}
+	}
+};
+var proofOfPlay = {
+	title: "Proof of Play",
+	subtitle: "Every day, on every screen, how many times your ad played in full.",
+	pdf: "Download PDF",
+	csv: "CSV",
+	downloading: "Downloading…",
+	downloadFailed: "Couldn't download. Please try again.",
+	empty: "Nothing has played yet. Plays show up here as soon as your ad starts running.",
+	totals: "{plays} verified plays on {screens, plural, one {# screen} other {# screens}} over {days, plural, one {# day} other {# days}}",
+	date: "Date",
+	screen: "Screen",
+	plays: "Plays",
+	status: "Status",
+	verified: "Verified",
+	notVerified: "Not verified",
+	showMore: "Show more ({count} left)",
+	pageSubtitle: "Download proof that your ads played, for every campaign that has run.",
+	noneYet: "None of your campaigns has played yet. Proof of Play appears here once one goes live.",
+	createCampaign: "Create a campaign"
+};
+var nav = {
+	dashboard: "Dashboard",
+	create: "Create Campaign",
+	screens: "Explore Screens",
+	campaigns: "My Campaigns",
+	analytics: "Analytics",
+	proofOfPlay: "Proof of Play",
+	billing: "Wallet & Billing",
+	saved: "Saved Screens",
+	company: "Company Profile",
+	notifications: "Notifications",
+	quotations: "Quotations"
+};
+var dashboard = {
+	create: "Create a campaign",
+	createHint: "Pick screens, upload your ad and pay — in 5 simple steps.",
+	intro: {
+		title: "How CASTADI works",
+		subtitle: "Put your ad on digital screens near your customers in three steps.",
+		close: "Close",
+		choose: {
+			title: "Choose screens",
+			body: "Find screens by area or landmark and see who passes by."
+		},
+		upload: {
+			title: "Upload your ad and pay",
+			body: "A picture or video, your dates, how often it plays — one clear price."
+		},
+		track: {
+			title: "See it run",
+			body: "Track plays live and download proof that your ad played."
+		}
+	},
+	tiles: {
+		active: "Live campaigns",
+		scheduled: "Coming up",
+		completed: "Completed",
+		spend: "Total spend",
+		plays: "Total ad plays",
+		views: "Estimated views",
+		screensNow: "Screens online / scheduled today"
+	},
+	pending: {
+		title: "Waiting for you",
+		DRAFT: {
+			what: "You haven't finished setting this up.",
+			cta: "Continue"
+		},
+		PAYMENT_PENDING: {
+			what: "Ready to go — just pay to launch it.",
+			cta: "Pay now"
+		},
+		PAYMENT_RECEIVED: {
+			what: "Paid — upload your ad so it can run.",
+			cta: "Upload ad"
+		},
+		REJECTED: {
+			what: "Your ad needs changes before it can run.",
+			cta: "Upload new ad"
+		}
+	},
+	recent: {
+		title: "Your campaigns",
+		all: "See all",
+		empty: "No campaigns yet. Create your first one above."
+	}
+};
+var company = {
+	title: "Company profile",
+	subtitle: "Your business details, team, account and help.",
+	tabs: {
+		business: "Business & KYC",
+		team: "Team",
+		account: "My account",
+		help: "Help & support"
+	}
+};
+var quotations = {
+	status: {
+		SUBMITTED: "Awaiting Review",
+		COUNTERED: "Counter-Offer",
+		APPROVED: "Approved",
+		REJECTED: "Rejected",
+		PAYMENT_SUBMITTED: "Payment Submitted",
+		COMPLETED: "Completed",
+		CANCELLED: "Cancelled"
+	},
+	action: {
+		SUBMITTED: "Quotation Requested",
+		COUNTERED: "Counter-Offer Sent",
+		ACCEPTED: "Counter-Offer Accepted",
+		APPROVED: "Quotation Approved",
+		REJECTED: "Quotation Rejected",
+		REOPENED: "Reopened for Revision",
+		RECEIPT_SUBMITTED: "Payment Receipt Submitted",
+		PAYMENT_REJECTED: "Payment Sent Back",
+		COMPLETED: "Payment Verified — Completed",
+		CANCELLED: "Cancelled",
+		REVISION_OPENED: "Opened for Revision",
+		REVISION_CLOSED: "Closed for Revision"
+	},
+	role: {
+		ADVERTISER: "Advertiser",
+		ADMIN: "CASTADI",
+		SYSTEM: "System"
+	},
+	revision: "Revision {n}",
+	updated: "Updated {date}",
+	history: "Negotiation history ({count})",
+	table: {
+		mediaCost: "Screen Cost",
+		platformFee: "CASTADI Platform Fee",
+		gst: "GST",
+		listTotal: "Order Total (List Price)",
+		yourProposal: "Your Proposal",
+		advertiserProposal: "Advertiser's Proposal",
+		counterOffer: "CASTADI Counter-Offer",
+		yourCounter: "Your Counter-Offer",
+		totalPayment: "Total Payment Amount",
+		revisedBadge: "Revised Quotation Amount",
+		saving: "{amount} ({percent}) off the list price",
+		above: "{amount} above the list price"
+	},
+	panel: {
+		title: "Quotation",
+		introRequired: "Orders of {amount} and above are paid through a quotation. Request one below — our team will review it, and you can negotiate until you agree on a price.",
+		introOptional: "Need a custom price or want to pay offline? Request a quotation and negotiate with our team.",
+		request: "Request Quotation",
+		sendRevision: "Send Revision",
+		cancel: "Cancel",
+		reopen: "Reopen for Revision",
+		proposeAnother: "Propose Another Amount",
+		accept: "Accept {amount}",
+		proposedLabel: "Your Proposed Amount (Optional)",
+		proposedPlaceholder: "e.g. less than {amount}",
+		proposedHint: "Prefilled with the order total — lower it to propose a custom price.",
+		noteLabel: "Note for Our Team (Optional)",
+		invalidAmount: "Enter a valid amount.",
+		amountTooHigh: "Your proposal can't be more than the order total ({amount}).",
+		stale: "Your order changed after this quotation was made. Reopen it to get the new order quoted.",
+		receiptTitle: "Payment Receipt",
+		receiptHint: "Pay CASTADI by bank transfer or UPI, then attach the receipt (PDF, JPG or PNG).",
+		submitPayment: "Submit Payment of {amount}",
+		submitting: "Submitting…",
+		viewCampaign: "View Campaign",
+		failed: "Something went wrong. Please try again.",
+		sentToast: "Quotation sent — we'll get back to you soon.",
+		reopenedToast: "Revision sent to our team.",
+		acceptedToast: "Counter-offer accepted.",
+		paidToast: "Payment submitted for verification.",
+		message: {
+			SUBMITTED: "Our team is reviewing your quotation for {amount}. We'll email you when it's updated.",
+			COUNTERED: "We've sent you a counter-offer of {amount}. Accept it or propose another amount.",
+			APPROVED: "Approved at {amount}. Pay CASTADI this amount, upload the receipt and submit.",
+			REJECTED: "This quotation was rejected. See the note in the history, then reopen it with a revised proposal.",
+			PAYMENT_SUBMITTED: "Payment of {amount} submitted. We'll verify your receipt and confirm your campaign — your screens are held meanwhile.",
+			COMPLETED: "Payment of {amount} verified. Your campaign is confirmed.",
+			CANCELLED: "This quotation was cancelled."
+		},
+		offList: "That's {percent} off the list price of {list}.",
+		revisionClosed: "Need changes? Ask CASTADI to open this quotation for revision.",
+		revisionOpen: "This quotation is open for revision — you can propose a new amount.",
+		exportPdf: "Download PDF",
+		exportTxt: "Download .txt",
+		paymentTitle: "Payment",
+		viewPayment: "View Payment",
+		viewInvoice: "View Invoice"
+	},
+	page: {
+		title: "Quotations",
+		description: "Every price you've negotiated with CASTADI, and where each one stands.",
+		empty: "No quotations yet",
+		emptyHint: "Request one from the Review & Payment step when creating a campaign.",
+		campaign: "Campaign",
+		listPrice: "List Price",
+		current: "Quoted Amount",
+		status: "Status",
+		updated: "Last Updated",
+		open: "Open",
+		all: "All",
+		active: "Open",
+		closed: "Closed",
+		previous: "Previous",
+		next: "Next",
+		pageOf: "Page {page} of {total}",
+		receipt: "Receipt",
+		quotation: "Quotation",
+		printPdf: "Print / PDF",
+		downloadTxt: "Download .txt",
+		number: "Quotation No.",
+		view: "View",
+		viewInCampaign: "View in Campaign",
+		search: "Search campaign or code"
+	}
+};
+var proofRequests = {
+	status: {
+		PENDING: "Requested",
+		SUBMITTED: "Photo sent",
+		VERIFIED: "Verified",
+		OVERDUE: "Overdue",
+		WAIVED: "Waived"
+	},
+	source: {
+		AUTO_GO_LIVE: "Automatic request",
+		ADVERTISER: "Requested by advertiser",
+		PARTNER: "Sent by screen partner"
+	},
+	due: {
+		overdue: "Overdue",
+		hours: "Due in {count}h",
+		days: "Due in {count}d"
+	},
+	matched: "Matches a logged playback",
+	screen: {
+		empty: "No ad is playing on this screen today, so there is nothing to photograph.",
+		noRequest: "No request",
+		answer: "Upload photo",
+		volunteer: "Send a photo anyway",
+		advertiserNote: "Advertiser note"
+	},
+	upload: {
+		choose: "Take or choose photo",
+		caption: "Optional note (e.g. 3pm slot, MG Road stop)",
+		submit: "Send photo",
+		uploading: "Sending…",
+		cancel: "Cancel",
+		done: "Photo sent",
+		failed: "Could not send the photo. Please try again.",
+		badType: "Use a JPG or PNG photo.",
+		tooLarge: "Photo is too large (max {mb}MB).",
+		lockedHint: "Once sent, a photo cannot be edited or deleted."
+	},
+	campaign: {
+		title: "Proof of play: photos",
+		subtitle: "Photos of your ad running on each screen, sent by the screen partner. Ask for a fresh one any time.",
+		empty: "Your ad is not live on a screen yet. Photo proof appears here once it is.",
+		noneYet: "No photo yet. It is requested automatically once your ad starts playing.",
+		request: "Ask for a photo",
+		alreadyRequested: "Photo requested",
+		notePlaceholder: "Optional note (e.g. evening slot)",
+		send: "Send request",
+		sending: "Sending…",
+		requested: "Request sent to the screen partner",
+		requestFailed: "Could not send the request."
+	},
+	dashboard: {
+		partnerTitle: "Photos to send",
+		advertiserTitle: "Photo proof of your ads",
+		adminTitle: "Overdue photo proof",
+		counts: "{open} open, {overdue} overdue",
+		waive: "Waive",
+		waiveReason: "Reason for waiving",
+		waiveConfirm: "Waive request",
+		cancel: "Cancel",
+		waived: "Request waived",
+		waiveFailed: "Could not waive the request."
+	}
+};
+var en = {
+	common: common,
+	language: language,
+	campaignStatus: campaignStatus,
+	glossary: glossary,
+	objective: objective,
+	builder: builder,
+	listing: listing,
+	marketplace: marketplace,
+	screenDetail: screenDetail,
+	savedScreens: savedScreens,
+	listingEditor: listingEditor,
+	commandCenter: commandCenter,
+	proofOfPlay: proofOfPlay,
+	nav: nav,
+	dashboard: dashboard,
+	company: company,
+	quotations: quotations,
+	proofRequests: proofRequests
+};
+
+declare const LOCALES: readonly ["en", "hi"];
+type Locale = (typeof LOCALES)[number];
+declare const DEFAULT_LOCALE: Locale;
+declare const messages: {
+    readonly en: {
+        common: {
+            continue: string;
+            back: string;
+            edit: string;
+            save: string;
+            cancel: string;
+            close: string;
+            done: string;
+            remove: string;
+            view: string;
+            loading: string;
+            retry: string;
+            optional: string;
+            perDay: string;
+            perMonth: string;
+            estimated: string;
+            help: string;
+            yes: string;
+            no: string;
+        };
+        language: {
+            label: string;
+            en: string;
+            hi: string;
+            switchTo: string;
+        };
+        campaignStatus: {
+            DRAFT: {
+                label: string;
+                description: string;
+            };
+            PAYMENT_PENDING: {
+                label: string;
+                description: string;
+            };
+            PAYMENT_RECEIVED: {
+                label: string;
+                description: string;
+            };
+            UNDER_REVIEW: {
+                label: string;
+                description: string;
+            };
+            APPROVED: {
+                label: string;
+                description: string;
+            };
+            SCHEDULED: {
+                label: string;
+                description: string;
+            };
+            LIVE: {
+                label: string;
+                description: string;
+            };
+            PAUSED: {
+                label: string;
+                description: string;
+            };
+            COMPLETED: {
+                label: string;
+                description: string;
+            };
+            REJECTED: {
+                label: string;
+                description: string;
+            };
+            CANCELLED: {
+                label: string;
+                description: string;
+            };
+        };
+        glossary: {
+            ad: string;
+            yourAd: string;
+            screens: string;
+            estimatedViews: string;
+            plays: string;
+            playsPerDay: string;
+            campaignId: string;
+            proofOfPlay: string;
+        };
+        objective: {
+            BRAND_AWARENESS: string;
+            PRODUCT_LAUNCH: string;
+            OFFER_PROMOTION: string;
+            STORE_TRAFFIC: string;
+            EVENT_PROMOTION: string;
+            NEW_BUSINESS_LAUNCH: string;
+            LEAD_GENERATION: string;
+            OTHER: string;
+            STORE_PROMOTION: string;
+            POLITICAL_CAMPAIGN: string;
+            PUBLIC_AWARENESS: string;
+            RECRUITMENT: string;
+            GOVERNMENT_ANNOUNCEMENT: string;
+            FESTIVAL_CAMPAIGN: string;
+            SEASONAL_PROMOTION: string;
+        };
+        builder: {
+            title: string;
+            subtitle: string;
+            steps: {
+                "1": string;
+                "2": string;
+                "3": string;
+                "4": string;
+                "5": string;
+                aria: string;
+                progress: string;
+                next: string;
+            };
+            summary: {
+                screens: string;
+                plays: string;
+                views: string;
+                total: string;
+            };
+            details: {
+                name: string;
+                nameHint: string;
+                namePlaceholder: string;
+                brand: string;
+                brandHint: string;
+                brandPlaceholder: string;
+                objective: string;
+                objectiveHint: string;
+                description: string;
+                descriptionHint: string;
+                descriptionPlaceholder: string;
+                saveFailed: string;
+                errors: {
+                    nameRequired: string;
+                    nameTooLong: string;
+                    brandTooLong: string;
+                    objectiveRequired: string;
+                    descriptionTooLong: string;
+                    targetAudienceOtherTooLong: string;
+                    preferredCitiesTooMany: string;
+                    preferredScreenTypesTooMany: string;
+                    totalBudgetInvalid: string;
+                    targetAgeRangeIncomplete: string;
+                    targetAgeRangeInvalid: string;
+                };
+                targetAudience: string;
+                targetAudienceHint: string;
+                targetAudienceOtherPlaceholder: string;
+                ageMin: string;
+                ageMax: string;
+                preferredCities: string;
+                preferredCitiesHint: string;
+                preferredCitiesPlaceholder: string;
+                preferredScreenTypes: string;
+                preferredScreenTypesHint: string;
+                budget: string;
+                budgetHint: string;
+            };
+            upload: {
+                dropTitle: string;
+                dropHint: string;
+                formats: string;
+                uploading: string;
+                uploaded: string;
+                uploadFailed: string;
+                wrongFormat: string;
+                tooBig: string;
+                tooLong: string;
+                allGood: string;
+                allGoodHint: string;
+                needsAttention: string;
+                needsAttentionHint: string;
+                checks: {
+                    format: {
+                        ok: string;
+                        warn: string;
+                    };
+                    size: {
+                        ok: string;
+                        warn: string;
+                    };
+                    resolution: {
+                        ok: string;
+                        warn: string;
+                    };
+                    orientation: {
+                        ok: string;
+                        warn: string;
+                    };
+                    length: {
+                        ok: string;
+                        warn: string;
+                    };
+                };
+                shapes: {
+                    landscape: string;
+                    portrait: string;
+                    square: string;
+                };
+                reviewNote: string;
+                replace: string;
+                addAnother: string;
+                count: string;
+                atCap: string;
+                mixedLength: string;
+            };
+            screens: {
+                pickOne: string;
+                fit: {
+                    fits: string;
+                    bars: string;
+                    rotated: string;
+                    rotatedSummary: string;
+                };
+                match: {
+                    allRun: string;
+                    capacity: string;
+                    bestMatch: string;
+                    scoreOf: string;
+                    emptyHint: string;
+                    compare: string;
+                    comparisonTitle: string;
+                    comparisonHint: string;
+                    checkAvailability: string;
+                    availabilityTitle: string;
+                    availabilityHint: string;
+                    datesTitle: string;
+                    datesHint: string;
+                    availabilityBlocked: string;
+                    perDay: string;
+                    colScreen: string;
+                    colMatch: string;
+                    colFit: string;
+                    colReach: string;
+                    colPrice: string;
+                    colHours: string;
+                    colShape: string;
+                    reason: {
+                        fillsScreen: string;
+                        highReach: string;
+                        bestValue: string;
+                        shapeMismatch: string;
+                    };
+                };
+            };
+            schedule: {
+                datesTitle: string;
+                datesHint: string;
+                days: string;
+                datesInvalid: string;
+                lengthTitle: string;
+                lengthVideo: string;
+                lengthHint: string;
+                seconds: string;
+                frequencyTitle: string;
+                frequencyHint: string;
+                less: string;
+                more: string;
+                capNote: string;
+                saveFailed: string;
+                levels: {
+                    popular: string;
+                    plays: string;
+                    priceMultiplier: string;
+                    STANDARD: {
+                        title: string;
+                        description: string;
+                    };
+                    HIGH: {
+                        title: string;
+                        description: string;
+                    };
+                    CUSTOM: {
+                        title: string;
+                        description: string;
+                    };
+                };
+                availabilityTitle: string;
+                availabilityHint: string;
+                availabilityToggle: string;
+                availabilityBlocked: string;
+                capacityConflict: string;
+                capacityDetail: string;
+                capacityBadge: string;
+                removeScreen: string;
+            };
+            review: {
+                campaign: string;
+                ad: string;
+                adLength: string;
+                screens: string;
+                locations: string;
+                schedule: string;
+                delivery: string;
+                plays: string;
+                views: string;
+                estimateNote: string;
+                cost: string;
+                mediaCost: string;
+                platformFee: string;
+                gst: string;
+                gstNone: string;
+                total: string;
+                noHiddenCharges: string;
+                payWith: string;
+                payOnline: string;
+                payOnlineHint: string;
+                payWallet: string;
+                walletBalance: string;
+                walletShort: string;
+                confirm: string;
+                editCampaign: string;
+                processing: string;
+                submitForApproval: string;
+                payAndLaunch: string;
+                verifyFailed: string;
+                paymentCancelled: string;
+                payFailed: string;
+                documents: {
+                    title: string;
+                    quotationTitle: string;
+                    quotationHint: string;
+                    quotationRequired: string;
+                    receiptTitle: string;
+                    receiptHint: string;
+                    add: string;
+                    replace: string;
+                    remove: string;
+                    uploading: string;
+                    formats: string;
+                    uploadFailed: string;
+                    approvalNote: string;
+                    optionalHint: string;
+                    verificationNote: string;
+                };
+                adsTitle: string;
+                bookingDates: string;
+                slotHours: string;
+                alreadyPaid: string;
+                alreadyPaidHint: string;
+                submitForVerification: string;
+                listTotal: string;
+                revisedQuotation: string;
+                viewMore: string;
+            };
+            launched: {
+                paid: {
+                    title: string;
+                    subtitle: string;
+                };
+                requested: {
+                    title: string;
+                    subtitle: string;
+                };
+                campaignId: string;
+                nextSteps: string;
+                steps: {
+                    paymentReceived: string;
+                    submitted: string;
+                    paymentApproval: string;
+                    adApproval: string;
+                    scheduling: string;
+                    live: string;
+                };
+                notifyNote: string;
+                viewCampaign: string;
+                backToDashboard: string;
+                approvalEta: string;
+            };
+            continueSetup: {
+                title: string;
+                needsAd: string;
+                needsScreens: string;
+                needsPayment: string;
+                cta: string;
+            };
+        };
+        listing: {
+            locationCategory: {
+                PREMIUM_COMMERCIAL: string;
+                HIGH_STREET: string;
+                BUSINESS_DISTRICT: string;
+                RESIDENTIAL: string;
+                TRANSIT: string;
+                RETAIL: string;
+                TOURIST: string;
+                INSTITUTIONAL: string;
+            };
+            audience: {
+                STUDENTS: string;
+                PROFESSIONALS: string;
+                FAMILIES: string;
+                SHOPPERS: string;
+                COMMUTERS: string;
+                TOURISTS: string;
+            };
+            traffic: {
+                PEDESTRIAN: string;
+                VEHICLE: string;
+                BOTH: string;
+            };
+            displayType: {
+                LCD: string;
+                LED: string;
+                DIGITAL_BILLBOARD: string;
+            };
+            facing: {
+                ROAD_FACING: string;
+                INDOOR_FACING: string;
+            };
+        };
+        marketplace: {
+            title: string;
+            subtitle: string;
+            advertisersOnly: string;
+            save: string;
+            unsave: string;
+            results: string;
+            listView: string;
+            mapView: string;
+            noResults: string;
+            noResultsHint: string;
+            showMore: string;
+            card: {
+                digitalDisplay: string;
+                available: string;
+                unavailable: string;
+                km: string;
+                footfall: string;
+                perDayValue: string;
+                peak: string;
+                hours: string;
+                plays: string;
+                view: string;
+                select: string;
+                selected: string;
+            };
+            filters: {
+                button: string;
+                title: string;
+                subtitle: string;
+                location: string;
+                venue: string;
+                audience: string;
+                traffic: string;
+                pedestrian: string;
+                vehicle: string;
+                screen: string;
+                indoor: string;
+                outdoor: string;
+                size: string;
+                sizeLabel: string;
+                budget: string;
+                anyPrice: string;
+                upTo: string;
+                dates: string;
+                datesHint: string;
+                clear: string;
+                clearAll: string;
+                show: string;
+                showCount: string;
+            };
+            search: {
+                placeholder: string;
+                nearMe: string;
+                nearMeLabel: string;
+                locating: string;
+                around: string;
+                clearPlace: string;
+                within: string;
+                km: string;
+            };
+            selection: {
+                count: string;
+                empty: string;
+                useGroup: string;
+                yourGroups: string;
+                groupAdded: string;
+                groupLoadFailed: string;
+                addSaved: string;
+                saveGroup: string;
+                saveGroupTitle: string;
+                saveGroupHint: string;
+                groupPlaceholder: string;
+                groupSaved: string;
+                groupSaveFailed: string;
+                remove: string;
+            };
+            cart: {
+                selected: string;
+                perDay: string;
+                clear: string;
+                continue: string;
+            };
+        };
+        screenDetail: {
+            back: string;
+            advertisersOnly: string;
+            loadFailed: string;
+            digitalDisplay: string;
+            price: string;
+            plays: string;
+            playsNote: string;
+            priceNote: string;
+            select: string;
+            selected: string;
+            viewLive: string;
+            perDay: string;
+            seconds: string;
+            meters: string;
+            indoor: string;
+            outdoor: string;
+            tabs: {
+                details: string;
+                liveAds: string;
+            };
+            sections: {
+                overview: string;
+                location: string;
+                audience: string;
+                visibility: string;
+                delivery: string;
+            };
+            estimatesNote: string;
+            deliveryHint: string;
+            browseMore: string;
+            fields: {
+                size: string;
+                resolution: string;
+                shape: string;
+                type: string;
+                environment: string;
+                brightness: string;
+                hours: string;
+                venue: string;
+                landmark: string;
+                area: string;
+                city: string;
+                pincode: string;
+                locationCategory: string;
+                footfall: string;
+                weekendFootfall: string;
+                traffic: string;
+                peak: string;
+                dwell: string;
+                audience: string;
+                facing: string;
+                viewingDistance: string;
+                angle: string;
+                obstructions: string;
+                night: string;
+            };
+        };
+        savedScreens: {
+            title: string;
+            subtitle: string;
+            groups: string;
+            noGroups: string;
+            saved: string;
+            noSaved: string;
+            explore: string;
+            screenCount: string;
+            useInCampaign: string;
+            rename: string;
+            save: string;
+            delete: string;
+            deleteTitle: string;
+            deleteHint: string;
+            loadFailed: string;
+            renameFailed: string;
+        };
+        listingEditor: {
+            title: string;
+            hint: string;
+            where: string;
+            landmark: string;
+            landmarkPlaceholder: string;
+            area: string;
+            areaPlaceholder: string;
+            pincode: string;
+            locationCategory: string;
+            audience: string;
+            traffic: string;
+            peakFrom: string;
+            peakTo: string;
+            weekendFootfall: string;
+            dwell: string;
+            displayType: string;
+            sizeInches: string;
+            brightness: string;
+            viewingDistance: string;
+            angle: string;
+            facing: string;
+            visibleAtNight: string;
+            obstructions: string;
+            obstructionsPlaceholder: string;
+            save: string;
+            saving: string;
+            saved: string;
+            saveFailed: string;
+        };
+        commandCenter: {
+            liveTitle: string;
+            completedTitle: string;
+            dayOf: string;
+            tiles: {
+                screens: string;
+                online: string;
+                plays: string;
+                views: string;
+                spend: string;
+                remaining: string;
+                delivery: string;
+                paid: string;
+            };
+            downloadReport: string;
+            downloading: string;
+            downloadFailed: string;
+            estimateNote: string;
+            byScreen: string;
+            table: {
+                screen: string;
+                status: string;
+                plays: string;
+                views: string;
+            };
+            screenStatus: {
+                ONLINE: string;
+                OFFLINE: string;
+                NOT_CONNECTED: string;
+            };
+            offline: {
+                title: string;
+                body: string;
+                impact: string;
+            };
+            progress: {
+                title: string;
+                steps: {
+                    paid: string;
+                    adCheck: string;
+                    scheduled: string;
+                    live: string;
+                };
+                rejected: string;
+                replaceAd: string;
+                hint: {
+                    PAYMENT_RECEIVED: string;
+                    UNDER_REVIEW: string;
+                    APPROVED: string;
+                    SCHEDULED: string;
+                    LIVE: string;
+                };
+            };
+        };
+        proofOfPlay: {
+            title: string;
+            subtitle: string;
+            pdf: string;
+            csv: string;
+            downloading: string;
+            downloadFailed: string;
+            empty: string;
+            totals: string;
+            date: string;
+            screen: string;
+            plays: string;
+            status: string;
+            verified: string;
+            notVerified: string;
+            showMore: string;
+            pageSubtitle: string;
+            noneYet: string;
+            createCampaign: string;
+        };
+        nav: {
+            dashboard: string;
+            create: string;
+            screens: string;
+            campaigns: string;
+            analytics: string;
+            proofOfPlay: string;
+            billing: string;
+            saved: string;
+            company: string;
+            notifications: string;
+            quotations: string;
+        };
+        dashboard: {
+            create: string;
+            createHint: string;
+            intro: {
+                title: string;
+                subtitle: string;
+                close: string;
+                choose: {
+                    title: string;
+                    body: string;
+                };
+                upload: {
+                    title: string;
+                    body: string;
+                };
+                track: {
+                    title: string;
+                    body: string;
+                };
+            };
+            tiles: {
+                active: string;
+                scheduled: string;
+                completed: string;
+                spend: string;
+                plays: string;
+                views: string;
+                screensNow: string;
+            };
+            pending: {
+                title: string;
+                DRAFT: {
+                    what: string;
+                    cta: string;
+                };
+                PAYMENT_PENDING: {
+                    what: string;
+                    cta: string;
+                };
+                PAYMENT_RECEIVED: {
+                    what: string;
+                    cta: string;
+                };
+                REJECTED: {
+                    what: string;
+                    cta: string;
+                };
+            };
+            recent: {
+                title: string;
+                all: string;
+                empty: string;
+            };
+        };
+        company: {
+            title: string;
+            subtitle: string;
+            tabs: {
+                business: string;
+                team: string;
+                account: string;
+                help: string;
+            };
+        };
+        quotations: {
+            status: {
+                SUBMITTED: string;
+                COUNTERED: string;
+                APPROVED: string;
+                REJECTED: string;
+                PAYMENT_SUBMITTED: string;
+                COMPLETED: string;
+                CANCELLED: string;
+            };
+            action: {
+                SUBMITTED: string;
+                COUNTERED: string;
+                ACCEPTED: string;
+                APPROVED: string;
+                REJECTED: string;
+                REOPENED: string;
+                RECEIPT_SUBMITTED: string;
+                PAYMENT_REJECTED: string;
+                COMPLETED: string;
+                CANCELLED: string;
+                REVISION_OPENED: string;
+                REVISION_CLOSED: string;
+            };
+            role: {
+                ADVERTISER: string;
+                ADMIN: string;
+                SYSTEM: string;
+            };
+            revision: string;
+            updated: string;
+            history: string;
+            table: {
+                mediaCost: string;
+                platformFee: string;
+                gst: string;
+                listTotal: string;
+                yourProposal: string;
+                advertiserProposal: string;
+                counterOffer: string;
+                yourCounter: string;
+                totalPayment: string;
+                revisedBadge: string;
+                saving: string;
+                above: string;
+            };
+            panel: {
+                title: string;
+                introRequired: string;
+                introOptional: string;
+                request: string;
+                sendRevision: string;
+                cancel: string;
+                reopen: string;
+                proposeAnother: string;
+                accept: string;
+                proposedLabel: string;
+                proposedPlaceholder: string;
+                proposedHint: string;
+                noteLabel: string;
+                invalidAmount: string;
+                amountTooHigh: string;
+                stale: string;
+                receiptTitle: string;
+                receiptHint: string;
+                submitPayment: string;
+                submitting: string;
+                viewCampaign: string;
+                failed: string;
+                sentToast: string;
+                reopenedToast: string;
+                acceptedToast: string;
+                paidToast: string;
+                message: {
+                    SUBMITTED: string;
+                    COUNTERED: string;
+                    APPROVED: string;
+                    REJECTED: string;
+                    PAYMENT_SUBMITTED: string;
+                    COMPLETED: string;
+                    CANCELLED: string;
+                };
+                offList: string;
+                revisionClosed: string;
+                revisionOpen: string;
+                exportPdf: string;
+                exportTxt: string;
+                paymentTitle: string;
+                viewPayment: string;
+                viewInvoice: string;
+            };
+            page: {
+                title: string;
+                description: string;
+                empty: string;
+                emptyHint: string;
+                campaign: string;
+                listPrice: string;
+                current: string;
+                status: string;
+                updated: string;
+                open: string;
+                all: string;
+                active: string;
+                closed: string;
+                previous: string;
+                next: string;
+                pageOf: string;
+                receipt: string;
+                quotation: string;
+                printPdf: string;
+                downloadTxt: string;
+                number: string;
+                view: string;
+                viewInCampaign: string;
+                search: string;
+            };
+        };
+        proofRequests: {
+            status: {
+                PENDING: string;
+                SUBMITTED: string;
+                VERIFIED: string;
+                OVERDUE: string;
+                WAIVED: string;
+            };
+            source: {
+                AUTO_GO_LIVE: string;
+                ADVERTISER: string;
+                PARTNER: string;
+            };
+            due: {
+                overdue: string;
+                hours: string;
+                days: string;
+            };
+            matched: string;
+            screen: {
+                empty: string;
+                noRequest: string;
+                answer: string;
+                volunteer: string;
+                advertiserNote: string;
+            };
+            upload: {
+                choose: string;
+                caption: string;
+                submit: string;
+                uploading: string;
+                cancel: string;
+                done: string;
+                failed: string;
+                badType: string;
+                tooLarge: string;
+                lockedHint: string;
+            };
+            campaign: {
+                title: string;
+                subtitle: string;
+                empty: string;
+                noneYet: string;
+                request: string;
+                alreadyRequested: string;
+                notePlaceholder: string;
+                send: string;
+                sending: string;
+                requested: string;
+                requestFailed: string;
+            };
+            dashboard: {
+                partnerTitle: string;
+                advertiserTitle: string;
+                adminTitle: string;
+                counts: string;
+                waive: string;
+                waiveReason: string;
+                waiveConfirm: string;
+                cancel: string;
+                waived: string;
+                waiveFailed: string;
+            };
+        };
+    };
+    readonly hi: {
+        common: {
+            continue: string;
+            back: string;
+            edit: string;
+            save: string;
+            cancel: string;
+            close: string;
+            done: string;
+            remove: string;
+            view: string;
+            loading: string;
+            retry: string;
+            optional: string;
+            perDay: string;
+            perMonth: string;
+            estimated: string;
+            help: string;
+            yes: string;
+            no: string;
+        };
+        language: {
+            label: string;
+            en: string;
+            hi: string;
+            switchTo: string;
+        };
+        campaignStatus: {
+            DRAFT: {
+                label: string;
+                description: string;
+            };
+            PAYMENT_PENDING: {
+                label: string;
+                description: string;
+            };
+            PAYMENT_RECEIVED: {
+                label: string;
+                description: string;
+            };
+            UNDER_REVIEW: {
+                label: string;
+                description: string;
+            };
+            APPROVED: {
+                label: string;
+                description: string;
+            };
+            SCHEDULED: {
+                label: string;
+                description: string;
+            };
+            LIVE: {
+                label: string;
+                description: string;
+            };
+            PAUSED: {
+                label: string;
+                description: string;
+            };
+            COMPLETED: {
+                label: string;
+                description: string;
+            };
+            REJECTED: {
+                label: string;
+                description: string;
+            };
+            CANCELLED: {
+                label: string;
+                description: string;
+            };
+        };
+        glossary: {
+            ad: string;
+            yourAd: string;
+            screens: string;
+            estimatedViews: string;
+            plays: string;
+            playsPerDay: string;
+            campaignId: string;
+            proofOfPlay: string;
+        };
+        objective: {
+            BRAND_AWARENESS: string;
+            PRODUCT_LAUNCH: string;
+            OFFER_PROMOTION: string;
+            STORE_TRAFFIC: string;
+            EVENT_PROMOTION: string;
+            NEW_BUSINESS_LAUNCH: string;
+            LEAD_GENERATION: string;
+            OTHER: string;
+            STORE_PROMOTION: string;
+            POLITICAL_CAMPAIGN: string;
+            PUBLIC_AWARENESS: string;
+            RECRUITMENT: string;
+            GOVERNMENT_ANNOUNCEMENT: string;
+            FESTIVAL_CAMPAIGN: string;
+            SEASONAL_PROMOTION: string;
+        };
+        builder: {
+            title: string;
+            subtitle: string;
+            steps: {
+                "1": string;
+                "2": string;
+                "3": string;
+                "4": string;
+                "5": string;
+                aria: string;
+                progress: string;
+                next: string;
+            };
+            summary: {
+                screens: string;
+                plays: string;
+                views: string;
+                total: string;
+            };
+            details: {
+                name: string;
+                nameHint: string;
+                namePlaceholder: string;
+                brand: string;
+                brandHint: string;
+                brandPlaceholder: string;
+                objective: string;
+                objectiveHint: string;
+                description: string;
+                descriptionHint: string;
+                descriptionPlaceholder: string;
+                saveFailed: string;
+                errors: {
+                    nameRequired: string;
+                    nameTooLong: string;
+                    brandTooLong: string;
+                    objectiveRequired: string;
+                    descriptionTooLong: string;
+                    targetAudienceOtherTooLong: string;
+                    preferredCitiesTooMany: string;
+                    preferredScreenTypesTooMany: string;
+                    totalBudgetInvalid: string;
+                    targetAgeRangeIncomplete: string;
+                    targetAgeRangeInvalid: string;
+                };
+                targetAudience: string;
+                targetAudienceHint: string;
+                targetAudienceOtherPlaceholder: string;
+                ageMin: string;
+                ageMax: string;
+                preferredCities: string;
+                preferredCitiesHint: string;
+                preferredCitiesPlaceholder: string;
+                preferredScreenTypes: string;
+                preferredScreenTypesHint: string;
+                budget: string;
+                budgetHint: string;
+            };
+            upload: {
+                dropTitle: string;
+                dropHint: string;
+                formats: string;
+                uploading: string;
+                uploaded: string;
+                uploadFailed: string;
+                wrongFormat: string;
+                tooBig: string;
+                tooLong: string;
+                allGood: string;
+                allGoodHint: string;
+                needsAttention: string;
+                needsAttentionHint: string;
+                checks: {
+                    format: {
+                        ok: string;
+                        warn: string;
+                    };
+                    size: {
+                        ok: string;
+                        warn: string;
+                    };
+                    resolution: {
+                        ok: string;
+                        warn: string;
+                    };
+                    orientation: {
+                        ok: string;
+                        warn: string;
+                    };
+                    length: {
+                        ok: string;
+                        warn: string;
+                    };
+                };
+                shapes: {
+                    landscape: string;
+                    portrait: string;
+                    square: string;
+                };
+                reviewNote: string;
+                replace: string;
+                addAnother: string;
+                count: string;
+                atCap: string;
+                mixedLength: string;
+            };
+            screens: {
+                pickOne: string;
+                fit: {
+                    fits: string;
+                    bars: string;
+                    rotated: string;
+                    rotatedSummary: string;
+                };
+                match: {
+                    allRun: string;
+                    capacity: string;
+                    bestMatch: string;
+                    scoreOf: string;
+                    emptyHint: string;
+                    compare: string;
+                    comparisonTitle: string;
+                    comparisonHint: string;
+                    checkAvailability: string;
+                    availabilityTitle: string;
+                    availabilityHint: string;
+                    datesTitle: string;
+                    datesHint: string;
+                    availabilityBlocked: string;
+                    perDay: string;
+                    colScreen: string;
+                    colMatch: string;
+                    colFit: string;
+                    colReach: string;
+                    colPrice: string;
+                    colHours: string;
+                    colShape: string;
+                    reason: {
+                        fillsScreen: string;
+                        highReach: string;
+                        bestValue: string;
+                        shapeMismatch: string;
+                    };
+                };
+            };
+            schedule: {
+                datesTitle: string;
+                datesHint: string;
+                days: string;
+                datesInvalid: string;
+                lengthTitle: string;
+                lengthVideo: string;
+                lengthHint: string;
+                seconds: string;
+                frequencyTitle: string;
+                frequencyHint: string;
+                less: string;
+                more: string;
+                capNote: string;
+                saveFailed: string;
+                levels: {
+                    popular: string;
+                    plays: string;
+                    priceMultiplier: string;
+                    STANDARD: {
+                        title: string;
+                        description: string;
+                    };
+                    HIGH: {
+                        title: string;
+                        description: string;
+                    };
+                    CUSTOM: {
+                        title: string;
+                        description: string;
+                    };
+                };
+                availabilityTitle: string;
+                availabilityHint: string;
+                availabilityToggle: string;
+                availabilityBlocked: string;
+                capacityConflict: string;
+                capacityDetail: string;
+                capacityBadge: string;
+                removeScreen: string;
+            };
+            review: {
+                campaign: string;
+                ad: string;
+                adLength: string;
+                screens: string;
+                locations: string;
+                schedule: string;
+                delivery: string;
+                plays: string;
+                views: string;
+                estimateNote: string;
+                cost: string;
+                mediaCost: string;
+                platformFee: string;
+                gst: string;
+                gstNone: string;
+                total: string;
+                noHiddenCharges: string;
+                payWith: string;
+                payOnline: string;
+                payOnlineHint: string;
+                payWallet: string;
+                walletBalance: string;
+                walletShort: string;
+                confirm: string;
+                editCampaign: string;
+                processing: string;
+                submitForApproval: string;
+                payAndLaunch: string;
+                verifyFailed: string;
+                paymentCancelled: string;
+                payFailed: string;
+                documents: {
+                    title: string;
+                    quotationTitle: string;
+                    quotationHint: string;
+                    quotationRequired: string;
+                    receiptTitle: string;
+                    receiptHint: string;
+                    add: string;
+                    replace: string;
+                    remove: string;
+                    uploading: string;
+                    formats: string;
+                    uploadFailed: string;
+                    approvalNote: string;
+                    optionalHint: string;
+                    verificationNote: string;
+                };
+                adsTitle: string;
+                bookingDates: string;
+                slotHours: string;
+                alreadyPaid: string;
+                alreadyPaidHint: string;
+                submitForVerification: string;
+                listTotal: string;
+                revisedQuotation: string;
+                viewMore: string;
+            };
+            launched: {
+                paid: {
+                    title: string;
+                    subtitle: string;
+                };
+                requested: {
+                    title: string;
+                    subtitle: string;
+                };
+                campaignId: string;
+                nextSteps: string;
+                steps: {
+                    paymentReceived: string;
+                    submitted: string;
+                    paymentApproval: string;
+                    adApproval: string;
+                    scheduling: string;
+                    live: string;
+                };
+                notifyNote: string;
+                viewCampaign: string;
+                backToDashboard: string;
+                approvalEta: string;
+            };
+            continueSetup: {
+                title: string;
+                needsAd: string;
+                needsScreens: string;
+                needsPayment: string;
+                cta: string;
+            };
+        };
+        listing: {
+            locationCategory: {
+                PREMIUM_COMMERCIAL: string;
+                HIGH_STREET: string;
+                BUSINESS_DISTRICT: string;
+                RESIDENTIAL: string;
+                TRANSIT: string;
+                RETAIL: string;
+                TOURIST: string;
+                INSTITUTIONAL: string;
+            };
+            audience: {
+                STUDENTS: string;
+                PROFESSIONALS: string;
+                FAMILIES: string;
+                SHOPPERS: string;
+                COMMUTERS: string;
+                TOURISTS: string;
+            };
+            traffic: {
+                PEDESTRIAN: string;
+                VEHICLE: string;
+                BOTH: string;
+            };
+            displayType: {
+                LCD: string;
+                LED: string;
+                DIGITAL_BILLBOARD: string;
+            };
+            facing: {
+                ROAD_FACING: string;
+                INDOOR_FACING: string;
+            };
+        };
+        marketplace: {
+            title: string;
+            subtitle: string;
+            advertisersOnly: string;
+            save: string;
+            unsave: string;
+            results: string;
+            listView: string;
+            mapView: string;
+            noResults: string;
+            noResultsHint: string;
+            showMore: string;
+            card: {
+                digitalDisplay: string;
+                available: string;
+                unavailable: string;
+                km: string;
+                footfall: string;
+                perDayValue: string;
+                peak: string;
+                hours: string;
+                plays: string;
+                view: string;
+                select: string;
+                selected: string;
+            };
+            filters: {
+                button: string;
+                title: string;
+                subtitle: string;
+                location: string;
+                venue: string;
+                audience: string;
+                traffic: string;
+                pedestrian: string;
+                vehicle: string;
+                screen: string;
+                indoor: string;
+                outdoor: string;
+                size: string;
+                sizeLabel: string;
+                budget: string;
+                anyPrice: string;
+                upTo: string;
+                dates: string;
+                datesHint: string;
+                clear: string;
+                clearAll: string;
+                show: string;
+                showCount: string;
+            };
+            search: {
+                placeholder: string;
+                nearMe: string;
+                nearMeLabel: string;
+                locating: string;
+                around: string;
+                clearPlace: string;
+                within: string;
+                km: string;
+            };
+            selection: {
+                count: string;
+                empty: string;
+                useGroup: string;
+                yourGroups: string;
+                groupAdded: string;
+                groupLoadFailed: string;
+                addSaved: string;
+                saveGroup: string;
+                saveGroupTitle: string;
+                saveGroupHint: string;
+                groupPlaceholder: string;
+                groupSaved: string;
+                groupSaveFailed: string;
+                remove: string;
+            };
+            cart: {
+                selected: string;
+                perDay: string;
+                clear: string;
+                continue: string;
+            };
+        };
+        screenDetail: {
+            back: string;
+            advertisersOnly: string;
+            loadFailed: string;
+            digitalDisplay: string;
+            price: string;
+            plays: string;
+            playsNote: string;
+            priceNote: string;
+            select: string;
+            selected: string;
+            viewLive: string;
+            perDay: string;
+            seconds: string;
+            meters: string;
+            indoor: string;
+            outdoor: string;
+            tabs: {
+                details: string;
+                liveAds: string;
+            };
+            sections: {
+                overview: string;
+                location: string;
+                audience: string;
+                visibility: string;
+                delivery: string;
+            };
+            estimatesNote: string;
+            deliveryHint: string;
+            browseMore: string;
+            fields: {
+                size: string;
+                resolution: string;
+                shape: string;
+                type: string;
+                environment: string;
+                brightness: string;
+                hours: string;
+                venue: string;
+                landmark: string;
+                area: string;
+                city: string;
+                pincode: string;
+                locationCategory: string;
+                footfall: string;
+                weekendFootfall: string;
+                traffic: string;
+                peak: string;
+                dwell: string;
+                audience: string;
+                facing: string;
+                viewingDistance: string;
+                angle: string;
+                obstructions: string;
+                night: string;
+            };
+        };
+        savedScreens: {
+            title: string;
+            subtitle: string;
+            groups: string;
+            noGroups: string;
+            saved: string;
+            noSaved: string;
+            explore: string;
+            screenCount: string;
+            useInCampaign: string;
+            rename: string;
+            save: string;
+            delete: string;
+            deleteTitle: string;
+            deleteHint: string;
+            loadFailed: string;
+            renameFailed: string;
+        };
+        listingEditor: {
+            title: string;
+            hint: string;
+            where: string;
+            landmark: string;
+            landmarkPlaceholder: string;
+            area: string;
+            areaPlaceholder: string;
+            pincode: string;
+            locationCategory: string;
+            audience: string;
+            traffic: string;
+            peakFrom: string;
+            peakTo: string;
+            weekendFootfall: string;
+            dwell: string;
+            displayType: string;
+            sizeInches: string;
+            brightness: string;
+            viewingDistance: string;
+            angle: string;
+            facing: string;
+            visibleAtNight: string;
+            obstructions: string;
+            obstructionsPlaceholder: string;
+            save: string;
+            saving: string;
+            saved: string;
+            saveFailed: string;
+        };
+        commandCenter: {
+            liveTitle: string;
+            completedTitle: string;
+            dayOf: string;
+            tiles: {
+                screens: string;
+                online: string;
+                plays: string;
+                views: string;
+                spend: string;
+                remaining: string;
+                delivery: string;
+                paid: string;
+            };
+            downloadReport: string;
+            downloading: string;
+            downloadFailed: string;
+            estimateNote: string;
+            byScreen: string;
+            table: {
+                screen: string;
+                status: string;
+                plays: string;
+                views: string;
+            };
+            screenStatus: {
+                ONLINE: string;
+                OFFLINE: string;
+                NOT_CONNECTED: string;
+            };
+            offline: {
+                title: string;
+                body: string;
+                impact: string;
+            };
+            progress: {
+                title: string;
+                steps: {
+                    paid: string;
+                    adCheck: string;
+                    scheduled: string;
+                    live: string;
+                };
+                rejected: string;
+                replaceAd: string;
+                hint: {
+                    PAYMENT_RECEIVED: string;
+                    UNDER_REVIEW: string;
+                    APPROVED: string;
+                    SCHEDULED: string;
+                    LIVE: string;
+                };
+            };
+        };
+        proofOfPlay: {
+            title: string;
+            subtitle: string;
+            pdf: string;
+            csv: string;
+            downloading: string;
+            downloadFailed: string;
+            empty: string;
+            totals: string;
+            date: string;
+            screen: string;
+            plays: string;
+            status: string;
+            verified: string;
+            notVerified: string;
+            showMore: string;
+            pageSubtitle: string;
+            noneYet: string;
+            createCampaign: string;
+        };
+        nav: {
+            dashboard: string;
+            create: string;
+            screens: string;
+            campaigns: string;
+            analytics: string;
+            proofOfPlay: string;
+            billing: string;
+            saved: string;
+            company: string;
+            notifications: string;
+            quotations: string;
+        };
+        dashboard: {
+            create: string;
+            createHint: string;
+            intro: {
+                title: string;
+                subtitle: string;
+                close: string;
+                choose: {
+                    title: string;
+                    body: string;
+                };
+                upload: {
+                    title: string;
+                    body: string;
+                };
+                track: {
+                    title: string;
+                    body: string;
+                };
+            };
+            tiles: {
+                active: string;
+                scheduled: string;
+                completed: string;
+                spend: string;
+                plays: string;
+                views: string;
+                screensNow: string;
+            };
+            pending: {
+                title: string;
+                DRAFT: {
+                    what: string;
+                    cta: string;
+                };
+                PAYMENT_PENDING: {
+                    what: string;
+                    cta: string;
+                };
+                PAYMENT_RECEIVED: {
+                    what: string;
+                    cta: string;
+                };
+                REJECTED: {
+                    what: string;
+                    cta: string;
+                };
+            };
+            recent: {
+                title: string;
+                all: string;
+                empty: string;
+            };
+        };
+        company: {
+            title: string;
+            subtitle: string;
+            tabs: {
+                business: string;
+                team: string;
+                account: string;
+                help: string;
+            };
+        };
+        quotations: {
+            status: {
+                SUBMITTED: string;
+                COUNTERED: string;
+                APPROVED: string;
+                REJECTED: string;
+                PAYMENT_SUBMITTED: string;
+                COMPLETED: string;
+                CANCELLED: string;
+            };
+            action: {
+                SUBMITTED: string;
+                COUNTERED: string;
+                ACCEPTED: string;
+                APPROVED: string;
+                REJECTED: string;
+                REOPENED: string;
+                RECEIPT_SUBMITTED: string;
+                PAYMENT_REJECTED: string;
+                COMPLETED: string;
+                CANCELLED: string;
+                REVISION_OPENED: string;
+                REVISION_CLOSED: string;
+            };
+            role: {
+                ADVERTISER: string;
+                ADMIN: string;
+                SYSTEM: string;
+            };
+            revision: string;
+            updated: string;
+            history: string;
+            table: {
+                mediaCost: string;
+                platformFee: string;
+                gst: string;
+                listTotal: string;
+                yourProposal: string;
+                advertiserProposal: string;
+                counterOffer: string;
+                yourCounter: string;
+                totalPayment: string;
+                revisedBadge: string;
+                saving: string;
+                above: string;
+            };
+            panel: {
+                title: string;
+                introRequired: string;
+                introOptional: string;
+                request: string;
+                sendRevision: string;
+                cancel: string;
+                reopen: string;
+                proposeAnother: string;
+                accept: string;
+                proposedLabel: string;
+                proposedPlaceholder: string;
+                proposedHint: string;
+                noteLabel: string;
+                invalidAmount: string;
+                amountTooHigh: string;
+                stale: string;
+                receiptTitle: string;
+                receiptHint: string;
+                submitPayment: string;
+                submitting: string;
+                viewCampaign: string;
+                failed: string;
+                sentToast: string;
+                reopenedToast: string;
+                acceptedToast: string;
+                paidToast: string;
+                message: {
+                    SUBMITTED: string;
+                    COUNTERED: string;
+                    APPROVED: string;
+                    REJECTED: string;
+                    PAYMENT_SUBMITTED: string;
+                    COMPLETED: string;
+                    CANCELLED: string;
+                };
+                offList: string;
+                revisionClosed: string;
+                revisionOpen: string;
+                exportPdf: string;
+                exportTxt: string;
+                paymentTitle: string;
+                viewPayment: string;
+                viewInvoice: string;
+            };
+            page: {
+                title: string;
+                description: string;
+                empty: string;
+                emptyHint: string;
+                campaign: string;
+                listPrice: string;
+                current: string;
+                status: string;
+                updated: string;
+                open: string;
+                all: string;
+                active: string;
+                closed: string;
+                previous: string;
+                next: string;
+                pageOf: string;
+                receipt: string;
+                quotation: string;
+                printPdf: string;
+                downloadTxt: string;
+                number: string;
+                view: string;
+                viewInCampaign: string;
+                search: string;
+            };
+        };
+        proofRequests: {
+            status: {
+                PENDING: string;
+                SUBMITTED: string;
+                VERIFIED: string;
+                OVERDUE: string;
+                WAIVED: string;
+            };
+            source: {
+                AUTO_GO_LIVE: string;
+                ADVERTISER: string;
+                PARTNER: string;
+            };
+            due: {
+                overdue: string;
+                hours: string;
+                days: string;
+            };
+            matched: string;
+            screen: {
+                empty: string;
+                noRequest: string;
+                answer: string;
+                volunteer: string;
+                advertiserNote: string;
+            };
+            upload: {
+                choose: string;
+                caption: string;
+                submit: string;
+                uploading: string;
+                cancel: string;
+                done: string;
+                failed: string;
+                badType: string;
+                tooLarge: string;
+                lockedHint: string;
+            };
+            campaign: {
+                title: string;
+                subtitle: string;
+                empty: string;
+                noneYet: string;
+                request: string;
+                alreadyRequested: string;
+                notePlaceholder: string;
+                send: string;
+                sending: string;
+                requested: string;
+                requestFailed: string;
+            };
+            dashboard: {
+                partnerTitle: string;
+                advertiserTitle: string;
+                adminTitle: string;
+                counts: string;
+                waive: string;
+                waiveReason: string;
+                waiveConfirm: string;
+                cancel: string;
+                waived: string;
+                waiveFailed: string;
+            };
+        };
+    };
+};
+type Messages = typeof en;
+declare function coerceLocale(value: unknown): Locale | null;
+
+export { DEFAULT_LOCALE, LOCALES, type Locale, type Messages, coerceLocale, messages };
