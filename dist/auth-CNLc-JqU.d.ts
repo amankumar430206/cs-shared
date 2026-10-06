@@ -2,6 +2,15 @@ interface TokenPair {
     accessToken: string;
     refreshToken: string;
 }
+/** POST /auth/google result: either signed in, or a new Google identity that must complete its profile. */
+type GoogleAuthResult = ({
+    status: "AUTHENTICATED";
+} & TokenPair) | {
+    status: "PROFILE_REQUIRED";
+    signupToken: string;
+    email: string;
+    fullName: string;
+};
 type UserRole = "ADVERTISER" | "SCREEN_PARTNER" | "ADMINISTRATOR" | "SUPER_ADMINISTRATOR";
 interface CurrentUser {
     id: string;
@@ -10,6 +19,9 @@ interface CurrentUser {
     email: string;
     mobile_number: string;
     status: string;
+    /** ISO timestamps; null until that channel is verified. */
+    mobile_verified_at?: string | null;
+    email_verified_at?: string | null;
     /** UI language saved on the account ("en" | "hi"). */
     preferred_language?: "en" | "hi";
     advertiser?: {
@@ -32,4 +44,4 @@ interface CurrentUser {
     };
 }
 
-export type { CurrentUser as C, TokenPair as T, UserRole as U };
+export type { CurrentUser as C, GoogleAuthResult as G, TokenPair as T, UserRole as U };

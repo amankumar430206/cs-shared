@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiPatch, apiPost } from "../api/client";
-import type { CurrentUser, TokenPair } from "../types/auth";
+import type { CurrentUser, GoogleAuthResult, TokenPair } from "../types/auth";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
 
 export function useMeQuery() {
@@ -29,6 +29,28 @@ export function useLoginMutation() {
       setSession(tokens);
       await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
     },
+  });
+}
+
+/**
+ * Posts a Google ID token to /auth/google. Deliberately does NOT store the
+ * session: the caller (cs-mobile's useGoogleAuth) must first check the
+ * account's role against the app, exactly like useAppLoginMutation does.
+ */
+export function useGoogleLoginMutation() {
+  return useMutation({
+    mutationFn: (input: { idToken: string; nonce?: string }) => apiPost<GoogleAuthResult>("/auth/google", input),
+  });
+}
+
+export type GoogleCompleteInput = Omit<RegisterInput, "email" | "password" | "inviteCode"> & {
+  signupToken: string;
+};
+
+/** Creates the account after a PROFILE_REQUIRED Google sign-in. Returns tokens; the caller stores them after its role check. */
+export function useGoogleCompleteMutation() {
+  return useMutation({
+    mutationFn: (input: GoogleCompleteInput) => apiPost<GoogleAuthResult>("/auth/google/complete", input),
   });
 }
 
