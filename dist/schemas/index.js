@@ -44,17 +44,18 @@ var LEGAL_STRUCTURES = [
   { value: "PROPRIETOR", label: "Proprietor" },
   { value: "COMPANY", label: "Company" }
 ];
-var onboardingSchema = z.object({
+var buildOnboardingSchema = (withPassword) => z.object({
   role: z.enum(["ADVERTISER", "SCREEN_PARTNER"]),
   // Basic Information (registration)
   fullName: z.string().min(2, "Enter your full name").max(120),
   mobileNumber: z.string().regex(MOBILE_PATTERN, "Enter a valid 10-digit Indian mobile number"),
   email: z.string().max(160).optional().or(z.literal("")),
-  password: z.string().regex(
+  // Absent in Google sign-up: Google proved the email, and the account has no password.
+  password: withPassword ? z.string().regex(
     PASSWORD_PATTERN,
     "Password must be at least 8 characters with an uppercase letter, lowercase letter, number, and special character"
-  ),
-  confirmPassword: z.string(),
+  ) : z.string().optional(),
+  confirmPassword: withPassword ? z.string() : z.string().optional(),
   referralCode: z.string().optional(),
   // Advertiser — required by registerSchema
   contactPerson: z.string().optional(),
@@ -67,7 +68,7 @@ var onboardingSchema = z.object({
   acceptTerms: z.boolean()
 }).superRefine((data, ctx) => {
   const issue = (path, message) => ctx.addIssue({ code: "custom", path: [path], message });
-  if (data.password !== data.confirmPassword) {
+  if (withPassword && data.password !== data.confirmPassword) {
     issue("confirmPassword", "Passwords do not match.");
   }
   if (data.role === "ADVERTISER") {
@@ -102,6 +103,8 @@ var onboardingSchema = z.object({
     issue("acceptTerms", "You must accept the Terms & Conditions to continue.");
   }
 });
+var onboardingSchema = buildOnboardingSchema(true);
+var googleOnboardingSchema = buildOnboardingSchema(false);
 
 // src/schemas/auth.ts
 var loginSchema = z.object({
@@ -287,4 +290,4 @@ var ticketMessageSchema = z.object({
   message: z.string().trim().min(1, "Write a message").max(5e3)
 });
 
-export { AADHAAR_PATTERN, ADVERTISER_BUSINESS_CATEGORIES, BUDGET_RANGES, BUSINESS_TYPES, CIN_PATTERN, GST_PATTERN, IFSC_PATTERN, LEGAL_STRUCTURES, MAX_PREFERRED_CITIES, MAX_PREFERRED_SCREEN_TYPES, MOBILE_PATTERN, PAN_PATTERN, PASSWORD_PATTERN, PINCODE_PATTERN, UDYAM_PATTERN, advertiserKycSchema, bankDetailsSchema, builderDetailsSchema, campaignFormSchema, changePasswordSchema, createTicketSchema, forgotPasswordSchema, loginSchema, onboardingSchema, resetPasswordSchema, screenFormSchema, screenPartnerKycSchema, ticketMessageSchema, updateProfileSchema, verifyOtpSchema };
+export { AADHAAR_PATTERN, ADVERTISER_BUSINESS_CATEGORIES, BUDGET_RANGES, BUSINESS_TYPES, CIN_PATTERN, GST_PATTERN, IFSC_PATTERN, LEGAL_STRUCTURES, MAX_PREFERRED_CITIES, MAX_PREFERRED_SCREEN_TYPES, MOBILE_PATTERN, PAN_PATTERN, PASSWORD_PATTERN, PINCODE_PATTERN, UDYAM_PATTERN, advertiserKycSchema, bankDetailsSchema, builderDetailsSchema, campaignFormSchema, changePasswordSchema, createTicketSchema, forgotPasswordSchema, googleOnboardingSchema, loginSchema, onboardingSchema, resetPasswordSchema, screenFormSchema, screenPartnerKycSchema, ticketMessageSchema, updateProfileSchema, verifyOtpSchema };

@@ -59,7 +59,8 @@ export const LEGAL_STRUCTURES = [
 // (AdvertiserKycPanel/ScreenPartnerKycPanel) instead of up front, to keep
 // signup itself fast. See ActionableItemsCard for the post-registration
 // reminder that KYC data will be needed.
-export const onboardingSchema = z
+const buildOnboardingSchema = (withPassword: boolean) =>
+  z
   .object({
     role: z.enum(["ADVERTISER", "SCREEN_PARTNER"]),
 
@@ -67,11 +68,14 @@ export const onboardingSchema = z
     fullName: z.string().min(2, "Enter your full name").max(120),
     mobileNumber: z.string().regex(MOBILE_PATTERN, "Enter a valid 10-digit Indian mobile number"),
     email: z.string().max(160).optional().or(z.literal("")),
-    password: z.string().regex(
-      PASSWORD_PATTERN,
-      "Password must be at least 8 characters with an uppercase letter, lowercase letter, number, and special character"
-    ),
-    confirmPassword: z.string(),
+    // Absent in Google sign-up: Google proved the email, and the account has no password.
+    password: withPassword
+      ? z.string().regex(
+          PASSWORD_PATTERN,
+          "Password must be at least 8 characters with an uppercase letter, lowercase letter, number, and special character"
+        )
+      : z.string().optional(),
+    confirmPassword: withPassword ? z.string() : z.string().optional(),
     referralCode: z.string().optional(),
 
     // Advertiser — required by registerSchema
@@ -89,7 +93,7 @@ export const onboardingSchema = z
   .superRefine((data, ctx) => {
     const issue = (path: string, message: string) => ctx.addIssue({ code: "custom", path: [path], message });
 
-    if (data.password !== data.confirmPassword) {
+    if (withPassword && data.password !== data.confirmPassword) {
       issue("confirmPassword", "Passwords do not match.");
     }
 
@@ -127,5 +131,11 @@ export const onboardingSchema = z
       issue("acceptTerms", "You must accept the Terms & Conditions to continue.");
     }
   });
+
+/** The registration form (email + password account). */
+export const onboardingSchema = buildOnboardingSchema(true);
+
+/** Same form for a new Google user: identical fields and rules minus the password pair. */
+export const googleOnboardingSchema = buildOnboardingSchema(false);
 
 export type OnboardingFormValues = z.input<typeof onboardingSchema>;

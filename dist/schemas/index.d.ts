@@ -200,6 +200,7 @@ declare const LEGAL_STRUCTURES: readonly [{
     readonly value: "COMPANY";
     readonly label: "Company";
 }];
+/** The registration form (email + password account). */
 declare const onboardingSchema: z.ZodObject<{
     role: z.ZodEnum<{
         ADVERTISER: "ADVERTISER";
@@ -208,8 +209,28 @@ declare const onboardingSchema: z.ZodObject<{
     fullName: z.ZodString;
     mobileNumber: z.ZodString;
     email: z.ZodUnion<[z.ZodOptional<z.ZodString>, z.ZodLiteral<"">]>;
-    password: z.ZodString;
-    confirmPassword: z.ZodString;
+    password: z.ZodString | z.ZodOptional<z.ZodString>;
+    confirmPassword: z.ZodString | z.ZodOptional<z.ZodString>;
+    referralCode: z.ZodOptional<z.ZodString>;
+    contactPerson: z.ZodOptional<z.ZodString>;
+    businessName: z.ZodOptional<z.ZodString>;
+    dateOfBirth: z.ZodOptional<z.ZodString>;
+    city: z.ZodOptional<z.ZodString>;
+    state: z.ZodOptional<z.ZodString>;
+    partnerType: z.ZodOptional<z.ZodString>;
+    acceptTerms: z.ZodBoolean;
+}, z.core.$strip>;
+/** Same form for a new Google user: identical fields and rules minus the password pair. */
+declare const googleOnboardingSchema: z.ZodObject<{
+    role: z.ZodEnum<{
+        ADVERTISER: "ADVERTISER";
+        SCREEN_PARTNER: "SCREEN_PARTNER";
+    }>;
+    fullName: z.ZodString;
+    mobileNumber: z.ZodString;
+    email: z.ZodUnion<[z.ZodOptional<z.ZodString>, z.ZodLiteral<"">]>;
+    password: z.ZodString | z.ZodOptional<z.ZodString>;
+    confirmPassword: z.ZodString | z.ZodOptional<z.ZodString>;
     referralCode: z.ZodOptional<z.ZodString>;
     contactPerson: z.ZodOptional<z.ZodString>;
     businessName: z.ZodOptional<z.ZodString>;
@@ -313,4 +334,4 @@ declare const ticketMessageSchema: z.ZodObject<{
 }, z.core.$strip>;
 type TicketMessageFormValues = z.infer<typeof ticketMessageSchema>;
 
-export { AADHAAR_PATTERN, ADVERTISER_BUSINESS_CATEGORIES, type AdvertiserKycFormValues, BUDGET_RANGES, BUSINESS_TYPES, type BankDetailsFormValues, type BuilderDetailsInput, type BuilderDetailsOutput, CIN_PATTERN, type CampaignFormInput, type CampaignFormOutput, type ChangePasswordFormValues, type CreateTicketFormValues, type ForgotPasswordFormValues, GST_PATTERN, IFSC_PATTERN, LEGAL_STRUCTURES, type LoginFormValues, MAX_PREFERRED_CITIES, MAX_PREFERRED_SCREEN_TYPES, MOBILE_PATTERN, type OnboardingFormValues, PAN_PATTERN, PASSWORD_PATTERN, PINCODE_PATTERN, type ResetPasswordFormValues, type ScreenFormInput, type ScreenFormOutput, type ScreenPartnerKycFormValues, type TicketMessageFormValues, UDYAM_PATTERN, type UpdateProfileFormValues, type VerifyOtpFormValues, advertiserKycSchema, bankDetailsSchema, builderDetailsSchema, campaignFormSchema, changePasswordSchema, createTicketSchema, forgotPasswordSchema, loginSchema, onboardingSchema, resetPasswordSchema, screenFormSchema, screenPartnerKycSchema, ticketMessageSchema, updateProfileSchema, verifyOtpSchema };
+export { AADHAAR_PATTERN, ADVERTISER_BUSINESS_CATEGORIES, type AdvertiserKycFormValues, BUDGET_RANGES, BUSINESS_TYPES, type BankDetailsFormValues, type BuilderDetailsInput, type BuilderDetailsOutput, CIN_PATTERN, type CampaignFormInput, type CampaignFormOutput, type ChangePasswordFormValues, type CreateTicketFormValues, type ForgotPasswordFormValues, GST_PATTERN, IFSC_PATTERN, LEGAL_STRUCTURES, type LoginFormValues, MAX_PREFERRED_CITIES, MAX_PREFERRED_SCREEN_TYPES, MOBILE_PATTERN, type OnboardingFormValues, PAN_PATTERN, PASSWORD_PATTERN, PINCODE_PATTERN, type ResetPasswordFormValues, type ScreenFormInput, type ScreenFormOutput, type ScreenPartnerKycFormValues, type TicketMessageFormValues, UDYAM_PATTERN, type UpdateProfileFormValues, type VerifyOtpFormValues, advertiserKycSchema, bankDetailsSchema, builderDetailsSchema, campaignFormSchema, changePasswordSchema, createTicketSchema, forgotPasswordSchema, googleOnboardingSchema, loginSchema, onboardingSchema, resetPasswordSchema, screenFormSchema, screenPartnerKycSchema, ticketMessageSchema, updateProfileSchema, verifyOtpSchema };
