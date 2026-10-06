@@ -47,6 +47,7 @@ same pass. Source mapping:
 | `src/types/{checkout,delivery,money,screenListing,adChecks}.ts` | `src/lib/*.ts` (same names) |
 | `src/types/imageVariants.ts` | `src/lib/imageVariants.ts` (`thumbSrc` / `previewSrc` for the API's `thumbUrl` / `previewUrl`) |
 | `src/types/orientation.ts` | the fit maths from `src/lib/orientation.ts` (parse/orient helpers live in `./screens`) |
+| `useGoogleLoginMutation` / `useGoogleCompleteMutation` in `src/hooks/useAuth.ts` | same names in `src/hooks/useAuth.ts` (cs-web versions also store the session; the shared login hook does not, so cs-mobile can role-check first) |
 | `src/hooks/marketplaceFilters.ts` | `src/components/marketplace/marketplaceFilters.ts` |
 | `useApplyMediaMutation` in `src/hooks/useCreatives.ts` | `useApplyMediaMutation` in `src/hooks/useMedia.ts` |
 | quotation/receipt document hooks (`useUploadCampaignDocumentMutation`, `useRemoveCampaignDocumentMutation`, `useUpdatePaymentsConfigMutation`) in `src/hooks/useCheckout.ts` | same-named hooks in `src/hooks/useCheckout.ts` |
