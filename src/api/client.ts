@@ -214,13 +214,35 @@ export function apiGetPaginated<T>(path: string, accessToken?: string | null): P
 
 // No Content-Type: the runtime sets the multipart boundary. On React Native, append
 // files as `formData.append("file", { uri, name, type } as unknown as Blob)`.
+// Retries once on network failure (TypeError) since mobile connections are flaky.
+const UPLOAD_TIMEOUT_MS = 120_000;
+const UPLOAD_RETRY_DELAY_MS = 2_000;
+
+function isNetworkError(err: unknown): boolean {
+  return err instanceof TypeError || (err instanceof DOMException && err.name === "AbortError");
+}
+
 export function apiUpload<T>(path: string, formData: FormData, accessToken?: string | null): Promise<T> {
   return runReported(accessToken, async (token) => {
-    const res = await doFetch(`${getApiBaseUrl()}${path}`, {
-      method: "POST",
-      headers: baseHeaders(token, false),
-      body: formData,
-    });
+    const attempt = () => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
+      return doFetch(`${getApiBaseUrl()}${path}`, {
+        method: "POST",
+        headers: baseHeaders(token, false),
+        body: formData,
+        signal: controller.signal,
+      }).finally(() => clearTimeout(timer));
+    };
+
+    let res: Response;
+    try {
+      res = await attempt();
+    } catch (err) {
+      if (!isNetworkError(err)) throw err;
+      await new Promise((r) => setTimeout(r, UPLOAD_RETRY_DELAY_MS));
+      res = await attempt();
+    }
     return (await parseFullEnvelope<T>(res)).data;
   });
 }
