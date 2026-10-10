@@ -63,5 +63,17 @@ interface SessionLimitDetail {
     limit: number;
     sessions: AuthSession[];
 }
+/** One row of GET /auth/activity: a login-related event on the account, display-ready. */
+interface LoginActivityEvent {
+    id: string;
+    action: string;
+    title: string;
+    /** "warning" for failed/blocked/suspicious events. */
+    tone: "default" | "warning";
+    /** Best-effort "Chrome on Windows" label. */
+    device: string;
+    ipAddress: string | null;
+    createdAt: string;
+}
 
-export type { AuthSession as A, CurrentUser as C, GoogleAuthResult as G, SessionLimitDetail as S, TokenPair as T, UserRole as U };
+export type { AuthSession as A, CurrentUser as C, GoogleAuthResult as G, LoginActivityEvent as L, SessionLimitDetail as S, TokenPair as T, UserRole as U };

@@ -1,6 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ApiClientError, apiDelete, apiGet, apiPatch, apiPost } from "../api/client";
-import type { AuthSession, CurrentUser, GoogleAuthResult, SessionLimitDetail, TokenPair } from "../types/auth";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ApiClientError, apiDelete, apiGet, apiGetPaginated, apiPatch, apiPost } from "../api/client";
+import type { AuthSession, CurrentUser, GoogleAuthResult, LoginActivityEvent, SessionLimitDetail, TokenPair } from "../types/auth";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
 
 export function useMeQuery() {
@@ -280,7 +280,7 @@ export function useRevokeSessionMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => apiDelete<{ status: string }>(`/auth/sessions/${id}`, getAccessToken()),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "sessions"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth"] }),
   });
 }
 
@@ -288,7 +288,7 @@ export function useRevokeOtherSessionsMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => apiPost<{ revoked: number }>("/auth/sessions/revoke-others", undefined, getAccessToken()),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "sessions"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth"] }),
   });
 }
 
@@ -297,7 +297,7 @@ export function useTrustSessionMutation() {
   return useMutation({
     mutationFn: (id: string) =>
       apiPost<{ status: string }>(`/auth/sessions/${id}/trust`, undefined, getAccessToken()),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "sessions"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth"] }),
   });
 }
 
@@ -310,4 +310,20 @@ export async function logoutOnServer(): Promise<void> {
   } catch {
     // offline / token already dead: nothing to revoke
   }
+}
+
+const ACTIVITY_PAGE_LIMIT = 20;
+
+/** Login history for the Activity page (GET /auth/activity), newest first, loaded a page at a time. */
+export function useLoginActivityQuery() {
+  const hasAccessToken = useHasSession();
+  return useInfiniteQuery({
+    queryKey: ["auth", "activity"],
+    queryFn: ({ pageParam }) =>
+      apiGetPaginated<LoginActivityEvent>(`/auth/activity?page=${pageParam}&limit=${ACTIVITY_PAGE_LIMIT}`, getAccessToken()),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.meta.page * lastPage.meta.limit < lastPage.meta.total ? lastPage.meta.page + 1 : undefined,
+    enabled: hasAccessToken,
+  });
 }
