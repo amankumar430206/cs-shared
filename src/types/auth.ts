@@ -41,3 +41,25 @@ export interface CurrentUser {
     upi_id: string | null;
   };
 }
+
+/** One logged-in browser or app install (GET /auth/sessions). */
+export interface AuthSession {
+  id: string;
+  platform: "web" | "mobile";
+  deviceName: string | null;
+  ipAddress: string | null;
+  /** Device the user confirmed ("yes, that was me"); false = still unreviewed. */
+  trusted: boolean;
+  /** True for the session making this request. */
+  current: boolean;
+  createdAt: string;
+  lastUsedAt: string;
+}
+
+/** `details[0]` of a 409 SESSION_LIMIT_REACHED login response. */
+export interface SessionLimitDetail {
+  loginTicket: string;
+  platform: "web" | "mobile";
+  limit: number;
+  sessions: AuthSession[];
+}

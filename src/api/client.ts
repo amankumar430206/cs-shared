@@ -92,9 +92,14 @@ async function refreshSession(): Promise<boolean> {
           headers: baseHeaders(null, true),
           body: JSON.stringify({ refreshToken }),
         });
-        const envelope: ApiEnvelope<{ accessToken: string; refreshToken: string }> = await res.json();
+        // refreshToken is omitted when this request lost a refresh race with
+        // another tab/request: keep the one we already hold.
+        const envelope: ApiEnvelope<{ accessToken: string; refreshToken?: string }> = await res.json();
         if (!envelope.success) return false;
-        await session.setTokens(envelope.data);
+        await session.setTokens({
+          accessToken: envelope.data.accessToken,
+          refreshToken: envelope.data.refreshToken ?? refreshToken,
+        });
         return true;
       } catch {
         return false;

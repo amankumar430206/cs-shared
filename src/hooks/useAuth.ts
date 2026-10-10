@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGet, apiPatch, apiPost } from "../api/client";
-import type { CurrentUser, GoogleAuthResult, TokenPair } from "../types/auth";
+import { ApiClientError, apiDelete, apiGet, apiPatch, apiPost } from "../api/client";
+import type { AuthSession, CurrentUser, GoogleAuthResult, SessionLimitDetail, TokenPair } from "../types/auth";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
 
 export function useMeQuery() {
@@ -247,4 +247,67 @@ export function useLogout() {
     logout();
     queryClient.removeQueries({ queryKey: ["auth", "me"] });
   };
+}
+
+// --- Device sessions --------------------------------------------------------
+
+/** Pulls the ticket + sessions out of a login rejected by the per-platform session cap, else null. */
+export function getSessionLimit(error: unknown): SessionLimitDetail | null {
+  if (error instanceof ApiClientError && error.code === "SESSION_LIMIT_REACHED") {
+    return (error.details[0] as SessionLimitDetail | undefined) ?? null;
+  }
+  return null;
+}
+
+/** Finishes a login blocked by the session cap: signs `revokeSessionId` out and returns tokens (caller stores them after its role check). */
+export function useResolveSessionLimitMutation() {
+  return useMutation({
+    mutationFn: (input: { loginTicket: string; revokeSessionId: string }) =>
+      apiPost<TokenPair>("/auth/sessions/resolve", input),
+  });
+}
+
+export function useSessionsQuery() {
+  const hasAccessToken = useHasSession();
+  return useQuery({
+    queryKey: ["auth", "sessions"],
+    queryFn: () => apiGet<AuthSession[]>("/auth/sessions", getAccessToken()),
+    enabled: hasAccessToken,
+  });
+}
+
+export function useRevokeSessionMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => apiDelete<{ status: string }>(`/auth/sessions/${id}`, getAccessToken()),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "sessions"] }),
+  });
+}
+
+export function useRevokeOtherSessionsMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiPost<{ revoked: number }>("/auth/sessions/revoke-others", undefined, getAccessToken()),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "sessions"] }),
+  });
+}
+
+export function useTrustSessionMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiPost<{ status: string }>(`/auth/sessions/${id}/trust`, undefined, getAccessToken()),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["auth", "sessions"] }),
+  });
+}
+
+/** Best-effort server-side logout (revokes this session). Never throws: local sign-out must always succeed. */
+export async function logoutOnServer(): Promise<void> {
+  const token = getAccessToken();
+  if (!token) return;
+  try {
+    await apiPost("/auth/logout", undefined, token);
+  } catch {
+    // offline / token already dead: nothing to revoke
+  }
 }
