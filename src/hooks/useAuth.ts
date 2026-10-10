@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiClientError, apiDelete, apiGet, apiGetPaginated, apiPatch, apiPost } from "../api/client";
-import type { AuthSession, CurrentUser, GoogleAuthResult, LoginActivityEvent, SessionLimitDetail, TokenPair } from "../types/auth";
+import type { AuthSession, CurrentUser, GoogleAuthResult, LoginActivityEvent, LoginSummary, SessionLimitDetail, TokenPair } from "../types/auth";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
 
 export function useMeQuery() {
@@ -324,6 +324,16 @@ export function useLoginActivityQuery() {
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.meta.page * lastPage.meta.limit < lastPage.meta.total ? lastPage.meta.page + 1 : undefined,
+    enabled: hasAccessToken,
+  });
+}
+
+/** Per-day sign-in counts for the Activity heatmap (GET /auth/activity/summary). */
+export function useLoginSummaryQuery() {
+  const hasAccessToken = useHasSession();
+  return useQuery({
+    queryKey: ["auth", "activity-summary"],
+    queryFn: () => apiGet<LoginSummary>("/auth/activity/summary", getAccessToken()),
     enabled: hasAccessToken,
   });
 }

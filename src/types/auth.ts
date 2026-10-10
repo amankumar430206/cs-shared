@@ -76,3 +76,16 @@ export interface LoginActivityEvent {
   ipAddress: string | null;
   createdAt: string;
 }
+
+/** One day of GET /auth/activity/summary (IST date). */
+export interface LoginDay {
+  date: string;
+  logins: number;
+  failed: number;
+}
+
+export interface LoginSummary {
+  /** Last 30 days, oldest first, today last, zeros included. */
+  days: LoginDay[];
+  totalLogins: number;
+}

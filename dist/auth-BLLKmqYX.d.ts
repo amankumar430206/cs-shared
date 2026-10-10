@@ -75,5 +75,16 @@ interface LoginActivityEvent {
     ipAddress: string | null;
     createdAt: string;
 }
+/** One day of GET /auth/activity/summary (IST date). */
+interface LoginDay {
+    date: string;
+    logins: number;
+    failed: number;
+}
+interface LoginSummary {
+    /** Last 30 days, oldest first, today last, zeros included. */
+    days: LoginDay[];
+    totalLogins: number;
+}
 
-export type { AuthSession as A, CurrentUser as C, GoogleAuthResult as G, LoginActivityEvent as L, SessionLimitDetail as S, TokenPair as T, UserRole as U };
+export type { AuthSession as A, CurrentUser as C, GoogleAuthResult as G, LoginActivityEvent as L, SessionLimitDetail as S, TokenPair as T, UserRole as U, LoginDay as a, LoginSummary as b };
