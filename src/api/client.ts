@@ -13,6 +13,8 @@ export interface ApiClientConfig {
   /** Extra headers on every request, e.g. X-Client-Platform / X-App-Version. */
   headers?: Record<string, string>;
   fetch?: typeof fetch;
+  /** Used by apiUpload only. React Native + Expo's fetch rejects `{ uri, name, type }` file parts, so mobile supplies an XHR-based one. */
+  uploadFetch?: typeof fetch;
 }
 
 let config: ApiClientConfig | null = null;
@@ -232,7 +234,7 @@ export function apiUpload<T>(path: string, formData: FormData, accessToken?: str
     const attempt = () => {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
-      return doFetch(`${getApiBaseUrl()}${path}`, {
+      return (getConfig().uploadFetch ?? doFetch)(`${getApiBaseUrl()}${path}`, {
         method: "POST",
         headers: baseHeaders(token, false),
         body: formData,

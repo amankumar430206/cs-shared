@@ -187,7 +187,7 @@ function apiUpload(path, formData, accessToken) {
     const attempt = () => {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
-      return doFetch(`${getApiBaseUrl()}${path}`, {
+      return (getConfig().uploadFetch ?? doFetch)(`${getApiBaseUrl()}${path}`, {
         method: "POST",
         headers: baseHeaders(token, false),
         body: formData,
