@@ -1,5 +1,5 @@
 export { A as ApiClientConfig, a as ApiClientError, P as PaginationMeta, b as apiDelete, c as apiFetchRaw, d as apiGet, e as apiGetPaginated, f as apiPatch, g as apiPost, h as apiPut, i as apiRequest, j as apiUpload, k as buildQuery, l as configureApiClient, m as getApiBaseUrl } from '../client-DE_OHF35.js';
-import { T as TokenPair } from '../auth-CNLc-JqU.js';
+import { T as TokenPair } from '../auth-C-_LNWoA.js';
 import { QueryClient } from '@tanstack/react-query';
 
 interface TokenStorage {
@@ -44,4 +44,6 @@ declare function createQueryClient(toast?: ToastAdapter, overrides?: {
     retry?: number;
 }): QueryClient;
 
-export { type MutationToastMeta, type SessionState, type ToastAdapter, type TokenStorage, createQueryClient, getAccessToken, session, useHasSession, useSession };
+declare function generateDeviceId(): string;
+
+export { type MutationToastMeta, type SessionState, type ToastAdapter, type TokenStorage, createQueryClient, generateDeviceId, getAccessToken, session, useHasSession, useSession };

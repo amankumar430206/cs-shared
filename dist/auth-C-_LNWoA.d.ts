@@ -43,5 +43,25 @@ interface CurrentUser {
         upi_id: string | null;
     };
 }
+/** One logged-in browser or app install (GET /auth/sessions). */
+interface AuthSession {
+    id: string;
+    platform: "web" | "mobile";
+    deviceName: string | null;
+    ipAddress: string | null;
+    /** Device the user confirmed ("yes, that was me"); false = still unreviewed. */
+    trusted: boolean;
+    /** True for the session making this request. */
+    current: boolean;
+    createdAt: string;
+    lastUsedAt: string;
+}
+/** `details[0]` of a 409 SESSION_LIMIT_REACHED login response. */
+interface SessionLimitDetail {
+    loginTicket: string;
+    platform: "web" | "mobile";
+    limit: number;
+    sessions: AuthSession[];
+}
 
-export type { CurrentUser as C, GoogleAuthResult as G, TokenPair as T, UserRole as U };
+export type { AuthSession as A, CurrentUser as C, GoogleAuthResult as G, SessionLimitDetail as S, TokenPair as T, UserRole as U };

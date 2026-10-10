@@ -95,7 +95,10 @@ async function refreshSession() {
         });
         const envelope = await res.json();
         if (!envelope.success) return false;
-        await session.setTokens(envelope.data);
+        await session.setTokens({
+          accessToken: envelope.data.accessToken,
+          refreshToken: envelope.data.refreshToken ?? refreshToken
+        });
         return true;
       } catch {
         return false;
@@ -174,13 +177,31 @@ function apiGetPaginated(path, accessToken) {
     };
   });
 }
+var UPLOAD_TIMEOUT_MS = 12e4;
+var UPLOAD_RETRY_DELAY_MS = 2e3;
+function isNetworkError(err) {
+  return err instanceof TypeError || err instanceof DOMException && err.name === "AbortError";
+}
 function apiUpload(path, formData, accessToken) {
   return runReported(accessToken, async (token) => {
-    const res = await doFetch(`${getApiBaseUrl()}${path}`, {
-      method: "POST",
-      headers: baseHeaders(token, false),
-      body: formData
-    });
+    const attempt = () => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
+      return doFetch(`${getApiBaseUrl()}${path}`, {
+        method: "POST",
+        headers: baseHeaders(token, false),
+        body: formData,
+        signal: controller.signal
+      }).finally(() => clearTimeout(timer));
+    };
+    let res;
+    try {
+      res = await attempt();
+    } catch (err) {
+      if (!isNetworkError(err)) throw err;
+      await new Promise((r) => setTimeout(r, UPLOAD_RETRY_DELAY_MS));
+      res = await attempt();
+    }
     return (await parseFullEnvelope(res)).data;
   });
 }
