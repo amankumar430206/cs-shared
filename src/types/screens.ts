@@ -65,6 +65,10 @@ export interface Screen extends ScreenListingDetails {
   maxAdCapacity: number;
   /** Managed offline: the device has no internet, so the partner downloads the booked creatives from the CMS and plays them by hand. Still bookable and visible to advertisers (cs-api 20260101000143). */
   isSelfManaged: boolean;
+  /** Cab fleet: null until the device is mounted on a vehicle (cs-api 20260101000151). */
+  vehiclePlate: string | null;
+  driverName: string | null;
+  driverMobile: string | null;
   /** Admin-only override of how often this screen's player polls /sync — null means "use the platform-wide default" (see useSyncPollingQuery in useTheme.ts). */
   syncIntervalMinutes: number | null;
   // Server-generated (crypto.randomUUID() at registration time) — never

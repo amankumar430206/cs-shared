@@ -361,7 +361,8 @@ export interface BulkRegisterCabsPayload {
     isSelfManaged?: boolean;
   };
   cabs: Array<{
-    vehiclePlate: string;
+    /** Optional: devices are often registered before they are mounted on a vehicle. */
+    vehiclePlate?: string;
     city: string;
     state: string;
     installationAddress?: string;
@@ -375,7 +376,7 @@ export interface BulkRegisterCabsPayload {
 export interface BulkRegisterCabResult {
   screenId: string;
   screenName: string;
-  vehiclePlate: string;
+  vehiclePlate: string | null;
   deviceId: string;
   deviceToken: string;
 }
