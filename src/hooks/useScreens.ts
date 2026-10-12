@@ -32,6 +32,7 @@ export interface MyScreensListFilters {
   status?: ScreenVerificationStatus;
   search?: string;
   live?: boolean;
+  categoryCode?: string;
 }
 
 const MY_SCREENS_PAGE_LIMIT = 20;
@@ -50,6 +51,7 @@ export function useMyScreensListQuery(filters: MyScreensListFilters) {
       if (filters.status) query.set("status", filters.status);
       if (filters.search) query.set("search", filters.search);
       if (filters.live) query.set("live", "true");
+      if (filters.categoryCode) query.set("categoryCode", filters.categoryCode);
       return apiGetPaginated<ScreenListItem>(`/screens/me/list?${query.toString()}`, getAccessToken());
     },
     initialPageParam: 1,
@@ -305,6 +307,7 @@ export interface AdminScreensListFilters {
   status?: ScreenVerificationStatus;
   search?: string;
   live?: boolean;
+  categoryCode?: string;
   page?: number;
 }
 
@@ -321,6 +324,7 @@ export function useAdminScreensListQuery(filters: AdminScreensListFilters) {
       if (filters.status) query.set("status", filters.status);
       if (filters.search) query.set("search", filters.search);
       if (filters.live) query.set("live", "true");
+      if (filters.categoryCode) query.set("categoryCode", filters.categoryCode);
       return apiGetPaginated<ScreenListItem>(`/screens/admin/list?${query.toString()}`, getAccessToken());
     },
     enabled: hasAccessToken,
@@ -337,6 +341,53 @@ export function useApproveScreenMutation() {
       queryClient.invalidateQueries({ queryKey: ["screens", "admin"] });
       queryClient.invalidateQueries({ queryKey: ["screens", screenId] });
       queryClient.invalidateQueries({ queryKey: ["screens", "owner", screenId] });
+    },
+  });
+}
+
+export interface BulkRegisterCabsPayload {
+  template: {
+    categoryCode: string;
+    screenSize: string;
+    resolution: string;
+    os: string;
+    internetType: string;
+    operatingHoursStart: string;
+    operatingHoursEnd: string;
+    revenueModel: string;
+    pricePerDay: number;
+    installationEnvironment: string;
+    maxAdCapacity?: number;
+    isSelfManaged?: boolean;
+  };
+  cabs: Array<{
+    vehiclePlate: string;
+    city: string;
+    state: string;
+    installationAddress?: string;
+    gpsLatitude?: number;
+    gpsLongitude?: number;
+    driverName?: string;
+    driverMobile?: string;
+  }>;
+}
+
+export interface BulkRegisterCabResult {
+  screenId: string;
+  screenName: string;
+  vehiclePlate: string;
+  deviceId: string;
+  deviceToken: string;
+}
+
+export function useBulkRegisterCabsMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: BulkRegisterCabsPayload) =>
+      apiPost<BulkRegisterCabResult[]>("/screens/bulk-register", payload, getAccessToken()),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["screens", "me"] });
+      queryClient.invalidateQueries({ queryKey: ["screens", "admin"] });
     },
   });
 }
