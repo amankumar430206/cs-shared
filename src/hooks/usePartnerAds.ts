@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiDelete, apiGet, apiGetPaginated, apiUpload } from "../api/client";
 import { getAccessToken, useHasSession } from "../api/session";
 import type { PartnerAd, PartnerAdStatus, PartnerAdWithContext, ReservationAds } from "../types/partnerAds";
@@ -30,20 +30,34 @@ export interface MyPartnerAdsFilters {
   page?: number;
 }
 
+function fetchMyPartnerAds(filters: MyPartnerAdsFilters) {
+  const query = new URLSearchParams();
+  if (filters.status) query.set("status", filters.status);
+  if (filters.screenId) query.set("screenId", filters.screenId);
+  if (filters.when) query.set("when", filters.when);
+  if (filters.search?.trim()) query.set("search", filters.search.trim());
+  if (filters.page) query.set("page", String(filters.page));
+  const qs = query.toString();
+  return apiGetPaginated<PartnerAdWithContext>(`/partner-ads/mine${qs ? `?${qs}` : ""}`, getAccessToken());
+}
+
 export function useMyPartnerAdsQuery(filters: MyPartnerAdsFilters = {}) {
   const hasAccessToken = useHasSession();
   return useQuery({
     queryKey: ["partner-ads", "mine", filters],
-    queryFn: () => {
-      const query = new URLSearchParams();
-      if (filters.status) query.set("status", filters.status);
-      if (filters.screenId) query.set("screenId", filters.screenId);
-      if (filters.when) query.set("when", filters.when);
-      if (filters.search?.trim()) query.set("search", filters.search.trim());
-      if (filters.page) query.set("page", String(filters.page));
-      const qs = query.toString();
-      return apiGetPaginated<PartnerAdWithContext>(`/partner-ads/mine${qs ? `?${qs}` : ""}`, getAccessToken());
-    },
+    queryFn: () => fetchMyPartnerAds(filters),
+    enabled: hasAccessToken,
+  });
+}
+
+/** Same list, paged by scrolling (`filters.page` is ignored). */
+export function useMyPartnerAdsInfiniteQuery(filters: Omit<MyPartnerAdsFilters, "page"> = {}) {
+  const hasAccessToken = useHasSession();
+  return useInfiniteQuery({
+    queryKey: ["partner-ads", "mine", "infinite", filters],
+    queryFn: ({ pageParam }) => fetchMyPartnerAds({ ...filters, page: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.meta.page * lastPage.meta.limit < lastPage.meta.total ? lastPage.meta.page + 1 : undefined),
     enabled: hasAccessToken,
   });
 }
