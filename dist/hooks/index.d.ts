@@ -1,5 +1,5 @@
 import * as _tanstack_react_query from '@tanstack/react-query';
-import { bj as RevenueGranularity, c as AdminFinance, _ as GeographicRow, d as AdminOverview, b8 as RefundTrend, f as AdminRevenue, bW as TaxLedgerFilters, i as AdminTaxLedger, l as AdvertiserAnalytics, C as CampaignAnalytics, y as CampaignTrend, as as PartnerAnalytics, aQ as ProofOfPlay, bx as ScreenAnalytics, ba as ReportFilters, aK as PlaysGroupBy, bk as RevenueGroupBy, aI as PlaysBreakdown, aL as PlaysHeatmap, aM as PlaysSummary, bd as ReportGranularity, aN as PlaysTimeseries, b9 as ReportFilterOptions, bh as RevenueBreakdown, bl as RevenueSummary, bm as RevenueTimeseries, P as DiscoveryScreen, aa as KycDocument, az as PendingAdvertiserRow, aB as PendingScreenPartnerRow, E as Creative, ac as LiveScreen, aA as PendingCreative, q as AdvertiserScreenPreview, aF as PlaybackSummary, L as DeviceActivation, bz as ScreenHealth, bD as ScreenLocation, aP as PreviewPlaylist, Z as FleetHealthSummary, $ as HealthAlertConfig, N as DeviceLogHistory, a0 as HeartbeatHistoryRow, O as DeviceLogMapEntry, ae as MonitoringTimeline, af as MyScreenHealth, c3 as TimelineScreen, aE as PlaybackLogEntry, ag as MyScreenSummary, aD as PlaybackHistoryRow, a9 as KbCategory, a8 as KbArticle, ah as Notification, aj as NotificationPreferences, aq as PartnerAdStatus, ar as PartnerAdWithContext, bg as ReservationAds, ap as PartnerAd, bK as SettlementMode, ax as Payment, z as CreateOrderResult, a6 as InvoiceDetail, B as BillingFilters, a5 as Invoice, bu as SavedPaymentMethod, w as CampaignProofRequest, aV as ProofRequestStatus, aS as ProofRequest, aW as ProofRequestSummary, bC as ScreenLiveCampaign, aZ as QuotationDetail, aX as Quotation, b5 as Refund, e as AdminRefund, g as AdminSettlement, h as AdminSettlementFilters, j as AdminWallet, c8 as WithdrawalRequest, bv as ScheduledReport, bc as ReportFrequency, bb as ReportFormat, K as DailyCollection, R as DisplaySettings, Y as FeeConfig, at as Wallet, k as AdminWithdrawalRequest, bJ as SettlementCadence, c4 as TodayCollection, bI as ScreenVerificationStatus, bw as Screen, bA as ScreenListItem, by as ScreenCategory, bH as ScreenPhoto, c1 as TicketStatus, bZ as TicketCategory, c0 as TicketPriority, b$ as TicketMessage, bY as Ticket, t as AssignmentTeam, bL as SlaConfig, b_ as TicketDetail, W as Wallet$1, D as CreateTopUpOrderResult, G as CreditRejectedCreativeResult, aw as PayCampaignFromWalletResult } from '../wallet-C5ikw681.js';
+import { bj as RevenueGranularity, c as AdminFinance, _ as GeographicRow, d as AdminOverview, b8 as RefundTrend, f as AdminRevenue, bW as TaxLedgerFilters, i as AdminTaxLedger, l as AdvertiserAnalytics, C as CampaignAnalytics, y as CampaignTrend, as as PartnerAnalytics, aQ as ProofOfPlay, bx as ScreenAnalytics, ba as ReportFilters, aK as PlaysGroupBy, bk as RevenueGroupBy, aI as PlaysBreakdown, aL as PlaysHeatmap, aM as PlaysSummary, bd as ReportGranularity, aN as PlaysTimeseries, b9 as ReportFilterOptions, bh as RevenueBreakdown, bl as RevenueSummary, bm as RevenueTimeseries, P as DiscoveryScreen, aa as KycDocument, az as PendingAdvertiserRow, aB as PendingScreenPartnerRow, E as Creative, ac as LiveScreen, aA as PendingCreative, q as AdvertiserScreenPreview, aF as PlaybackSummary, L as DeviceActivation, bz as ScreenHealth, bD as ScreenLocation, aP as PreviewPlaylist, Z as FleetHealthSummary, $ as HealthAlertConfig, N as DeviceLogHistory, a0 as HeartbeatHistoryRow, O as DeviceLogMapEntry, ae as MonitoringTimeline, af as MyScreenHealth, c3 as TimelineScreen, aE as PlaybackLogEntry, ag as MyScreenSummary, aD as PlaybackHistoryRow, a9 as KbCategory, a8 as KbArticle, ah as Notification, aj as NotificationPreferences, aq as PartnerAdStatus, ar as PartnerAdWithContext, bg as ReservationAds, ap as PartnerAd, bK as SettlementMode, ax as Payment, z as CreateOrderResult, a6 as InvoiceDetail, B as BillingFilters, a5 as Invoice, bu as SavedPaymentMethod, w as CampaignProofRequest, aV as ProofRequestStatus, aS as ProofRequest, aW as ProofRequestSummary, bC as ScreenLiveCampaign, aZ as QuotationDetail, aX as Quotation, b5 as Refund, e as AdminRefund, g as AdminSettlement, h as AdminSettlementFilters, j as AdminWallet, c8 as WithdrawalRequest, bv as ScheduledReport, bc as ReportFrequency, bb as ReportFormat, K as DailyCollection, R as DisplaySettings, Y as FeeConfig, at as Wallet, k as AdminWithdrawalRequest, bJ as SettlementCadence, c4 as TodayCollection, bI as ScreenVerificationStatus, bw as Screen, bA as ScreenListItem, by as ScreenCategory, bH as ScreenPhoto, c1 as TicketStatus, bZ as TicketCategory, c0 as TicketPriority, b$ as TicketMessage, bY as Ticket, t as AssignmentTeam, bL as SlaConfig, b_ as TicketDetail, W as Wallet$1, D as CreateTopUpOrderResult, G as CreditRejectedCreativeResult, aw as PayCampaignFromWalletResult } from '../wallet-D58E0Wgk.js';
 import * as _tanstack_query_core from '@tanstack/query-core';
 import { P as PaginationMeta } from '../client-B6tfZPvn.js';
 import { S as SessionLimitDetail, C as CurrentUser, G as GoogleAuthResult, L as LoginActivityEvent, T as TokenPair, b as LoginSummary, A as AuthSession } from '../auth-BLLKmqYX.js';
@@ -299,6 +299,91 @@ declare function useCheckAvailabilityQuery(params: {
     startDate: string;
     endDate: string;
 } | null): _tanstack_react_query.UseQueryResult<AvailabilityCheckResult, Error>;
+
+interface CabLocation {
+    city: string;
+    state: string;
+    /** Set only when grouped by area within a city. */
+    area: string | null;
+    /** Cabs bookable now. */
+    cabCount: number;
+    liveCount: number;
+    minPrice: number;
+    maxPrice: number;
+    avgPrice: number;
+}
+interface CabLocationFilters {
+    /** "CAB", "AUTO_RICKSHAW" or both comma-separated; empty = both. */
+    categoryCode?: string;
+    search?: string;
+    state?: string;
+    city?: string;
+    maxPrice?: number;
+    live?: boolean;
+    sort?: "count" | "price" | "name";
+    groupBy?: "city" | "area";
+}
+declare function useCabLocationsQuery(filters: CabLocationFilters, page?: number, limit?: number, enabled?: boolean): _tanstack_react_query.UseQueryResult<{
+    rows: CabLocation[];
+    meta: PaginationMeta;
+}, Error>;
+interface CabPickRequestLocation {
+    city: string;
+    state?: string;
+    area?: string;
+    /** Cabs wanted in total for this place, including `fixedIds`. */
+    count: number;
+    /** Cabs the advertiser chose by hand; the rest are auto-picked. */
+    fixedIds?: string[];
+    /** Cabs the advertiser removed or swapped out. */
+    excludeIds?: string[];
+}
+interface CabPickRequest {
+    locations: CabPickRequestLocation[];
+    categoryCode?: string;
+    maxPrice?: number;
+    live?: boolean;
+}
+interface PickedCab extends DiscoveryScreen {
+    chosenByYou: boolean;
+}
+interface CabPickLocation {
+    city: string;
+    state: string | null;
+    area: string | null;
+    requested: number;
+    picked: PickedCab[];
+    /** How many fewer than requested were available. */
+    shortfall: number;
+}
+interface CabPicks {
+    total: number;
+    locations: CabPickLocation[];
+}
+/** The exact cabs for "N cabs in each place", live first then cheapest. Re-resolves whenever the request changes. */
+declare function useCabPicksQuery(request: CabPickRequest | null): _tanstack_react_query.UseQueryResult<CabPicks, Error>;
+
+interface PlanItem {
+    key: string;
+    city: string;
+    state: string;
+    count: number;
+    fixedIds: string[];
+    excludeIds: string[];
+}
+type Plan = Record<string, PlanItem>;
+declare const placeKey: (loc: Pick<CabLocation, "city" | "state">) => string;
+declare const without: (plan: Plan, key: string) => Plan;
+
+declare const planTotal: (plan: Plan) => number;
+/** Sets one place's count, never above what the place has, never past the overall cap, and never below the cabs already chosen by hand. */
+declare function withCount(plan: Plan, loc: CabLocation, wanted: number, capacity: number): Plan;
+/** Chooses (or un-chooses) one specific cab in a place. Choosing raises the count if needed. */
+declare function withFixed(plan: Plan, loc: CabLocation, cabId: string, capacity: number): Plan;
+/** Sends one cab away: it is never picked again here. `keepCount` false also drops one from the count (a plain remove). */
+declare function withoutCab(plan: Plan, placeKeyValue: string, cabId: string, keepCount: boolean): Plan;
+/** The request cs-api resolves into actual cabs; null while the plan is empty. */
+declare function planToRequest(plan: Plan, extra: Pick<CabPickRequest, "categoryCode" | "maxPrice" | "live">): CabPickRequest | null;
 
 interface KycSubmitResult {
     verificationStatus?: string;
@@ -601,6 +686,10 @@ declare function useReservationAdsQuery(reservationId: string, options?: {
 interface MyPartnerAdsFilters {
     status?: PartnerAdStatus;
     screenId?: string;
+    /** Running = approved, in an approved block covering today, and the current IST hour is inside its hours. */
+    when?: "running" | "upcoming" | "ended";
+    /** Screen name, city or ad name. */
+    search?: string;
     page?: number;
 }
 declare function useMyPartnerAdsQuery(filters?: MyPartnerAdsFilters): _tanstack_react_query.UseQueryResult<{
@@ -875,6 +964,7 @@ interface MyScreensListFilters {
     status?: ScreenVerificationStatus;
     search?: string;
     live?: boolean;
+    categoryCode?: string;
 }
 declare function useMyScreensListQuery(filters: MyScreensListFilters): _tanstack_react_query.UseInfiniteQueryResult<_tanstack_query_core.InfiniteData<{
     rows: ScreenListItem[];
@@ -951,6 +1041,11 @@ interface ScreenSearchFilters {
     lng?: string;
     radiusKm?: string;
     sort?: string;
+    /** "only" = screens with a vehicle plate (cabs, autos); "exclude" = everything else. */
+    vehicle?: "only" | "exclude";
+    area?: string;
+    /** Venue code(s), comma-separated, to leave out. */
+    excludeCategoryCode?: string;
 }
 declare function useSearchScreensQuery(filters: ScreenSearchFilters, enabled: boolean): _tanstack_react_query.UseInfiniteQueryResult<_tanstack_query_core.InfiniteData<{
     rows: DiscoveryScreen[];
@@ -961,6 +1056,7 @@ interface AdminScreensListFilters {
     status?: ScreenVerificationStatus;
     search?: string;
     live?: boolean;
+    categoryCode?: string;
     page?: number;
 }
 declare function useAdminScreensListQuery(filters: AdminScreensListFilters): _tanstack_react_query.UseQueryResult<{
@@ -968,6 +1064,41 @@ declare function useAdminScreensListQuery(filters: AdminScreensListFilters): _ta
     meta: PaginationMeta;
 }, Error>;
 declare function useApproveScreenMutation(): _tanstack_react_query.UseMutationResult<Screen, Error, string, unknown>;
+interface BulkRegisterCabsPayload {
+    template: {
+        categoryCode: string;
+        screenSize: string;
+        resolution: string;
+        os: string;
+        internetType: string;
+        operatingHoursStart: string;
+        operatingHoursEnd: string;
+        revenueModel: string;
+        pricePerDay: number;
+        installationEnvironment: string;
+        maxAdCapacity?: number;
+        isSelfManaged?: boolean;
+    };
+    cabs: Array<{
+        /** Optional: devices are often registered before they are mounted on a vehicle. */
+        vehiclePlate?: string;
+        city: string;
+        state: string;
+        installationAddress?: string;
+        gpsLatitude?: number;
+        gpsLongitude?: number;
+        driverName?: string;
+        driverMobile?: string;
+    }>;
+}
+interface BulkRegisterCabResult {
+    screenId: string;
+    screenName: string;
+    vehiclePlate: string | null;
+    deviceId: string;
+    deviceToken: string;
+}
+declare function useBulkRegisterCabsMutation(): _tanstack_react_query.UseMutationResult<BulkRegisterCabResult[], Error, BulkRegisterCabsPayload, unknown>;
 declare function useRejectScreenMutation(): _tanstack_react_query.UseMutationResult<Screen, Error, {
     screenId: string;
     reason: string;
@@ -1077,4 +1208,4 @@ declare const EMPTY_FILTERS: MarketplaceFilterState;
 declare function activeFilterCount(f: MarketplaceFilterState): number;
 declare function toSearchFilters(f: MarketplaceFilterState, text: string): ScreenSearchFilters;
 
-export { type AdminScreensListFilters, type AdminSelfReservation, type AdminTicketFilters, type AppConfig, type ApprovePaymentInput, type ClaimActivationResult, type CreateKbArticleInput, type CreateTicketInput, type DeviceActivationFilters, type DeviceHealthFilters, type DuplicateCampaignInput, EMPTY_FILTERS, type GoogleCompleteInput, type KbFilters, type MarketplaceFilterState, type MonitoringTimelineFilters, type MyCampaignsListFilters, type MyPartnerAdsFilters, type MyPartnerBookingsListFilters, type MyScreensListFilters, NOTIFICATIONS_LIST_KEY, NOTIFICATIONS_PREFERENCES_KEY, NOTIFICATIONS_UNREAD_COUNT_KEY, type PartnerStats, type PendingCreativesFilters, type Place, type PlaybackLogFilters, type PushPlatform, type PushTokenRegistration, type QuickRegisterScreenInput, type RecordPayoutInput, type RegisterInput, type RegisterPushTokenInput, type RegisterResult, type RejectPaymentInput, type SavedScreens, type ScreenAvailability, type ScreenAvailabilityEntry, type ScreenGroup, type ScreenGroupDetail, type ScreenSearchFilters, type SelfReservation, type SelfReservationStatus, type SubmitQuotationInput, type UpdateFeeConfigInput, type UploadCreativeInput, type UploadFile, type UploadPartnerAdInput, activeFilterCount, campaignReportPath, compareAppVersions, getSessionLimit, invoicePdfPath, logoutOnServer, playsExportPath, proofOfPlayExportPath, quotationPdfPath, registerPushToken, revenueExportPath, toSearchFilters, unregisterPushToken, useAcceptQuotationMutation, useActivateScreenMutation, useAddTicketMessageMutation, useAdminBookingFunnelQuery, useAdminFinanceQuery, useAdminGeographicQuery, useAdminOverviewQuery, useAdminRefundTrendQuery, useAdminRevenueQuery, useAdminScreensListQuery, useAdminSettlementDetailQuery, useAdminSettlementsQuery, useAdminTaxLedgerQuery, useAdminTicketsQuery, useAdminWalletsQuery, useAdvertiserAnalyticsQuery, useAdvertiserScreenPreviewQuery, useWalletQuery as useAdvertiserWalletQuery, useAppConfigQuery, useApplyMediaMutation, useApproveAdvertiserMutation, useApproveCreativeMutation, useApprovePaymentMutation, useApproveRefundMutation, useApproveScreenMutation, useApproveScreenPartnerMutation, useApproveSelfReservationMutation, useApproveWithdrawalMutation, useAssignTicketMutation, useCampaignAnalyticsQuery, useCampaignBookingsQuery, useCampaignCreativesQuery, useCampaignPlaybackQuery, useCampaignProofRequestsQuery, useCampaignQuery, useCampaignQuotationQuery, useCampaignQuoteQuery, useCampaignTrendQuery, useCancelBookingMutation, useCancelCampaignMutation, useCancelSelfReservationMutation, useCancelWithdrawalMutation, useCategoriesQuery, useChangeEmailMutation, useChangeMobileNumberMutation, useChangePasswordMutation, useCheckAvailabilityMutation, useCheckAvailabilityQuery, useCheckoutMutation, useClaimActivationMutation, useCloseTicketMutation, useCreateBookingMutation, useCreateCampaignMutation, useCreateKbArticleMutation, useCreateOrderMutation, useCreateRefundRequestMutation, useCreateScheduledReportMutation, useCreateScreenGroupMutation, useCreateTicketMutation, useCreateTopUpOrderMutation, useCreateWithdrawalMutation, useCreditRejectedCreativeToWalletMutation, useDailyCollectionsQuery, useDeactivateScreenMutation, useDeleteCampaignBannerMutation, useDeleteKbArticleMutation, useDeletePartnerAdMutation, useDeleteSavedPaymentMethodMutation, useDeleteScheduledReportMutation, useDeleteScreenGroupMutation, useDeleteScreenMutation, useDeleteScreenPhotoMutation, useDeliveryConfigQuery, useDeviceActivationsQuery, useDeviceHealthQuery, useDeviceLocationsQuery, useDevicePreviewQuery, useDisassociateBookingMutation, useDisplaySettingsQuery, useDuplicateCampaignMutation, useFeeConfigQuery, useFleetHealthSummaryQuery, useGoogleCompleteMutation, useGoogleLoginMutation, useHealthAlertConfigQuery, useHeartbeatHistoryQuery, useHeartbeatMapQuery, useInvalidateNotifications, useInvoiceDetailQuery, useKbArticleQuery, useKbArticlesQuery, useKycDocumentsQuery, useLiveScreensQuery, useLoginActivityQuery, useLoginMutation, useLoginSummaryQuery, useLogout, useMarkAllNotificationsReadMutation, useMarkNotificationReadMutation, useMeQuery, useMonitoringTimelineQuery, useMyBookingsQuery, useMyCampaignsListQuery, useMyCampaignsQuery, useMyCreativesQuery, useMyDeviceHealthQuery, useMyDeviceLocationsQuery, useMyDocumentsQuery, useMyInvoicesQuery, useMyKycQuery, useMyLiveScreensTimelineQuery, useMyMonitoringTimelineQuery, useMyPartnerAdsQuery, useMyPartnerBookingsListQuery, useMyPartnerBookingsQuery, useMyPaymentsQuery, useMyPlaybackLogsQuery, useMyProofRequestsQuery, useMyQuotationQuery, useMyQuotationsQuery, useMyRefundsQuery, useMyScreenQuery, useMyScreensListQuery, useMyTicketsInfiniteQuery, useMyTicketsQuery, useMyWithdrawalsQuery, useNotificationPreferencesQuery, useNotificationsInfiniteQuery, useNotificationsQuery, usePartnerAnalyticsQuery, usePartnerStatsQuery, useWalletQuery$1 as usePartnerWalletQuery, usePayCampaignFromWalletMutation, usePayQuotationMutation, usePaymentDetailQuery, usePaymentStatusQuery, usePaymentsConfigQuery, usePendingAdvertisersQuery, usePendingCreativesQuery, usePendingPaymentsQuery, usePendingRefundsQuery, usePendingScreenPartnersQuery, usePendingScreensQuery, usePendingSelfReservationsQuery, usePendingWithdrawalsQuery, usePhotosQuery, usePlacesQuery, usePlaybackHistoryQuery, usePlaybackMapQuery, usePlaysBreakdownQuery, usePlaysHeatmapQuery, usePlaysSummaryQuery, usePlaysTimeseriesQuery, usePriceEstimateQuery, useProofOfPlayQuery, useProofRequestSummaryQuery, useQuickRegisterScreenMutation, useRaisePaymentRequestMutation, useRecordPayoutMutation, useRegisterMutation, useRegisterPushTokenMutation, useRegisterScreenMutation, useRejectAdvertiserMutation, useRejectCreativeMutation, useRejectPaymentMutation, useRejectRefundMutation, useRejectScreenMutation, useRejectScreenPartnerMutation, useRejectSelfReservationMutation, useRejectWithdrawalMutation, useRemoveCampaignDocumentMutation, useRemoveCreativeMutation, useReopenTicketMutation, useReportFilterOptionsQuery, useRequestProofMutation, useRequestSelfReservationMutation, useReservationAdsQuery, useResetPasswordMutation, useResolveSessionLimitMutation, useResolveTicketMutation, useRevenueBreakdownQuery, useRevenueSummaryQuery, useRevenueTimeseriesQuery, useRevokeDeviceMutation, useRevokeOtherSessionsMutation, useRevokeSessionMutation, useSavedPaymentMethodsQuery, useSavedScreensQuery, useScheduledReportsQuery, useScreenAnalyticsQuery, useScreenAvailabilityQuery, useScreenBookingTimelineQuery, useScreenGroupQuery, useScreenGroupsQuery, useScreenLiveCampaignsQuery, useScreenQuery, useScreenSelfReservationsQuery, useScreenTimelineQuery, useSearchScreensQuery, useSendEmailLinkMutation, useSendEmailOtpMutation, useSendMobileOtpMutation, useSessionsQuery, useSetSettlementCadenceMutation, useSlaConfigsQuery, useSubmitKycMutation, useSubmitProofMutation, useSubmitQuotationMutation, useSubmitScreenMutation, useSubmitTicketFeedbackMutation, useTicketDetailQuery, useTodayCollectionQuery, useToggleSavedScreenMutation, useTrustSessionMutation, useUnreadCountQuery, useUnregisterPushTokenMutation, useUpdateAdvertiserBankDetailsMutation, useUpdateBankDetailsMutation, useUpdateCampaignBudgetMutation, useUpdateCampaignMutation, useUpdateFeeConfigMutation, useUpdateHealthAlertConfigMutation, useUpdateKbArticleMutation, useUpdateNotificationPreferencesMutation, useUpdatePaymentsConfigMutation, useUpdateProfileMutation, useUpdateScreenGroupMutation, useUpdateScreenMutation, useUpdateScreenPricingConfigMutation, useUpdateScreenSyncConfigMutation, useUpdateSelfReservationMutation, useUpdateSlaConfigMutation, useUpdateTicketStatusMutation, useUploadCampaignBannerMutation, useUploadCampaignDocumentMutation, useUploadCreativeMutation, useUploadDocumentMutation, useUploadPartnerAdMutation, useUploadPhotoMutation, useVerifyEmailMutation, useVerifyEmailOtpMutation, useVerifyMobileOtpMutation, useVerifyOtpMutation, useVerifyPaymentMutation, useVerifyTopUpMutation, useWalletQuery$1 as useWalletQuery };
+export { type AdminScreensListFilters, type AdminSelfReservation, type AdminTicketFilters, type AppConfig, type ApprovePaymentInput, type BulkRegisterCabResult, type BulkRegisterCabsPayload, type CabLocation, type CabLocationFilters, type CabPickLocation, type CabPickRequest, type CabPickRequestLocation, type CabPicks, type ClaimActivationResult, type CreateKbArticleInput, type CreateTicketInput, type DeviceActivationFilters, type DeviceHealthFilters, type DuplicateCampaignInput, EMPTY_FILTERS, type GoogleCompleteInput, type KbFilters, type MarketplaceFilterState, type MonitoringTimelineFilters, type MyCampaignsListFilters, type MyPartnerAdsFilters, type MyPartnerBookingsListFilters, type MyScreensListFilters, NOTIFICATIONS_LIST_KEY, NOTIFICATIONS_PREFERENCES_KEY, NOTIFICATIONS_UNREAD_COUNT_KEY, type PartnerStats, type PendingCreativesFilters, type PickedCab, type Place, type Plan, type PlanItem, type PlaybackLogFilters, type PushPlatform, type PushTokenRegistration, type QuickRegisterScreenInput, type RecordPayoutInput, type RegisterInput, type RegisterPushTokenInput, type RegisterResult, type RejectPaymentInput, type SavedScreens, type ScreenAvailability, type ScreenAvailabilityEntry, type ScreenGroup, type ScreenGroupDetail, type ScreenSearchFilters, type SelfReservation, type SelfReservationStatus, type SubmitQuotationInput, type UpdateFeeConfigInput, type UploadCreativeInput, type UploadFile, type UploadPartnerAdInput, activeFilterCount, campaignReportPath, compareAppVersions, getSessionLimit, invoicePdfPath, logoutOnServer, placeKey, planToRequest, planTotal, playsExportPath, proofOfPlayExportPath, quotationPdfPath, registerPushToken, revenueExportPath, toSearchFilters, unregisterPushToken, useAcceptQuotationMutation, useActivateScreenMutation, useAddTicketMessageMutation, useAdminBookingFunnelQuery, useAdminFinanceQuery, useAdminGeographicQuery, useAdminOverviewQuery, useAdminRefundTrendQuery, useAdminRevenueQuery, useAdminScreensListQuery, useAdminSettlementDetailQuery, useAdminSettlementsQuery, useAdminTaxLedgerQuery, useAdminTicketsQuery, useAdminWalletsQuery, useAdvertiserAnalyticsQuery, useAdvertiserScreenPreviewQuery, useWalletQuery as useAdvertiserWalletQuery, useAppConfigQuery, useApplyMediaMutation, useApproveAdvertiserMutation, useApproveCreativeMutation, useApprovePaymentMutation, useApproveRefundMutation, useApproveScreenMutation, useApproveScreenPartnerMutation, useApproveSelfReservationMutation, useApproveWithdrawalMutation, useAssignTicketMutation, useBulkRegisterCabsMutation, useCabLocationsQuery, useCabPicksQuery, useCampaignAnalyticsQuery, useCampaignBookingsQuery, useCampaignCreativesQuery, useCampaignPlaybackQuery, useCampaignProofRequestsQuery, useCampaignQuery, useCampaignQuotationQuery, useCampaignQuoteQuery, useCampaignTrendQuery, useCancelBookingMutation, useCancelCampaignMutation, useCancelSelfReservationMutation, useCancelWithdrawalMutation, useCategoriesQuery, useChangeEmailMutation, useChangeMobileNumberMutation, useChangePasswordMutation, useCheckAvailabilityMutation, useCheckAvailabilityQuery, useCheckoutMutation, useClaimActivationMutation, useCloseTicketMutation, useCreateBookingMutation, useCreateCampaignMutation, useCreateKbArticleMutation, useCreateOrderMutation, useCreateRefundRequestMutation, useCreateScheduledReportMutation, useCreateScreenGroupMutation, useCreateTicketMutation, useCreateTopUpOrderMutation, useCreateWithdrawalMutation, useCreditRejectedCreativeToWalletMutation, useDailyCollectionsQuery, useDeactivateScreenMutation, useDeleteCampaignBannerMutation, useDeleteKbArticleMutation, useDeletePartnerAdMutation, useDeleteSavedPaymentMethodMutation, useDeleteScheduledReportMutation, useDeleteScreenGroupMutation, useDeleteScreenMutation, useDeleteScreenPhotoMutation, useDeliveryConfigQuery, useDeviceActivationsQuery, useDeviceHealthQuery, useDeviceLocationsQuery, useDevicePreviewQuery, useDisassociateBookingMutation, useDisplaySettingsQuery, useDuplicateCampaignMutation, useFeeConfigQuery, useFleetHealthSummaryQuery, useGoogleCompleteMutation, useGoogleLoginMutation, useHealthAlertConfigQuery, useHeartbeatHistoryQuery, useHeartbeatMapQuery, useInvalidateNotifications, useInvoiceDetailQuery, useKbArticleQuery, useKbArticlesQuery, useKycDocumentsQuery, useLiveScreensQuery, useLoginActivityQuery, useLoginMutation, useLoginSummaryQuery, useLogout, useMarkAllNotificationsReadMutation, useMarkNotificationReadMutation, useMeQuery, useMonitoringTimelineQuery, useMyBookingsQuery, useMyCampaignsListQuery, useMyCampaignsQuery, useMyCreativesQuery, useMyDeviceHealthQuery, useMyDeviceLocationsQuery, useMyDocumentsQuery, useMyInvoicesQuery, useMyKycQuery, useMyLiveScreensTimelineQuery, useMyMonitoringTimelineQuery, useMyPartnerAdsQuery, useMyPartnerBookingsListQuery, useMyPartnerBookingsQuery, useMyPaymentsQuery, useMyPlaybackLogsQuery, useMyProofRequestsQuery, useMyQuotationQuery, useMyQuotationsQuery, useMyRefundsQuery, useMyScreenQuery, useMyScreensListQuery, useMyTicketsInfiniteQuery, useMyTicketsQuery, useMyWithdrawalsQuery, useNotificationPreferencesQuery, useNotificationsInfiniteQuery, useNotificationsQuery, usePartnerAnalyticsQuery, usePartnerStatsQuery, useWalletQuery$1 as usePartnerWalletQuery, usePayCampaignFromWalletMutation, usePayQuotationMutation, usePaymentDetailQuery, usePaymentStatusQuery, usePaymentsConfigQuery, usePendingAdvertisersQuery, usePendingCreativesQuery, usePendingPaymentsQuery, usePendingRefundsQuery, usePendingScreenPartnersQuery, usePendingScreensQuery, usePendingSelfReservationsQuery, usePendingWithdrawalsQuery, usePhotosQuery, usePlacesQuery, usePlaybackHistoryQuery, usePlaybackMapQuery, usePlaysBreakdownQuery, usePlaysHeatmapQuery, usePlaysSummaryQuery, usePlaysTimeseriesQuery, usePriceEstimateQuery, useProofOfPlayQuery, useProofRequestSummaryQuery, useQuickRegisterScreenMutation, useRaisePaymentRequestMutation, useRecordPayoutMutation, useRegisterMutation, useRegisterPushTokenMutation, useRegisterScreenMutation, useRejectAdvertiserMutation, useRejectCreativeMutation, useRejectPaymentMutation, useRejectRefundMutation, useRejectScreenMutation, useRejectScreenPartnerMutation, useRejectSelfReservationMutation, useRejectWithdrawalMutation, useRemoveCampaignDocumentMutation, useRemoveCreativeMutation, useReopenTicketMutation, useReportFilterOptionsQuery, useRequestProofMutation, useRequestSelfReservationMutation, useReservationAdsQuery, useResetPasswordMutation, useResolveSessionLimitMutation, useResolveTicketMutation, useRevenueBreakdownQuery, useRevenueSummaryQuery, useRevenueTimeseriesQuery, useRevokeDeviceMutation, useRevokeOtherSessionsMutation, useRevokeSessionMutation, useSavedPaymentMethodsQuery, useSavedScreensQuery, useScheduledReportsQuery, useScreenAnalyticsQuery, useScreenAvailabilityQuery, useScreenBookingTimelineQuery, useScreenGroupQuery, useScreenGroupsQuery, useScreenLiveCampaignsQuery, useScreenQuery, useScreenSelfReservationsQuery, useScreenTimelineQuery, useSearchScreensQuery, useSendEmailLinkMutation, useSendEmailOtpMutation, useSendMobileOtpMutation, useSessionsQuery, useSetSettlementCadenceMutation, useSlaConfigsQuery, useSubmitKycMutation, useSubmitProofMutation, useSubmitQuotationMutation, useSubmitScreenMutation, useSubmitTicketFeedbackMutation, useTicketDetailQuery, useTodayCollectionQuery, useToggleSavedScreenMutation, useTrustSessionMutation, useUnreadCountQuery, useUnregisterPushTokenMutation, useUpdateAdvertiserBankDetailsMutation, useUpdateBankDetailsMutation, useUpdateCampaignBudgetMutation, useUpdateCampaignMutation, useUpdateFeeConfigMutation, useUpdateHealthAlertConfigMutation, useUpdateKbArticleMutation, useUpdateNotificationPreferencesMutation, useUpdatePaymentsConfigMutation, useUpdateProfileMutation, useUpdateScreenGroupMutation, useUpdateScreenMutation, useUpdateScreenPricingConfigMutation, useUpdateScreenSyncConfigMutation, useUpdateSelfReservationMutation, useUpdateSlaConfigMutation, useUpdateTicketStatusMutation, useUploadCampaignBannerMutation, useUploadCampaignDocumentMutation, useUploadCreativeMutation, useUploadDocumentMutation, useUploadPartnerAdMutation, useUploadPhotoMutation, useVerifyEmailMutation, useVerifyEmailOtpMutation, useVerifyMobileOtpMutation, useVerifyOtpMutation, useVerifyPaymentMutation, useVerifyTopUpMutation, useWalletQuery$1 as useWalletQuery, withCount, withFixed, withoutCab, without as withoutPlace };
