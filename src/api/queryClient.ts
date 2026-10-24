@@ -1,4 +1,5 @@
 import { MutationCache, QueryClient } from "@tanstack/react-query";
+import { ApiClientError } from "./client";
 
 // Opt-in per mutation via `meta.toast`-style fields; the platform supplies how a toast is shown.
 export interface MutationToastMeta {
@@ -23,13 +24,19 @@ function resolveMessage<T extends unknown[]>(value: string | ((...args: T) => st
   return typeof value === "function" ? value(...args) : value;
 }
 
+/** Retry transient failures only: a 4xx (including a 429 rate limit) will fail the same way again, and retrying a 429 makes it worse. */
+export function shouldRetryQuery(failureCount: number, error: unknown, maxRetries: number) {
+  if (error instanceof ApiClientError && error.status >= 400 && error.status < 500) return false;
+  return failureCount < maxRetries;
+}
+
 export function createQueryClient(toast?: ToastAdapter, overrides: { staleTime?: number; retry?: number } = {}) {
   const pendingToastIds = new WeakMap<object, string | number>();
 
   return new QueryClient({
     defaultOptions: {
       queries: {
-        retry: overrides.retry ?? 1,
+        retry: (failureCount, error) => shouldRetryQuery(failureCount, error, overrides.retry ?? 1),
         staleTime: overrides.staleTime ?? 30_000,
         refetchOnWindowFocus: false,
       },
