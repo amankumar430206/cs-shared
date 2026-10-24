@@ -267,6 +267,11 @@ export interface ScreenSearchFilters {
   lng?: string;
   radiusKm?: string;
   sort?: string;
+  /** "only" = screens with a vehicle plate (cabs, autos); "exclude" = everything else. */
+  vehicle?: "only" | "exclude";
+  area?: string;
+  /** Venue code(s), comma-separated, to leave out. */
+  excludeCategoryCode?: string;
 }
 
 const SCREEN_SEARCH_PAGE_LIMIT = 20;
