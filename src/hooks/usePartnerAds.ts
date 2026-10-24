@@ -23,6 +23,10 @@ export function useReservationAdsQuery(reservationId: string, options: { enabled
 export interface MyPartnerAdsFilters {
   status?: PartnerAdStatus;
   screenId?: string;
+  /** Running = approved, in an approved block covering today, and the current IST hour is inside its hours. */
+  when?: "running" | "upcoming" | "ended";
+  /** Screen name, city or ad name. */
+  search?: string;
   page?: number;
 }
 
@@ -34,6 +38,8 @@ export function useMyPartnerAdsQuery(filters: MyPartnerAdsFilters = {}) {
       const query = new URLSearchParams();
       if (filters.status) query.set("status", filters.status);
       if (filters.screenId) query.set("screenId", filters.screenId);
+      if (filters.when) query.set("when", filters.when);
+      if (filters.search?.trim()) query.set("search", filters.search.trim());
       if (filters.page) query.set("page", String(filters.page));
       const qs = query.toString();
       return apiGetPaginated<PartnerAdWithContext>(`/partner-ads/mine${qs ? `?${qs}` : ""}`, getAccessToken());
