@@ -931,6 +931,67 @@ var proofRequests = {
 		waiveFailed: "Could not waive the request."
 	}
 };
+var cabs = {
+	tabScreens: "Screens",
+	tabCabs: "Cabs & Autos",
+	title: "Cabs & autos by place",
+	intro: "Cabs and autos carry the same ad, so we group them by city. Choose how many you want in each place, or pick the exact ones.",
+	searchPlaceholder: "Search a city or state",
+	anyType: "Cabs and autos",
+	typeCab: "Cabs",
+	typeAuto: "Autos",
+	allStates: "All states",
+	allCities: "All cities",
+	maxPrice: "Max price a day",
+	anyPrice: "Any price",
+	liveOnly: "Running now",
+	sortLabel: "Sort",
+	sortCount: "Most vehicles",
+	sortPrice: "Lowest price",
+	sortName: "Name",
+	clear: "Clear filters",
+	places: "{count, plural, one {# place} other {# places}}",
+	noPlaces: "No cabs or autos match these filters.",
+	noPlacesHint: "Try a different city or a higher price.",
+	cabCount: "{count, plural, one {# vehicle} other {# vehicles}}",
+	liveCount: "{count} running now",
+	priceRange: "{min} to {max} a day",
+	priceFrom: "From {min} a day",
+	count: "How many in {place}",
+	decrease: "One fewer",
+	increase: "One more",
+	all: "All {count}",
+	chooseSpecific: "Choose specific",
+	chosenByYou: "{count} chosen by you",
+	inPlan: "{count} added",
+	areas: "Areas in {city}",
+	allAreas: "All areas",
+	pickerTitle: "Choose vehicles in {place}",
+	pickerHint: "Pick the exact ones. The rest of your count is filled automatically.",
+	pickerEmpty: "No vehicles found here.",
+	pickerDone: "Done",
+	vehicle: "{plate}",
+	cappedTitle: "That is the most one campaign can hold",
+	cappedBody: "A campaign can have up to {max} vehicles and screens in total.",
+	planTitle: "Your plan",
+	planEmpty: "Set a number for any place and your vehicles appear here.",
+	planTotal: "{count, plural, one {# vehicle} other {# vehicles}} in {places, plural, one {# place} other {# places}}",
+	planPerDay: "{amount} a day",
+	planShort: "Only {found} of {wanted} available in {place}",
+	swap: "Swap",
+	swapHint: "Replace with another vehicle",
+	remove: "Remove",
+	removePlace: "Remove {place}",
+	addToCampaign: "Add to campaign",
+	adding: "Adding",
+	added: "{count, plural, one {# vehicle} other {# vehicles}} added to your selection",
+	addFailed: "Could not load your vehicles. Try again.",
+	loadingPlan: "Finding vehicles",
+	stripTitle: "Cabs & autos near here",
+	stripHint: "Shown as groups by city instead of one by one.",
+	stripSeeAll: "See all cabs & autos",
+	stripBook: "Choose"
+};
 var en = {
 	common: common,
 	language: language,
@@ -949,7 +1010,8 @@ var en = {
 	dashboard: dashboard,
 	company: company,
 	quotations: quotations,
-	proofRequests: proofRequests
+	proofRequests: proofRequests,
+	cabs: cabs
 };
 
 declare const LOCALES: readonly ["en", "hi"];
@@ -1890,6 +1952,67 @@ declare const messages: {
                 waiveFailed: string;
             };
         };
+        cabs: {
+            tabScreens: string;
+            tabCabs: string;
+            title: string;
+            intro: string;
+            searchPlaceholder: string;
+            anyType: string;
+            typeCab: string;
+            typeAuto: string;
+            allStates: string;
+            allCities: string;
+            maxPrice: string;
+            anyPrice: string;
+            liveOnly: string;
+            sortLabel: string;
+            sortCount: string;
+            sortPrice: string;
+            sortName: string;
+            clear: string;
+            places: string;
+            noPlaces: string;
+            noPlacesHint: string;
+            cabCount: string;
+            liveCount: string;
+            priceRange: string;
+            priceFrom: string;
+            count: string;
+            decrease: string;
+            increase: string;
+            all: string;
+            chooseSpecific: string;
+            chosenByYou: string;
+            inPlan: string;
+            areas: string;
+            allAreas: string;
+            pickerTitle: string;
+            pickerHint: string;
+            pickerEmpty: string;
+            pickerDone: string;
+            vehicle: string;
+            cappedTitle: string;
+            cappedBody: string;
+            planTitle: string;
+            planEmpty: string;
+            planTotal: string;
+            planPerDay: string;
+            planShort: string;
+            swap: string;
+            swapHint: string;
+            remove: string;
+            removePlace: string;
+            addToCampaign: string;
+            adding: string;
+            added: string;
+            addFailed: string;
+            loadingPlan: string;
+            stripTitle: string;
+            stripHint: string;
+            stripSeeAll: string;
+            stripBook: string;
+        };
     };
     readonly hi: {
         common: {
@@ -2824,6 +2947,67 @@ declare const messages: {
                 waived: string;
                 waiveFailed: string;
             };
+        };
+        cabs: {
+            tabScreens: string;
+            tabCabs: string;
+            title: string;
+            intro: string;
+            searchPlaceholder: string;
+            anyType: string;
+            typeCab: string;
+            typeAuto: string;
+            allStates: string;
+            allCities: string;
+            maxPrice: string;
+            anyPrice: string;
+            liveOnly: string;
+            sortLabel: string;
+            sortCount: string;
+            sortPrice: string;
+            sortName: string;
+            clear: string;
+            places: string;
+            noPlaces: string;
+            noPlacesHint: string;
+            cabCount: string;
+            liveCount: string;
+            priceRange: string;
+            priceFrom: string;
+            count: string;
+            decrease: string;
+            increase: string;
+            all: string;
+            chooseSpecific: string;
+            chosenByYou: string;
+            inPlan: string;
+            areas: string;
+            allAreas: string;
+            pickerTitle: string;
+            pickerHint: string;
+            pickerEmpty: string;
+            pickerDone: string;
+            vehicle: string;
+            cappedTitle: string;
+            cappedBody: string;
+            planTitle: string;
+            planEmpty: string;
+            planTotal: string;
+            planPerDay: string;
+            planShort: string;
+            swap: string;
+            swapHint: string;
+            remove: string;
+            removePlace: string;
+            addToCampaign: string;
+            adding: string;
+            added: string;
+            addFailed: string;
+            loadingPlan: string;
+            stripTitle: string;
+            stripHint: string;
+            stripSeeAll: string;
+            stripBook: string;
         };
     };
 };
