@@ -1,15 +1,19 @@
+import { ApiClientError } from './chunk-IVTLVE2M.js';
 import { QueryClient, MutationCache } from '@tanstack/react-query';
 
-// src/api/queryClient.ts
 function resolveMessage(value, args) {
   return typeof value === "function" ? value(...args) : value;
+}
+function shouldRetryQuery(failureCount, error, maxRetries) {
+  if (error instanceof ApiClientError && error.status >= 400 && error.status < 500) return false;
+  return failureCount < maxRetries;
 }
 function createQueryClient(toast, overrides = {}) {
   const pendingToastIds = /* @__PURE__ */ new WeakMap();
   return new QueryClient({
     defaultOptions: {
       queries: {
-        retry: overrides.retry ?? 1,
+        retry: (failureCount, error) => shouldRetryQuery(failureCount, error, overrides.retry ?? 1),
         staleTime: overrides.staleTime ?? 3e4,
         refetchOnWindowFocus: false
       }
@@ -44,4 +48,4 @@ function generateDeviceId() {
   return `${Date.now().toString(36)}-${rand()}-${rand()}${rand()}`;
 }
 
-export { createQueryClient, generateDeviceId };
+export { createQueryClient, generateDeviceId, shouldRetryQuery };

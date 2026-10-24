@@ -39,6 +39,8 @@ interface ToastAdapter {
     success: (message: string, id?: string | number) => void;
     error: (message: string, id?: string | number) => void;
 }
+/** Retry transient failures only: a 4xx (including a 429 rate limit) will fail the same way again, and retrying a 429 makes it worse. */
+declare function shouldRetryQuery(failureCount: number, error: unknown, maxRetries: number): boolean;
 declare function createQueryClient(toast?: ToastAdapter, overrides?: {
     staleTime?: number;
     retry?: number;
@@ -46,4 +48,4 @@ declare function createQueryClient(toast?: ToastAdapter, overrides?: {
 
 declare function generateDeviceId(): string;
 
-export { type MutationToastMeta, type SessionState, type ToastAdapter, type TokenStorage, createQueryClient, generateDeviceId, getAccessToken, session, useHasSession, useSession };
+export { type MutationToastMeta, type SessionState, type ToastAdapter, type TokenStorage, createQueryClient, generateDeviceId, getAccessToken, session, shouldRetryQuery, useHasSession, useSession };
