@@ -1,4 +1,6 @@
-// Mirrors the partnerType enum in cs-api/src/modules/auth/auth.validators.js
+// Mirrors PARTNER_TYPE_VALUES in cs-api/src/modules/auth/auth.validators.js
+// (minus OTHER, which needs a free-text description the mobile form does not
+// collect yet — see changelog; the API still accepts this single `partnerType`).
 // — keep in sync if that list changes.
 export const PARTNER_TYPES = [
   { value: "EXISTING_SCREEN_OWNER", label: "Existing Screen Owner" },
@@ -15,5 +17,4 @@ export const PARTNER_TYPES = [
   { value: "MALL", label: "Mall" },
   { value: "EDUCATIONAL_INSTITUTION", label: "Educational Institution" },
   { value: "FLEET_OPERATOR", label: "Fleet Operator" },
-  { value: "INVESTOR", label: "Investor" },
 ] as const;
