@@ -9,8 +9,23 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
+  # Runs before any install: a poisoned postinstall/prepare or config would execute on `yarn install`.
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Scan for the injected loader
+        run: bash scripts/ci/scan-loader.sh .
+
   checks:
+    needs: scan
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
