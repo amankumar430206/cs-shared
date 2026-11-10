@@ -48,3 +48,9 @@ export type {
   WalletTransaction as PartnerWalletTransaction,
   WalletTransactionType as PartnerWalletTransactionType,
 } from "./revenue";
+export * from "./coupons";
+export * from "./referrals";
+export * from "./featureFlags";
+export * from "./kycDraft";
+export * from "./indianIds";
+export * from "./identityMatch";
