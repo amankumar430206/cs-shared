@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { placeKey, planToRequest, planTotal, withCount, withFixed, withoutCab, type Plan } from "../src/hooks/cabPlan";
 import type { CabLocation } from "../src/hooks/useCabs";
 
-const pune: CabLocation = { city: "Pune", state: "MH", area: null, cabCount: 5, liveCount: 3, minPrice: 100, maxPrice: 300, avgPrice: 200 };
+const pune: CabLocation = { city: "Pune", state: "MH", area: null, cabCount: 5, liveCount: 3, vehicleTypes: { cab: 5, auto: 0 }, coverPhoto: null, minPrice: 100, maxPrice: 300, avgPrice: 200 };
 const mumbai: CabLocation = { ...pune, city: "Mumbai", cabCount: 10 };
 
 describe("cabPlan", () => {

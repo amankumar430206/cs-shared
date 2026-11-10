@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiGetPaginated, apiPost, apiUpload } from "../api/client";
-import type { Creative, LiveScreen, PendingCreative } from "../types/creatives";
+import type { Creative, LiveScreen, PendingCreative, ScreenMapPoint } from "../types/creatives";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
 import type { UploadFile } from "./useKyc";
 
@@ -128,5 +128,17 @@ export function useApplyMediaMutation() {
       queryClient.invalidateQueries({ queryKey: ["creatives", "mine"] });
       queryClient.invalidateQueries({ queryKey: ["media"] });
     },
+  });
+}
+
+// Every screen carrying one of the advertiser's campaigns (live / upcoming / reserved / paused), for the map.
+// Positions are the registered ones only; a screen without one comes back with null coordinates.
+export function useScreenMapQuery(enabled = true) {
+  const hasAccessToken = useHasSession();
+  return useQuery({
+    queryKey: ["creatives", "screen-map"],
+    queryFn: () => apiGet<ScreenMapPoint[]>("/creatives/screen-map", getAccessToken()),
+    enabled: hasAccessToken && enabled,
+    refetchInterval: 60_000,
   });
 }

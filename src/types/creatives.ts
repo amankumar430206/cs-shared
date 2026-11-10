@@ -68,3 +68,40 @@ export interface LiveScreen {
     previewUrl?: string | null;
   };
 }
+
+// GET /creatives/screen-map: every screen carrying one of the advertiser's campaigns.
+// Copied from cs-web src/lib/creatives.ts — keep in sync.
+export type ScreenMapState = "LIVE" | "UPCOMING" | "RESERVED" | "PAUSED";
+
+export interface CoverPhoto {
+  downloadUrl: string;
+  thumbUrl: string | null;
+  previewUrl: string | null;
+}
+
+export interface ScreenMapCampaign {
+  campaignId: string;
+  campaignName: string;
+  bookingId: string;
+  state: ScreenMapState;
+  startDate: string;
+  endDate: string;
+  slotStartHour: number | null;
+  slotEndHour: number | null;
+}
+
+export interface ScreenMapPoint {
+  screenId: string;
+  screenName: string;
+  installationAddress: string | null;
+  city: string;
+  /** The registered state of India (not the booking state). */
+  state: string;
+  /** null when the screen has no usable registered position: listed, not pinned. */
+  latitude: number | null;
+  longitude: number | null;
+  /** Most important state across the screen's campaigns; drives the pin colour. */
+  mapState: ScreenMapState;
+  coverPhoto: CoverPhoto | null;
+  campaigns: ScreenMapCampaign[];
+}

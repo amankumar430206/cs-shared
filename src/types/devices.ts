@@ -120,6 +120,19 @@ export interface ScreenLocation {
   distanceFromRegisteredKm?: number | null;
   status: "ONLINE" | "OFFLINE";
   lastHeartbeatAt: string | null;
+  /** First discovery photo of the screen (signed URLs) — null when none was uploaded. */
+  coverPhoto?: { downloadUrl: string; thumbUrl: string | null; previewUrl: string | null } | null;
+}
+
+// An ACTIVE screen the map cannot plot (no device GPS and no usable registered
+// position) — GET /devices/locations/unlocated (admin).
+export interface UnlocatedScreen {
+  screenId: string;
+  screenName: string;
+  city: string | null;
+  state: string | null;
+  status: "ONLINE" | "OFFLINE";
+  lastHeartbeatAt: string | null;
 }
 
 // GET /devices/fleet-summary — the admin dashboard's fleet-health tile.

@@ -14,6 +14,10 @@ export interface CabLocation {
   /** Cabs bookable now. */
   cabCount: number;
   liveCount: number;
+  /** How many of the place's vehicles are cabs and how many are autos. */
+  vehicleTypes: { cab: number; auto: number };
+  /** A real photo of one of the place's vehicles; null when none has been uploaded. */
+  coverPhoto: { downloadUrl: string; thumbUrl: string | null; previewUrl: string | null } | null;
   minPrice: number;
   maxPrice: number;
   avgPrice: number;
