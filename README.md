@@ -52,6 +52,10 @@ same pass. Source mapping:
 | `src/hooks/marketplaceFilters.ts` | `src/components/marketplace/marketplaceFilters.ts` |
 | `useApplyMediaMutation` in `src/hooks/useCreatives.ts` | `useApplyMediaMutation` in `src/hooks/useMedia.ts` |
 | quotation/receipt document hooks (`useUploadCampaignDocumentMutation`, `useRemoveCampaignDocumentMutation`, `useUpdatePaymentsConfigMutation`) in `src/hooks/useCheckout.ts` | same-named hooks in `src/hooks/useCheckout.ts` |
+| `src/types/{coupons,referrals,featureFlags,kycDraft,indianIds,identityMatch}.ts` | `src/lib/{coupons,referrals,featureFlags,kycDraft,indianIds,identityMatch}.ts` (indianIds / identityMatch also mirror cs-api `shared/utils`) |
+| `src/hooks/{useCoupons,useReferrals,useFeatureFlags}.ts` | same names in `src/hooks/` (owner + advertiser parts of coupons only; admin and the create/edit sheet stay web-only) |
+| `saveKycDraftRequest`, `useIfscLookupQuery` in `src/hooks/useKyc.ts` | same names in cs-web `src/hooks/useKyc.ts` (the autosave effect `useKycDraft` is web-only; mobile writes its own with AppState) |
+| `useScreenMapQuery` in `src/hooks/useCreatives.ts` | same name in cs-web `src/hooks/useCreatives.ts` |
 
 ### Known intentional differences
 - `api/client.ts`: toasts, redirect-on-expiry and `fetch` are injected; no `apiDownload` (CSV/Excel export is web-only); adds `apiFetchRaw` and `buildQuery`.
@@ -67,6 +71,10 @@ same pass. Source mapping:
 - `types/geo.ts`: uses `apiFetchRaw` instead of reading `API_BASE_URL` + the web auth store.
 - `types/auth.ts`: types only (token storage moved to `session`).
 - `tokens`: numeric px scales instead of rem/CSS-variable strings; `logoUrl` defaults to `null`.
+- `api/client.ts` `apiRequest` has a `silent` option (no `onError` callback) for autosave and hints; web passes it to its own client.
+- `types/featureFlags.ts`: adds `isFlagOn` (fail closed) next to the web `isFlagEnabled` (fail open); coupons ship dark, so use `isFlagOn(flags, COUPONS_FLAG)`.
+- `types/referrals.ts`: no pending-code storage (web uses localStorage); each app keeps its own.
+- `onboardingSchema` accepts either the legacy `partnerType` or `partnerTypes[]` + `partnerTypeOther`; web only has the list form.
 - Barrel aliases for duplicate names: `formatBookingDateRange`, `AdvertiserWallet*`/`PartnerWallet*`, `useAdvertiserWalletQuery`/`usePartnerWalletQuery`.
 
 ## Scripts
