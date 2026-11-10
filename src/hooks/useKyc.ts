@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGet, apiPatch, apiPost, apiUpload } from "../api/client";
-import type { KycDocument, PendingAdvertiserRow, PendingScreenPartnerRow } from "../types/kyc";
+import { apiGet, apiPatch, apiPost, apiRequest, apiUpload } from "../api/client";
+import { IFSC_PATTERN } from "../schemas/onboarding";
+import type { IfscLookup, KycDocument, PendingAdvertiserRow, PendingScreenPartnerRow } from "../types/kyc";
+import type { KycDraftValues } from "../types/kycDraft";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
 
 interface KycSubmitResult {
@@ -144,3 +146,24 @@ export const useApproveAdvertiserMutation = () => useReviewMutation("advertisers
 export const useRejectAdvertiserMutation = () => useReviewMutation("advertisers", "reject");
 export const useApproveScreenPartnerMutation = () => useReviewMutation("screen-partners", "approve");
 export const useRejectScreenPartnerMutation = () => useReviewMutation("screen-partners", "reject");
+
+// Autosave of the half-filled form (PUT /kyc/draft/me). Not a mutation: nothing in the
+// cache depends on it, it fires in the background, and it must neither toast nor retry
+// on its own — the caller decides. Allowed only while KYC is PENDING or REJECTED (409
+// otherwise). Never send the consent checkboxes: use pickDraftValues().
+export const saveKycDraftRequest = (draft: { values: KycDraftValues; step: number }) =>
+  apiRequest<{ updatedAt: string }>("/kyc/draft/me", { method: "PUT", body: draft, accessToken: getAccessToken(), silent: true });
+
+// Bank and branch for an IFSC, looked up once it is fully typed. The answer for a code
+// never changes, so it is fetched once and kept. Silent: a failed lookup just means no
+// hint. The API answers status UNAVAILABLE (never an error) when the directory is down.
+export function useIfscLookupQuery(code: string | undefined) {
+  const hasAccessToken = useHasSession();
+  return useQuery({
+    queryKey: ["kyc", "ifsc", code],
+    queryFn: () => apiRequest<IfscLookup>(`/kyc/ifsc/${code}`, { accessToken: getAccessToken(), silent: true }),
+    enabled: hasAccessToken && !!code && IFSC_PATTERN.test(code),
+    staleTime: Infinity,
+    retry: false,
+  });
+}

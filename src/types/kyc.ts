@@ -1,6 +1,21 @@
 // Types mirroring cs-api's modules/kyc responses.
+import type { KycDraft } from "./kycDraft";
+
+export type { KycDraft };
+
+/** GET /kyc/ifsc/:code — informational only; submit never depends on it. */
+export interface IfscLookup {
+  ifsc: string;
+  status: "FOUND" | "NOT_FOUND" | "UNAVAILABLE";
+  bank?: string;
+  branch?: string;
+  city?: string;
+  state?: string;
+}
 
 export interface AdvertiserKycStatus {
+  /** Saved/pre-filled form values; only while the form is open (PENDING / REJECTED). */
+  draft?: KycDraft | null;
   verificationStatus: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED";
   rejectionReason: string | null;
   submittedAt: string | null;
@@ -8,6 +23,7 @@ export interface AdvertiserKycStatus {
 }
 
 export interface ScreenPartnerKycStatus {
+  draft?: KycDraft | null;
   kycStatus: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED";
   rejectionReason: string | null;
   submittedAt: string | null;
