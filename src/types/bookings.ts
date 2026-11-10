@@ -7,6 +7,9 @@ export interface PriceLineItem {
   listedDailyRate: number;
   days: number;
   screenPrice: number;
+  /** Screen-owner coupon lines only: the listed price before the discount (CASTADI's fee is charged on this). */
+  originalListedAmount?: number;
+  couponDiscount?: number;
   platformCharge: number;
   taxAmount: number;
   totalAmount: number;
@@ -15,6 +18,11 @@ export interface PriceLineItem {
 export interface PriceBreakdown {
   days: number;
   lineItems: PriceLineItem[];
+  /** Listed price of every screen before any coupon. Equals subtotal when no coupon applies. */
+  listedSubtotal?: number;
+  couponDiscount?: number;
+  couponCode?: string;
+  /** Price after the coupon discount (what the screens cost). */
   subtotal: number;
   platformCharge: number;
   taxAmount: number;

@@ -38,6 +38,8 @@ export interface QuoteInput {
   frequencyLevel: FrequencyLevel;
   customShares?: number;
   adDuration?: number;
+  /** A screen-owner coupon code; the server prices it (or rejects with 422 and the reason). */
+  couponCode?: string;
 }
 
 export interface DeliveryConfig {
