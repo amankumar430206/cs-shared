@@ -167,10 +167,12 @@ async function parseFullEnvelope<T>(res: Response): Promise<ApiSuccessEnvelope<T
   return envelope;
 }
 
-async function runReported<T>(accessToken: string | null | undefined, run: (token: string | null | undefined) => Promise<T>) {
+async function runReported<T>(accessToken: string | null | undefined, run: (token: string | null | undefined) => Promise<T>, silent = false) {
   try {
     return await withSessionRefresh(accessToken, run);
   } catch (error) {
+    // Background calls (autosave, hints) must not toast; the caller decides what to do.
+    if (silent && error instanceof ApiClientError) error.silent = true;
     reportApiError(error);
     throw error;
   }
@@ -180,9 +182,9 @@ type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export function apiRequest<T>(
   path: string,
-  options: { method?: Method; body?: unknown; accessToken?: string | null } = {}
+  options: { method?: Method; body?: unknown; accessToken?: string | null; silent?: boolean } = {}
 ): Promise<T> {
-  const { method = "GET", body, accessToken } = options;
+  const { method = "GET", body, accessToken, silent = false } = options;
   return runReported(accessToken, async (token) => {
     const res = await doFetch(`${getApiBaseUrl()}${path}`, {
       method,
@@ -190,7 +192,7 @@ export function apiRequest<T>(
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
     return (await parseFullEnvelope<T>(res)).data;
-  });
+  }, silent);
 }
 
 export const apiGet = <T>(path: string, accessToken?: string | null) => apiRequest<T>(path, { method: "GET", accessToken });
