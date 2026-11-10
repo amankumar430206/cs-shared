@@ -65,7 +65,12 @@ export interface RegisterInput {
   contactPerson?: string;
   businessType?: string;
   budgetRange?: string;
+  /** Legacy single type; the API treats it as a one-item `partnerTypes`. */
   partnerType?: string;
+  /** A partner can be several types at once; the first is the primary. At least one when registering a screen partner. */
+  partnerTypes?: string[];
+  /** Short description (up to 120 characters), required only when `partnerTypes` includes OTHER. */
+  partnerTypeOther?: string;
   dateOfBirth?: string;
   city?: string;
   state?: string;

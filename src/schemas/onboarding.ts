@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PARTNER_TYPE_OTHER, PARTNER_TYPE_OTHER_MAX } from "../types/partnerTypes";
 
 // Regexes mirrored 1:1 from cs-api's auth.validators.js / kyc.validators.js.
 export const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
@@ -86,7 +87,11 @@ const buildOnboardingSchema = (withPassword: boolean) =>
     dateOfBirth: z.string().optional(),
     city: z.string().optional(),
     state: z.string().optional(),
+    // Legacy single type, kept so older callers keep working.
     partnerType: z.string().optional(),
+    // A partner can be several types at once; OTHER needs a short description (cs-api 0.21).
+    partnerTypes: z.array(z.string()).optional(),
+    partnerTypeOther: z.string().max(PARTNER_TYPE_OTHER_MAX, `Keep it under ${PARTNER_TYPE_OTHER_MAX} characters.`).optional(),
 
     acceptTerms: z.boolean(),
   })
@@ -122,8 +127,12 @@ const buildOnboardingSchema = (withPassword: boolean) =>
       if (!data.state || data.state.trim().length < 2) {
         issue("state", "Enter your state.");
       }
-      if (!data.partnerType) {
-        issue("partnerType", "Select a partner type.");
+      const types = data.partnerTypes?.length ? data.partnerTypes : data.partnerType ? [data.partnerType] : [];
+      if (types.length === 0) {
+        issue(data.partnerTypes ? "partnerTypes" : "partnerType", data.partnerTypes ? "Select at least one partner type." : "Select a partner type.");
+      }
+      if (types.includes(PARTNER_TYPE_OTHER) && (data.partnerTypeOther ?? "").trim().length < 2) {
+        issue("partnerTypeOther", "Tell us what kind of partner you are.");
       }
     }
 
