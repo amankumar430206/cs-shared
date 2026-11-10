@@ -1,5 +1,5 @@
 import { z } from 'zod';
-export { A as AD_DURATION_MAX_SECONDS, a as AD_DURATION_MIN_SECONDS } from '../campaigns-6nJvR6CG.js';
+export { A as AD_DURATION_MAX_SECONDS, a as AD_DURATION_MIN_SECONDS } from '../campaigns-D1_n8OTZ.js';
 
 declare const loginSchema: z.ZodObject<{
     identifier: z.ZodString;
@@ -218,6 +218,8 @@ declare const onboardingSchema: z.ZodObject<{
     city: z.ZodOptional<z.ZodString>;
     state: z.ZodOptional<z.ZodString>;
     partnerType: z.ZodOptional<z.ZodString>;
+    partnerTypes: z.ZodOptional<z.ZodArray<z.ZodString>>;
+    partnerTypeOther: z.ZodOptional<z.ZodString>;
     acceptTerms: z.ZodBoolean;
 }, z.core.$strip>;
 /** Same form for a new Google user: identical fields and rules minus the password pair. */
@@ -238,6 +240,8 @@ declare const googleOnboardingSchema: z.ZodObject<{
     city: z.ZodOptional<z.ZodString>;
     state: z.ZodOptional<z.ZodString>;
     partnerType: z.ZodOptional<z.ZodString>;
+    partnerTypes: z.ZodOptional<z.ZodArray<z.ZodString>>;
+    partnerTypeOther: z.ZodOptional<z.ZodString>;
     acceptTerms: z.ZodBoolean;
 }, z.core.$strip>;
 type OnboardingFormValues = z.input<typeof onboardingSchema>;

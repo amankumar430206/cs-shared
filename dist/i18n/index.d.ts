@@ -340,7 +340,25 @@ var builder = {
 		submitForVerification: "Submit for verification",
 		listTotal: "List Price",
 		revisedQuotation: "Revised Quotation Amount",
-		viewMore: "{count, plural, one {View # more} other {View # more}}"
+		viewMore: "{count, plural, one {View # more} other {View # more}}",
+		couponTitle: "Offers & Coupons",
+		couponPlaceholder: "Enter coupon code",
+		couponApply: "Apply",
+		couponChecking: "Checking…",
+		couponRemove: "Remove coupon",
+		couponApplied: "you save {amount}",
+		couponHint: "The coupon only works on that owner's screens. Our fee is charged on the original listed price.",
+		couponFailed: "Could not check this coupon. Please try again.",
+		couponRemoved: "That coupon no longer applies, so it was removed.",
+		listedPrice: "Listed price",
+		couponDiscount: "Coupon {code}",
+		discountedPrice: "Price after coupon",
+		offersTitle: "Offers for you",
+		offerPublic: "Public offer",
+		offerPrivate: "Just for you",
+		offerFrom: "From {owner}",
+		offerMin: "min. {amount}",
+		offerUntil: "until {date}"
 	},
 	launched: {
 		paid: {
@@ -432,7 +450,10 @@ var marketplace = {
 		plays: "Est. plays",
 		view: "View screen",
 		select: "Select",
-		selected: "Selected"
+		selected: "Selected",
+		offersAvailable: "{count, plural, one {# coupon available} other {# coupons available}}",
+		offersUpTo: "up to {discount}",
+		offersCount: "{count, plural, one {# coupon} other {# coupons}}"
 	},
 	filters: {
 		button: "Filters",
@@ -990,7 +1011,129 @@ var cabs = {
 	stripTitle: "Cabs & autos near here",
 	stripHint: "Shown as groups by city instead of one by one.",
 	stripSeeAll: "See all cabs & autos",
-	stripBook: "Choose"
+	stripBook: "Choose",
+	vehicleCab: "Cab",
+	vehicleAuto: "Auto",
+	typeCabCount: "{count, plural, one {# cab} other {# cabs}}",
+	typeAutoCount: "{count, plural, one {# auto} other {# autos}}"
+};
+var coupons = {
+	preview: {
+		title: "What this looks like",
+		example: "Example booking",
+		listed: "Listed price",
+		discount: "Discount",
+		note: "CASTADI's usual fee and commission are still worked out on the listed price. The discount comes out of your share, so it is limited to what you would receive after CASTADI's commission.",
+		clientPays: "Client pays for the screen"
+	},
+	form: {
+		createTitle: "New coupon",
+		editTitle: "Edit {code}",
+		description: "Create a coupon for your existing advertisers.",
+		progressAria: "Coupon steps",
+		progress: "Step {current} of {total}",
+		steps: {
+			"0": "The offer",
+			"1": "Screens & code",
+			"2": "Who can use it",
+			"3": "Rules"
+		},
+		back: "Back",
+		cancel: "Cancel",
+		"continue": "Continue",
+		create: "Create coupon",
+		save: "Save changes",
+		saving: "Saving…",
+		updated: "Coupon updated",
+		saveFailed: "Could not save the coupon. Please try again.",
+		createdTitle: "Coupon created"
+	},
+	offer: {
+		name: "Offer name",
+		nameHint: "Advertisers who can use this coupon see this name.",
+		namePlaceholder: "e.g. Sharma Motors deal",
+		typeLabel: "How much does your client save?",
+		fixed: "₹ off",
+		fixedHint: "A fixed amount per screen booking",
+		percent: "% off",
+		percentHint: "A share of the listed price",
+		valueFixed: "Discount per screen booking",
+		valuePercent: "Discount percentage",
+		suggested: "Suggested names",
+		ideas: {
+			welcome: "Welcome offer: {offer}",
+			regulars: "{name}'s regular clients",
+			city: "{city} special",
+			thanks: "Thank-you offer",
+			newClient: "New client deal",
+			festive: "Festive offer"
+		}
+	},
+	screens: {
+		title: "Which of your screens?",
+		none: "You have no active screens yet.",
+		all: "All my screens",
+		count: "{count} of {total} selected",
+		search: "Search screens",
+		codeTitle: "Coupon code",
+		ownCode: "I'll choose my own code",
+		codeLabel: "Your code",
+		codeHint: "4–40 letters, numbers, - or _. Not case-sensitive.",
+		autoHint: "We'll create a short code for you. You can copy it on the next screen.",
+		lockedHint: "The code cannot change once issued.",
+		suggestedCodes: "Available codes. Tap to use"
+	},
+	rules: {
+		validity: "How long is it valid?",
+		validityOptions: {
+			"30": "30 days",
+			"90": "90 days",
+			NONE: "No expiry",
+			CUSTOM: "Pick dates"
+		},
+		starts: "Starts",
+		expires: "Expires",
+		limitUses: "Limit total uses",
+		totalUses: "Total uses",
+		totalUsesHint: "The coupon stops working after this many bookings.",
+		perAdvertiser: "Uses per advertiser",
+		perAdvertiserHint: "How many times one advertiser can use it.",
+		minBooking: "Minimum booking value (optional)",
+		minBookingHint: "Leave blank for no minimum."
+	},
+	created: {
+		title: "Your coupon is ready",
+		subtitle: "{offer} for your clients. Share the code and they enter it at checkout.",
+		code: "Code",
+		message: "Share message",
+		copied: "{what} copied",
+		copyFailed: "Could not copy. Select and copy it manually.",
+		copyCodeAria: "Copy code {code}",
+		copyMessage: "Copy share message",
+		another: "Create another",
+		done: "Done"
+	},
+	audience: {
+		title: "Who can use this coupon?",
+		"private": "Specific advertisers",
+		privateHint: "Only the people you choose. They see it as an offer when they book your screens.",
+		"public": "Everyone",
+		publicHint: "A public offer, for example a festive discount.",
+		publicNote: "Every advertiser booking your screens will see this offer and can apply it with one tap. You can switch it off any time.",
+		referredTitle: "Advertisers who joined through you",
+		selected: "{count} selected",
+		search: "Search advertisers",
+		noReferred: "No advertisers have joined through your referral yet. Share your referral link and they will appear here to choose from.",
+		addByContact: "Add by email or mobile",
+		addByContactHint: "For clients who are not on CASTADI yet, or did not join through you.",
+		contactPlaceholder: "client@example.com or 9876543210",
+		contactInvalid: "Enter a valid email or 10-digit mobile number.",
+		add: "Add",
+		addedList: "Advertisers added by email or mobile",
+		remove: "Remove {contact}",
+		referralPrompt: "Want more advertisers to choose from?",
+		referralLink: "Share your referral link"
+	}
 };
 var en = {
 	common: common,
@@ -1011,7 +1154,8 @@ var en = {
 	company: company,
 	quotations: quotations,
 	proofRequests: proofRequests,
-	cabs: cabs
+	cabs: cabs,
+	coupons: coupons
 };
 
 declare const LOCALES: readonly ["en", "hi"];
@@ -1362,6 +1506,24 @@ declare const messages: {
                 listTotal: string;
                 revisedQuotation: string;
                 viewMore: string;
+                couponTitle: string;
+                couponPlaceholder: string;
+                couponApply: string;
+                couponChecking: string;
+                couponRemove: string;
+                couponApplied: string;
+                couponHint: string;
+                couponFailed: string;
+                couponRemoved: string;
+                listedPrice: string;
+                couponDiscount: string;
+                discountedPrice: string;
+                offersTitle: string;
+                offerPublic: string;
+                offerPrivate: string;
+                offerFrom: string;
+                offerMin: string;
+                offerUntil: string;
             };
             launched: {
                 paid: {
@@ -1454,6 +1616,9 @@ declare const messages: {
                 view: string;
                 select: string;
                 selected: string;
+                offersAvailable: string;
+                offersUpTo: string;
+                offersCount: string;
             };
             filters: {
                 button: string;
@@ -2012,6 +2177,128 @@ declare const messages: {
             stripHint: string;
             stripSeeAll: string;
             stripBook: string;
+            vehicleCab: string;
+            vehicleAuto: string;
+            typeCabCount: string;
+            typeAutoCount: string;
+        };
+        coupons: {
+            preview: {
+                title: string;
+                example: string;
+                listed: string;
+                discount: string;
+                note: string;
+                clientPays: string;
+            };
+            form: {
+                createTitle: string;
+                editTitle: string;
+                description: string;
+                progressAria: string;
+                progress: string;
+                steps: {
+                    "0": string;
+                    "1": string;
+                    "2": string;
+                    "3": string;
+                };
+                back: string;
+                cancel: string;
+                continue: string;
+                create: string;
+                save: string;
+                saving: string;
+                updated: string;
+                saveFailed: string;
+                createdTitle: string;
+            };
+            offer: {
+                name: string;
+                nameHint: string;
+                namePlaceholder: string;
+                typeLabel: string;
+                fixed: string;
+                fixedHint: string;
+                percent: string;
+                percentHint: string;
+                valueFixed: string;
+                valuePercent: string;
+                suggested: string;
+                ideas: {
+                    welcome: string;
+                    regulars: string;
+                    city: string;
+                    thanks: string;
+                    newClient: string;
+                    festive: string;
+                };
+            };
+            screens: {
+                title: string;
+                none: string;
+                all: string;
+                count: string;
+                search: string;
+                codeTitle: string;
+                ownCode: string;
+                codeLabel: string;
+                codeHint: string;
+                autoHint: string;
+                lockedHint: string;
+                suggestedCodes: string;
+            };
+            rules: {
+                validity: string;
+                validityOptions: {
+                    "30": string;
+                    "90": string;
+                    NONE: string;
+                    CUSTOM: string;
+                };
+                starts: string;
+                expires: string;
+                limitUses: string;
+                totalUses: string;
+                totalUsesHint: string;
+                perAdvertiser: string;
+                perAdvertiserHint: string;
+                minBooking: string;
+                minBookingHint: string;
+            };
+            created: {
+                title: string;
+                subtitle: string;
+                code: string;
+                message: string;
+                copied: string;
+                copyFailed: string;
+                copyCodeAria: string;
+                copyMessage: string;
+                another: string;
+                done: string;
+            };
+            audience: {
+                title: string;
+                private: string;
+                privateHint: string;
+                public: string;
+                publicHint: string;
+                publicNote: string;
+                referredTitle: string;
+                selected: string;
+                search: string;
+                noReferred: string;
+                addByContact: string;
+                addByContactHint: string;
+                contactPlaceholder: string;
+                contactInvalid: string;
+                add: string;
+                addedList: string;
+                remove: string;
+                referralPrompt: string;
+                referralLink: string;
+            };
         };
     };
     readonly hi: {
@@ -2358,6 +2645,24 @@ declare const messages: {
                 listTotal: string;
                 revisedQuotation: string;
                 viewMore: string;
+                couponTitle: string;
+                couponPlaceholder: string;
+                couponApply: string;
+                couponChecking: string;
+                couponRemove: string;
+                couponApplied: string;
+                couponHint: string;
+                couponFailed: string;
+                couponRemoved: string;
+                listedPrice: string;
+                couponDiscount: string;
+                discountedPrice: string;
+                offersTitle: string;
+                offerPublic: string;
+                offerPrivate: string;
+                offerFrom: string;
+                offerMin: string;
+                offerUntil: string;
             };
             launched: {
                 paid: {
@@ -2450,6 +2755,9 @@ declare const messages: {
                 view: string;
                 select: string;
                 selected: string;
+                offersAvailable: string;
+                offersUpTo: string;
+                offersCount: string;
             };
             filters: {
                 button: string;
@@ -3008,6 +3316,128 @@ declare const messages: {
             stripHint: string;
             stripSeeAll: string;
             stripBook: string;
+            vehicleCab: string;
+            vehicleAuto: string;
+            typeCabCount: string;
+            typeAutoCount: string;
+        };
+        coupons: {
+            preview: {
+                title: string;
+                example: string;
+                listed: string;
+                discount: string;
+                note: string;
+                clientPays: string;
+            };
+            form: {
+                createTitle: string;
+                editTitle: string;
+                description: string;
+                progressAria: string;
+                progress: string;
+                steps: {
+                    "0": string;
+                    "1": string;
+                    "2": string;
+                    "3": string;
+                };
+                back: string;
+                cancel: string;
+                continue: string;
+                create: string;
+                save: string;
+                saving: string;
+                updated: string;
+                saveFailed: string;
+                createdTitle: string;
+            };
+            offer: {
+                name: string;
+                nameHint: string;
+                namePlaceholder: string;
+                typeLabel: string;
+                fixed: string;
+                fixedHint: string;
+                percent: string;
+                percentHint: string;
+                valueFixed: string;
+                valuePercent: string;
+                suggested: string;
+                ideas: {
+                    welcome: string;
+                    regulars: string;
+                    city: string;
+                    thanks: string;
+                    newClient: string;
+                    festive: string;
+                };
+            };
+            screens: {
+                title: string;
+                none: string;
+                all: string;
+                count: string;
+                search: string;
+                codeTitle: string;
+                ownCode: string;
+                codeLabel: string;
+                codeHint: string;
+                autoHint: string;
+                lockedHint: string;
+                suggestedCodes: string;
+            };
+            rules: {
+                validity: string;
+                validityOptions: {
+                    "30": string;
+                    "90": string;
+                    NONE: string;
+                    CUSTOM: string;
+                };
+                starts: string;
+                expires: string;
+                limitUses: string;
+                totalUses: string;
+                totalUsesHint: string;
+                perAdvertiser: string;
+                perAdvertiserHint: string;
+                minBooking: string;
+                minBookingHint: string;
+            };
+            created: {
+                title: string;
+                subtitle: string;
+                code: string;
+                message: string;
+                copied: string;
+                copyFailed: string;
+                copyCodeAria: string;
+                copyMessage: string;
+                another: string;
+                done: string;
+            };
+            audience: {
+                title: string;
+                private: string;
+                privateHint: string;
+                public: string;
+                publicHint: string;
+                publicNote: string;
+                referredTitle: string;
+                selected: string;
+                search: string;
+                noReferred: string;
+                addByContact: string;
+                addByContactHint: string;
+                contactPlaceholder: string;
+                contactInvalid: string;
+                add: string;
+                addedList: string;
+                remove: string;
+                referralPrompt: string;
+                referralLink: string;
+            };
         };
     };
 };

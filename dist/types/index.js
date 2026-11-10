@@ -1,7 +1,8 @@
-export { DEFAULT_REPORT_FILTERS, REPORT_RANGES, buildReportQuery, isReportQueryable } from '../chunk-WRV2ZKUS.js';
-import { apiFetchRaw, getAccessToken } from '../chunk-IVTLVE2M.js';
+export { DEFAULT_REPORT_FILTERS, REFERRAL_CODE_MIN_LENGTH, REPORT_RANGES, buildReportQuery, isReportQueryable, referralLink, referralShareText } from '../chunk-GDXKPKMS.js';
+import { apiFetchRaw, getAccessToken } from '../chunk-V2V5PEJF.js';
 import { parseResolution, getTodayIST } from '../chunk-446QGL3B.js';
 export { AD_DURATION_MAX_SECONDS, AD_DURATION_MIN_SECONDS, ASSIGNMENT_TEAMS, COMMON_CITY_SUGGESTIONS, DISCOVERY_PHOTO_TYPES, EDITABLE_SCREEN_STATUSES, INSTALLATION_ENVIRONMENTS, INSTALLATION_PHOTO_TYPES, INTERNET_TYPES, MAX_CAMPAIGN_BANNERS, OBJECTIVES, PHOTO_TYPES, PRIMARY_OBJECTIVES, REVENUE_MODELS, SCREEN_ORIENTATIONS, SCREEN_SIZE_PRESETS, SURROUNDING_VIDEO_TYPE, TARGET_AGE_MAX, TARGET_AGE_MIN, TARGET_AUDIENCE_SEGMENTS, TERMINAL_TICKET_STATUSES, TICKET_CATEGORIES, TICKET_PRIORITIES, TICKET_STATUSES, VIDEO_PHOTO_TYPE, formatDateRange, formatTargetAudience, getTodayIST, isCampaignEnded, isCampaignReservable, orientResolution, orientationLabel, parseResolution, screenOrientationOf } from '../chunk-446QGL3B.js';
+export { PARTNER_TYPES, PARTNER_TYPE_OTHER, PARTNER_TYPE_OTHER_MAX, formatPartnerTypes, partnerTypeLabel, partnerTypeValues } from '../chunk-HK7CF55G.js';
 
 // src/types/orientation.ts
 var SQUARE_TOLERANCE = 0.05;
@@ -213,25 +214,6 @@ function formatCompactIndian(value) {
   return Math.round(value).toLocaleString("en-IN");
 }
 
-// src/types/partnerTypes.ts
-var PARTNER_TYPES = [
-  { value: "EXISTING_SCREEN_OWNER", label: "Existing Screen Owner" },
-  { value: "AUTO_RICKSHAW_DRIVER", label: "Auto Rickshaw Driver" },
-  { value: "CAB_DRIVER", label: "Cab Driver" },
-  { value: "SHOP_OWNER", label: "Shop Owner" },
-  { value: "CAFE_OWNER", label: "Cafe Owner" },
-  { value: "RESTAURANT_OWNER", label: "Restaurant Owner" },
-  { value: "HOTEL_OWNER", label: "Hotel Owner" },
-  { value: "HOSPITAL", label: "Hospital" },
-  { value: "PETROL_PUMP", label: "Petrol Pump" },
-  { value: "APARTMENT", label: "Apartment" },
-  { value: "OFFICE_BUILDING", label: "Office Building" },
-  { value: "MALL", label: "Mall" },
-  { value: "EDUCATIONAL_INSTITUTION", label: "Educational Institution" },
-  { value: "FLEET_OPERATOR", label: "Fleet Operator" },
-  { value: "INVESTOR", label: "Investor" }
-];
-
 // src/types/payments.ts
 var SETTLEMENT_MODES = [
   { value: "CASH", label: "Cash" },
@@ -311,4 +293,282 @@ function computePeriodDelta(values) {
   return Math.round((last7 - prev7) / prev7 * 100);
 }
 
-export { AD_FORMATS, AD_MAX_FILE_MB, AD_MAX_VIDEO_SECONDS, AUDIENCE_TAGS, DISPLAY_TYPES, FACINGS, KB_CATEGORIES, LOCATION_CATEGORIES, MAX_CUSTOM_SHARES, OPEN_QUOTATION_STATUSES, PARTNER_TYPES, REPORT_FORMATS, REPORT_FREQUENCIES, SETTLEMENT_CADENCES, SETTLEMENT_MODES, SIZE_BUCKETS, TAX_LEDGER_ENTRY_TYPES, TRAFFIC_TYPES, adChecks, aspectLabel, compatibilityOf, computeFit, computePeriodDelta, effectiveShares, footfallRange, formatDateRange2 as formatBookingDateRange, formatCompactIndian, formatFileSize, formatRupees, formatShortDate, getMediaShape, isOpen, isVideo, listCities, listStates, liveWindowStatus, minPlaysPerDay, monthlyPrice, operatingSecondsPerDay, parseResolutionAspectRatio, previewSrc, quotationMatchesOrder, quotationNumber, resolvePincode, screenDimensions, shapeKey, shapeLabel, thumbSrc, totalMinPlaysPerDay };
+// src/types/coupons.ts
+function describeDiscount(coupon) {
+  return coupon.discountType === "PERCENT" ? `${coupon.discountValue}% off` : `\u20B9${coupon.discountValue.toLocaleString("en-IN")} off`;
+}
+function describeAudience(coupon) {
+  if (coupon.visibility === "PUBLIC") return "Public offer";
+  return `${coupon.allowedCount} advertiser${coupon.allowedCount === 1 ? "" : "s"}`;
+}
+function couponShareLink(code, origin) {
+  return `${origin}/campaigns/new?coupon=${encodeURIComponent(code)}`;
+}
+function couponShareText(coupon, origin) {
+  return `Book my screens on CASTADI with code ${coupon.code} (${describeDiscount(coupon)}): ${couponShareLink(coupon.code, origin)}`;
+}
+function describeOffer(offer) {
+  return describeDiscount(offer);
+}
+
+// src/types/featureFlags.ts
+var COUPONS_FLAG = "coupons.module";
+function isFlagEnabled(flags, key) {
+  if (Array.isArray(key)) return key.some((k) => isFlagEnabled(flags, k));
+  return flags?.find((flag) => flag.key === key)?.enabled ?? true;
+}
+function isFlagOn(flags, key) {
+  return flags?.find((flag) => flag.key === key)?.enabled === true;
+}
+
+// src/types/kycDraft.ts
+var ADVERTISER_DRAFT_FIELDS = [
+  { key: "businessAddress", label: "Business address", required: true },
+  { key: "businessCategory", label: "Business category", required: true },
+  { key: "billingState", label: "Billing state", required: true },
+  { key: "billingPincode", label: "Billing PIN code", required: true },
+  { key: "gstNumber", label: "GST number" },
+  { key: "panNumber", label: "PAN number" },
+  { key: "cin", label: "CIN" },
+  { key: "wantsGstInvoice", label: "Wants a GST invoice" },
+  { key: "brandName", label: "Brand name" },
+  { key: "brandWebsite", label: "Brand website" },
+  { key: "socialMediaLinks", label: "Social media links" }
+];
+var SCREEN_PARTNER_DRAFT_FIELDS = [
+  { key: "aadhaarNumber", label: "Aadhaar number", required: true },
+  { key: "panNumber", label: "PAN number", required: true },
+  { key: "businessName", label: "Business name" },
+  { key: "legalStructure", label: "Legal structure" },
+  { key: "gstNumber", label: "GST number" },
+  { key: "udyamNumber", label: "UDYAM number" },
+  { key: "cin", label: "CIN" },
+  { key: "bankAccountNumber", label: "Bank account number", required: true },
+  { key: "bankIfsc", label: "Bank IFSC code", required: true },
+  { key: "bankAccountName", label: "Account holder name", required: true },
+  { key: "upiId", label: "UPI ID" }
+];
+var advertiserDraftKeys = ADVERTISER_DRAFT_FIELDS.map((f) => f.key);
+var screenPartnerDraftKeys = SCREEN_PARTNER_DRAFT_FIELDS.map((f) => f.key);
+function pickDraftValues(values, keys) {
+  const picked = {};
+  for (const key of keys) {
+    const value = values[key];
+    if (typeof value === "string" || typeof value === "boolean") picked[key] = value;
+  }
+  return picked;
+}
+var draftSignature = (values, step) => JSON.stringify([step, values]);
+var hasValue = (value) => typeof value === "string" ? value.trim() !== "" : value === true;
+
+// src/types/indianIds.ts
+var D = [
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
+  [2, 3, 4, 0, 1, 7, 8, 9, 5, 6],
+  [3, 4, 0, 1, 2, 8, 9, 5, 6, 7],
+  [4, 0, 1, 2, 3, 9, 5, 6, 7, 8],
+  [5, 9, 8, 7, 6, 0, 4, 3, 2, 1],
+  [6, 5, 9, 8, 7, 1, 0, 4, 3, 2],
+  [7, 6, 5, 9, 8, 2, 1, 0, 4, 3],
+  [8, 7, 6, 5, 9, 3, 2, 1, 0, 4],
+  [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+];
+var P = [
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 5, 7, 6, 2, 8, 3, 0, 9, 4],
+  [5, 8, 0, 3, 7, 9, 6, 1, 4, 2],
+  [8, 9, 1, 6, 0, 4, 3, 5, 2, 7],
+  [9, 4, 5, 3, 1, 2, 6, 8, 7, 0],
+  [4, 2, 8, 6, 5, 7, 3, 9, 0, 1],
+  [2, 7, 9, 3, 8, 0, 6, 4, 1, 5],
+  [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]
+];
+var AADHAAR_SHAPE = /^[2-9][0-9]{11}$/;
+function isValidAadhaar(value) {
+  if (!AADHAAR_SHAPE.test(value)) return false;
+  let c = 0;
+  [...value].reverse().forEach((ch, i) => {
+    c = D[c][P[i % 8][Number(ch)]];
+  });
+  return c === 0;
+}
+var PAN_HOLDER_TYPES = {
+  P: "Individual",
+  C: "Company",
+  H: "Hindu Undivided Family",
+  F: "Firm / LLP",
+  A: "Association of Persons",
+  T: "Trust",
+  B: "Body of Individuals",
+  L: "Local authority",
+  J: "Artificial juridical person",
+  G: "Government"
+};
+var PAN_SHAPE = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+var isValidPan = (value) => PAN_SHAPE.test(value) && value[3] in PAN_HOLDER_TYPES;
+var PAN_TYPES_BY_STRUCTURE = {
+  INDIVIDUAL: ["P"],
+  PROPRIETOR: ["P"],
+  COMPANY: ["C", "F", "A", "B", "G", "J", "L", "T"]
+};
+function panFitsLegalStructure(pan, structure) {
+  const allowed = structure ? PAN_TYPES_BY_STRUCTURE[structure] : void 0;
+  if (!allowed || !isValidPan(pan)) return null;
+  return allowed.includes(pan[3]);
+}
+var isCompanyPan = (pan) => isValidPan(pan) && pan[3] !== "P" && pan[3] !== "H";
+var GSTIN_SHAPE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+var GSTIN_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+function gstinCheckChar(first14) {
+  let sum = 0;
+  [...first14].forEach((ch, i) => {
+    const product = GSTIN_CHARS.indexOf(ch) * (i % 2 === 0 ? 1 : 2);
+    sum += Math.floor(product / 36) + product % 36;
+  });
+  return GSTIN_CHARS[(36 - sum % 36) % 36];
+}
+var isValidGstin = (value) => GSTIN_SHAPE.test(value) && value[14] === gstinCheckChar(value.slice(0, 14));
+var gstinPan = (gstin) => gstin.slice(2, 12);
+var GST_STATES = {
+  "01": ["Jammu and Kashmir", "J&K"],
+  "02": ["Himachal Pradesh"],
+  "03": ["Punjab"],
+  "04": ["Chandigarh"],
+  "05": ["Uttarakhand", "Uttaranchal"],
+  "06": ["Haryana"],
+  "07": ["Delhi", "NCT of Delhi", "New Delhi"],
+  "08": ["Rajasthan"],
+  "09": ["Uttar Pradesh", "UP"],
+  "10": ["Bihar"],
+  "11": ["Sikkim"],
+  "12": ["Arunachal Pradesh"],
+  "13": ["Nagaland"],
+  "14": ["Manipur"],
+  "15": ["Mizoram"],
+  "16": ["Tripura"],
+  "17": ["Meghalaya"],
+  "18": ["Assam"],
+  "19": ["West Bengal"],
+  "20": ["Jharkhand"],
+  "21": ["Odisha", "Orissa"],
+  "22": ["Chhattisgarh"],
+  "23": ["Madhya Pradesh", "MP"],
+  "24": ["Gujarat"],
+  "25": ["Daman and Diu", "Dadra and Nagar Haveli and Daman and Diu"],
+  "26": ["Dadra and Nagar Haveli", "Daman and Diu", "Dadra and Nagar Haveli and Daman and Diu"],
+  "27": ["Maharashtra"],
+  "28": ["Andhra Pradesh"],
+  "29": ["Karnataka"],
+  "30": ["Goa"],
+  "31": ["Lakshadweep"],
+  "32": ["Kerala"],
+  "33": ["Tamil Nadu"],
+  "34": ["Puducherry", "Pondicherry"],
+  "35": ["Andaman and Nicobar Islands", "Andaman and Nicobar"],
+  "36": ["Telangana"],
+  "37": ["Andhra Pradesh"],
+  "38": ["Ladakh"]
+};
+var stateKey = (name) => String(name ?? "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z]/g, "");
+var CODES_BY_STATE = /* @__PURE__ */ new Map();
+Object.entries(GST_STATES).forEach(([code, names]) => {
+  names.forEach((name) => {
+    const key = stateKey(name);
+    CODES_BY_STATE.set(key, [...CODES_BY_STATE.get(key) ?? [], code]);
+  });
+});
+function gstinMatchesState(gstin, stateName) {
+  const codes = CODES_BY_STATE.get(stateKey(stateName));
+  if (!codes || !GSTIN_SHAPE.test(gstin)) return null;
+  return codes.includes(gstin.slice(0, 2));
+}
+function gstinStateName(gstin) {
+  return GST_STATES[gstin.slice(0, 2)]?.[0];
+}
+
+// src/types/identityMatch.ts
+var HONORIFICS = /* @__PURE__ */ new Set(["mr", "mrs", "ms", "miss", "shri", "shree", "sri", "smt", "kumari", "dr", "prof", "late"]);
+var FILLER = /* @__PURE__ */ new Set(["and", "the", "pvt", "private", "ltd", "limited", "llp", "co", "company", "ms"]);
+function nameTokens(name) {
+  return String(name ?? "").normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter((t) => t && !HONORIFICS.has(t) && !FILLER.has(t));
+}
+function jaroWinkler(a, b) {
+  if (a === b) return 1;
+  if (!a.length || !b.length) return 0;
+  const range = Math.max(0, Math.floor(Math.max(a.length, b.length) / 2) - 1);
+  const aMatched = new Array(a.length).fill(false);
+  const bMatched = new Array(b.length).fill(false);
+  let matches = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    const from = Math.max(0, i - range);
+    const to = Math.min(i + range + 1, b.length);
+    for (let j = from; j < to; j += 1) {
+      if (!bMatched[j] && a[i] === b[j]) {
+        aMatched[i] = true;
+        bMatched[j] = true;
+        matches += 1;
+        break;
+      }
+    }
+  }
+  if (!matches) return 0;
+  let transpositions = 0;
+  let k = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    if (aMatched[i]) {
+      while (!bMatched[k]) k += 1;
+      if (a[i] !== b[k]) transpositions += 1;
+      k += 1;
+    }
+  }
+  const jaro = (matches / a.length + matches / b.length + (matches - transpositions / 2) / matches) / 3;
+  let prefix = 0;
+  while (prefix < 4 && a[prefix] === b[prefix]) prefix += 1;
+  return jaro + prefix * 0.1 * (1 - jaro);
+}
+var tokenScore = (a, b) => a.length === 1 || b.length === 1 ? a[0] === b[0] ? 0.9 : 0 : jaroWinkler(a, b);
+function compareNames(first, second) {
+  const a = nameTokens(first);
+  const b = nameTokens(second);
+  if (!a.length || !b.length) return { status: "UNKNOWN", score: 0 };
+  const [short, long] = a.length <= b.length ? [a, b] : [b, a];
+  const used = /* @__PURE__ */ new Set();
+  let sum = 0;
+  let weakest = 1;
+  short.forEach((token) => {
+    let best = 0;
+    let bestIndex = -1;
+    long.forEach((other, i) => {
+      if (used.has(i)) return;
+      const s = tokenScore(token, other);
+      if (s > best) {
+        best = s;
+        bestIndex = i;
+      }
+    });
+    if (bestIndex >= 0) used.add(bestIndex);
+    sum += best;
+    weakest = Math.min(weakest, best);
+  });
+  const score = Math.round(sum / short.length * 100) / 100;
+  let status = "MISMATCH";
+  if (score >= 0.9 && weakest >= 0.85) status = "MATCH";
+  else if (score >= 0.75) status = "REVIEW";
+  if (status === "MATCH" && short.length === 1 && long.length > 1) status = "REVIEW";
+  return { status, score };
+}
+var RANK = { MATCH: 3, REVIEW: 2, MISMATCH: 1, UNKNOWN: 0 };
+function bestNameMatch(name, candidates) {
+  let best = { status: "UNKNOWN", score: 0, against: null };
+  candidates.forEach((candidate) => {
+    if (!candidate) return;
+    const result = compareNames(name, candidate);
+    if (RANK[result.status] > RANK[best.status] || result.status === best.status && result.score > best.score) {
+      best = { ...result, against: candidate };
+    }
+  });
+  return best;
+}
+
+export { ADVERTISER_DRAFT_FIELDS, AD_FORMATS, AD_MAX_FILE_MB, AD_MAX_VIDEO_SECONDS, AUDIENCE_TAGS, COUPONS_FLAG, DISPLAY_TYPES, FACINGS, KB_CATEGORIES, LOCATION_CATEGORIES, MAX_CUSTOM_SHARES, OPEN_QUOTATION_STATUSES, PAN_HOLDER_TYPES, REPORT_FORMATS, REPORT_FREQUENCIES, SCREEN_PARTNER_DRAFT_FIELDS, SETTLEMENT_CADENCES, SETTLEMENT_MODES, SIZE_BUCKETS, TAX_LEDGER_ENTRY_TYPES, TRAFFIC_TYPES, adChecks, advertiserDraftKeys, aspectLabel, bestNameMatch, compareNames, compatibilityOf, computeFit, computePeriodDelta, couponShareLink, couponShareText, describeAudience, describeDiscount, describeOffer, draftSignature, effectiveShares, footfallRange, formatDateRange2 as formatBookingDateRange, formatCompactIndian, formatFileSize, formatRupees, formatShortDate, getMediaShape, gstinMatchesState, gstinPan, gstinStateName, hasValue, isCompanyPan, isFlagEnabled, isFlagOn, isOpen, isValidAadhaar, isValidGstin, isValidPan, isVideo, listCities, listStates, liveWindowStatus, minPlaysPerDay, monthlyPrice, operatingSecondsPerDay, panFitsLegalStructure, parseResolutionAspectRatio, pickDraftValues, previewSrc, quotationMatchesOrder, quotationNumber, resolvePincode, screenDimensions, screenPartnerDraftKeys, shapeKey, shapeLabel, thumbSrc, totalMinPlaysPerDay };

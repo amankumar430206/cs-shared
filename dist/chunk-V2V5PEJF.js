@@ -143,16 +143,17 @@ async function parseFullEnvelope(res) {
   }
   return envelope;
 }
-async function runReported(accessToken, run) {
+async function runReported(accessToken, run, silent = false) {
   try {
     return await withSessionRefresh(accessToken, run);
   } catch (error) {
+    if (silent && error instanceof ApiClientError) error.silent = true;
     reportApiError(error);
     throw error;
   }
 }
 function apiRequest(path, options = {}) {
-  const { method = "GET", body, accessToken } = options;
+  const { method = "GET", body, accessToken, silent = false } = options;
   return runReported(accessToken, async (token) => {
     const res = await doFetch(`${getApiBaseUrl()}${path}`, {
       method,
@@ -160,7 +161,7 @@ function apiRequest(path, options = {}) {
       body: body !== void 0 ? JSON.stringify(body) : void 0
     });
     return (await parseFullEnvelope(res)).data;
-  });
+  }, silent);
 }
 var apiGet = (path, accessToken) => apiRequest(path, { method: "GET", accessToken });
 var apiPost = (path, body, accessToken) => apiRequest(path, { method: "POST", body, accessToken });

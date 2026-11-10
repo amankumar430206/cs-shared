@@ -1,4 +1,4 @@
-import { F as FrequencyLevel, k as CampaignDocuments } from './campaigns-6nJvR6CG.js';
+import { F as FrequencyLevel, k as CampaignDocuments } from './campaigns-D1_n8OTZ.js';
 
 interface AdvertiserAnalytics {
     kpis: {
@@ -801,13 +801,50 @@ declare const PHOTO_TYPES: ({
 declare const VIDEO_PHOTO_TYPE = "INSTALLATION_VIDEO";
 declare const SURROUNDING_VIDEO_TYPE = "SURROUNDING_VIDEO";
 
+type KycDraftValue = string | boolean;
+type KycDraftValues = Record<string, KycDraftValue>;
+/** `DRAFT` = autosaved by the customer; `SUBMITTED` = pre-filled from an earlier submission. */
+interface KycDraft {
+    values: KycDraftValues;
+    step: number;
+    updatedAt: string | null;
+    source: "DRAFT" | "SUBMITTED";
+}
+interface KycDraftField {
+    key: string;
+    label: string;
+    /** Needed to submit. */
+    required?: boolean;
+}
+declare const ADVERTISER_DRAFT_FIELDS: readonly KycDraftField[];
+declare const SCREEN_PARTNER_DRAFT_FIELDS: readonly KycDraftField[];
+declare const advertiserDraftKeys: string[];
+declare const screenPartnerDraftKeys: string[];
+/** Only the form's own text/boolean fields, in a fixed order — never the consent checkboxes. */
+declare function pickDraftValues(values: Record<string, unknown>, keys: readonly string[]): KycDraftValues;
+/** Stable identity of a save, so an unchanged form is never sent twice. */
+declare const draftSignature: (values: KycDraftValues, step: number) => string;
+declare const hasValue: (value: KycDraftValue | undefined) => boolean;
+
+/** GET /kyc/ifsc/:code — informational only; submit never depends on it. */
+interface IfscLookup {
+    ifsc: string;
+    status: "FOUND" | "NOT_FOUND" | "UNAVAILABLE";
+    bank?: string;
+    branch?: string;
+    city?: string;
+    state?: string;
+}
 interface AdvertiserKycStatus {
+    /** Saved/pre-filled form values; only while the form is open (PENDING / REJECTED). */
+    draft?: KycDraft | null;
     verificationStatus: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED";
     rejectionReason: string | null;
     submittedAt: string | null;
     reviewedAt: string | null;
 }
 interface ScreenPartnerKycStatus {
+    draft?: KycDraft | null;
     kycStatus: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED";
     rejectionReason: string | null;
     submittedAt: string | null;
@@ -861,6 +898,151 @@ interface KycDocument {
     uploadedAt: string;
     downloadUrl: string;
 }
+
+type CouponDiscountType = "FIXED" | "PERCENT";
+type CouponStatus = "ACTIVE" | "INACTIVE";
+type CouponVisibility = "PUBLIC" | "PRIVATE";
+type CouponEffectiveStatus = CouponStatus | "SCHEDULED" | "EXPIRED";
+interface CouponScreen {
+    id: string;
+    name: string;
+}
+interface Coupon {
+    id: string;
+    partnerId: string;
+    name: string;
+    code: string;
+    /** PUBLIC: any advertiser may use it and it is offered to everyone booking these screens. PRIVATE: only the listed advertisers. */
+    visibility: CouponVisibility;
+    allowedCount: number;
+    discountType: CouponDiscountType;
+    discountValue: number;
+    minBookingValue: number | null;
+    usageLimit: number | null;
+    perAdvertiserLimit: number;
+    startsAt: string;
+    expiresAt: string | null;
+    status: CouponStatus;
+    effectiveStatus: CouponEffectiveStatus;
+    deactivatedReason: string | null;
+    screens: CouponScreen[];
+    redeemedCount: number;
+    discountGiven: number;
+    createdAt: string;
+}
+interface CouponSummary {
+    totalBookings: number;
+    negotiatedValue: number;
+    discountValue: number;
+    castadiCommission: number;
+    pendingSettlement: number;
+    settledAmount: number;
+}
+interface CouponRedemption {
+    id: string;
+    status: "RESERVED" | "REDEEMED" | "RELEASED" | "REVERSED";
+    campaignId: string;
+    campaignName: string | null;
+    advertiserName: string | null;
+    listedValue: number;
+    discountValue: number;
+    negotiatedValue: number;
+    commission: number;
+    redeemedAt: string | null;
+    createdAt: string;
+}
+/** One entry on a private coupon's list of allowed advertisers. */
+interface AllowedAdvertiser {
+    id: string;
+    email: string | null;
+    mobile: string | null;
+    /** Set only for people the owner referred. */
+    advertiserId: string | null;
+    businessName: string | null;
+    /** INVITED: named by email / mobile. REFERRED: joined through the owner's referral. USED: has used the coupon. */
+    status: "INVITED" | "REFERRED" | "USED";
+}
+/** A coupon offered to the signed-in advertiser for the screens in their cart. */
+interface CouponOffer {
+    code: string;
+    name: string;
+    ownerName: string;
+    visibility: CouponVisibility;
+    discountType: CouponDiscountType;
+    discountValue: number;
+    minBookingValue: number | null;
+    expiresAt: string | null;
+    screenIds: string[];
+}
+/** "₹50 off" / "20% off" — the discount as an owner reads it. */
+declare function describeDiscount(coupon: Pick<Coupon, "discountType" | "discountValue">): string;
+/** "Public offer" or "3 advertisers" — who can use the coupon. */
+declare function describeAudience(coupon: Pick<Coupon, "visibility" | "allowedCount">): string;
+/** A booking link that pre-fills the code in the campaign builder. */
+declare function couponShareLink(code: string, origin: string): string;
+declare function couponShareText(coupon: Pick<Coupon, "code" | "discountType" | "discountValue">, origin: string): string;
+/** The best offer by value for display: a fixed rupee amount or a percentage, whichever the screens' owner set. */
+declare function describeOffer(offer: Pick<CouponOffer, "discountType" | "discountValue">): string;
+
+interface FeatureFlag {
+    key: string;
+    module: string;
+    label: string;
+    description: string;
+    enabled: boolean;
+    source: "code-default" | "admin" | "env-override";
+    /** true when an env var is forcing this flag's value. */
+    locked: boolean;
+}
+/** Flag that switches the screen-owner coupon module on. Off in production until the CA signs off. */
+declare const COUPONS_FLAG = "coupons.module";
+/**
+ * Fail open: a key that hasn't loaded yet or isn't registered in the backend's
+ * flag config should not hide a feature that was never meant to be gated.
+ * For coupons use {@link isFlagOn} instead, which fails closed.
+ */
+declare function isFlagEnabled(flags: FeatureFlag[] | undefined, key: string | string[]): boolean;
+/** Fail closed: only true when the list has loaded and the flag is on. For features that ship dark. */
+declare function isFlagOn(flags: FeatureFlag[] | undefined, key: string): boolean;
+
+interface ReferralCheck {
+    valid: boolean;
+    /** The owner's first name only. */
+    ownerName?: string;
+}
+interface MyReferral {
+    code: string;
+    advertisers: number;
+    screenOwners: number;
+}
+interface ReferredPerson {
+    id: string;
+    role: "ADVERTISER" | "SCREEN_PARTNER";
+    name: string;
+    businessName: string | null;
+    city: string | null;
+    /** Masked: a***@example.com */
+    email: string | null;
+    /** Masked: ******3210 */
+    mobile: string | null;
+    /** Present for advertisers — what a private coupon uses to name them. */
+    advertiserId: string | null;
+    accountStatus: "ACTIVE" | "PENDING";
+    source: "SIGNUP" | "LATER";
+    joinedAt: string;
+}
+interface MyReferrer {
+    referredBy: {
+        ownerName: string;
+        since: string;
+        source: "SIGNUP" | "LATER";
+    } | null;
+}
+/** The link an owner shares: opens the registration form with the code filled in. */
+declare function referralLink(code: string, origin: string): string;
+declare function referralShareText(code: string, origin: string): string;
+/** A referral code is 8 characters; anything shorter is not worth a server check. */
+declare const REFERRAL_CODE_MIN_LENGTH = 4;
 
 type CreativeStatus = "PENDING_REVIEW" | "APPROVED" | "REJECTED";
 type StorageProvider = "LOCAL" | "R2";
@@ -922,6 +1104,37 @@ interface LiveScreen {
         thumbUrl?: string | null;
         previewUrl?: string | null;
     };
+}
+type ScreenMapState = "LIVE" | "UPCOMING" | "RESERVED" | "PAUSED";
+interface CoverPhoto {
+    downloadUrl: string;
+    thumbUrl: string | null;
+    previewUrl: string | null;
+}
+interface ScreenMapCampaign {
+    campaignId: string;
+    campaignName: string;
+    bookingId: string;
+    state: ScreenMapState;
+    startDate: string;
+    endDate: string;
+    slotStartHour: number | null;
+    slotEndHour: number | null;
+}
+interface ScreenMapPoint {
+    screenId: string;
+    screenName: string;
+    installationAddress: string | null;
+    city: string;
+    /** The registered state of India (not the booking state). */
+    state: string;
+    /** null when the screen has no usable registered position: listed, not pinned. */
+    latitude: number | null;
+    longitude: number | null;
+    /** Most important state across the screen's campaigns; drives the pin colour. */
+    mapState: ScreenMapState;
+    coverPhoto: CoverPhoto | null;
+    campaigns: ScreenMapCampaign[];
 }
 
 /** Who the ad belongs to. "PARTNER" is the screen partner's own ad on the slots they reserved out of their own screen (cs-api's modules/partnerAds) — free, no campaign behind it. */
@@ -1019,6 +1232,20 @@ interface ScreenLocation {
     registeredLatitude?: number | null;
     registeredLongitude?: number | null;
     distanceFromRegisteredKm?: number | null;
+    status: "ONLINE" | "OFFLINE";
+    lastHeartbeatAt: string | null;
+    /** First discovery photo of the screen (signed URLs) — null when none was uploaded. */
+    coverPhoto?: {
+        downloadUrl: string;
+        thumbUrl: string | null;
+        previewUrl: string | null;
+    } | null;
+}
+interface UnlocatedScreen {
+    screenId: string;
+    screenName: string;
+    city: string | null;
+    state: string | null;
     status: "ONLINE" | "OFFLINE";
     lastHeartbeatAt: string | null;
 }
@@ -1864,4 +2091,4 @@ interface CreditRejectedCreativeResult {
     amount: number;
 }
 
-export { type HealthAlertConfig as $, ASSIGNMENT_TEAMS as A, type BillingFilters as B, type CampaignAnalytics as C, type CreateTopUpOrderResult as D, type Creative as E, type CreativeStatus as F, type CreditRejectedCreativeResult as G, DEFAULT_REPORT_FILTERS as H, DISCOVERY_PHOTO_TYPES as I, DISPLAY_TYPES as J, type DailyCollection as K, type DeviceActivation as L, type DeviceHealthReport as M, type DeviceLogHistory as N, type DeviceLogMapEntry as O, type DiscoveryScreen as P, type DiscoveryScreenPhoto as Q, type DisplaySettings as R, type ScreenOrientation as S, type DisplayType as T, EDITABLE_SCREEN_STATUSES as U, FACINGS as V, type Wallet as W, type Facing as X, type FeeConfig as Y, type FleetHealthSummary as Z, type GeographicRow as _, AUDIENCE_TAGS as a, type QuotationOrderSnapshot as a$, type HeartbeatHistoryRow as a0, type HeatmapDayStat as a1, INSTALLATION_ENVIRONMENTS as a2, INSTALLATION_PHOTO_TYPES as a3, INTERNET_TYPES as a4, type Invoice as a5, type InvoiceDetail as a6, KB_CATEGORIES as a7, type KbArticle as a8, type KbCategory as a9, type PendingCreative as aA, type PendingScreenPartnerRow as aB, type PlayStats as aC, type PlaybackHistoryRow as aD, type PlaybackLogEntry as aE, type PlaybackSummary as aF, type Playlist as aG, type PlaylistItem as aH, type PlaysBreakdown as aI, type PlaysBreakdownRow as aJ, type PlaysGroupBy as aK, type PlaysHeatmap as aL, type PlaysSummary as aM, type PlaysTimeseries as aN, type PreviewDeviceLiveness as aO, type PreviewPlaylist as aP, type ProofOfPlay as aQ, type ProofOfPlayEntry as aR, type ProofRequest as aS, type ProofRequestPhoto as aT, type ProofRequestSource as aU, type ProofRequestStatus as aV, type ProofRequestSummary as aW, type Quotation as aX, type QuotationAction as aY, type QuotationDetail as aZ, type QuotationEvent as a_, type KycDocument as aa, LOCATION_CATEGORIES as ab, type LiveScreen as ac, type LocationCategory as ad, type MonitoringTimeline as ae, type MyScreenHealth as af, type MyScreenSummary as ag, type Notification as ah, type NotificationCategory as ai, type NotificationPreferences as aj, type NotificationPriority as ak, type NotificationStatus as al, type NotificationTemplate as am, OPEN_QUOTATION_STATUSES as an, PHOTO_TYPES as ao, type PartnerAd as ap, type PartnerAdStatus as aq, type PartnerAdWithContext as ar, type PartnerAnalytics as as, type Wallet$1 as at, type WalletTransaction$1 as au, type WalletTransactionType$1 as av, type PayCampaignFromWalletResult as aw, type Payment as ax, type PaymentStatus as ay, type PendingAdvertiserRow as az, type AdOwner as b, type TicketMessage as b$, type QuotationStatus as b0, REPORT_FORMATS as b1, REPORT_FREQUENCIES as b2, REPORT_RANGES as b3, REVENUE_MODELS as b4, type Refund as b5, type RefundMethod as b6, type RefundStatus as b7, type RefundTrend as b8, type ReportFilterOptions as b9, type ScreenListItem as bA, type ScreenListingDetails as bB, type ScreenLiveCampaign as bC, type ScreenLocation as bD, type ScreenOwnerDetails as bE, type ScreenPartnerDocumentType as bF, type ScreenPartnerKycStatus as bG, type ScreenPhoto as bH, type ScreenVerificationStatus as bI, type SettlementCadence as bJ, type SettlementMode as bK, type SlaConfig as bL, type StorageProvider as bM, type SyncResult as bN, TAX_LEDGER_ENTRY_TYPES as bO, TERMINAL_TICKET_STATUSES as bP, TICKET_CATEGORIES as bQ, TICKET_PRIORITIES as bR, TICKET_STATUSES as bS, TRAFFIC_TYPES as bT, type TaxLedgerEntry as bU, type TaxLedgerEntryType as bV, type TaxLedgerFilters as bW, type TaxLedgerTotals as bX, type Ticket as bY, type TicketCategory as bZ, type TicketDetail as b_, type ReportFilters as ba, type ReportFormat as bb, type ReportFrequency as bc, type ReportGranularity as bd, type ReportRange as be, type ReportSeries as bf, type ReservationAds as bg, type RevenueBreakdown as bh, type RevenueBreakdownRow as bi, type RevenueGranularity as bj, type RevenueGroupBy as bk, type RevenueSummary as bl, type RevenueTimeseries as bm, type RevenueTotals as bn, SCREEN_ORIENTATIONS as bo, SCREEN_SIZE_PRESETS as bp, SETTLEMENT_CADENCES as bq, SETTLEMENT_MODES as br, SIZE_BUCKETS as bs, SURROUNDING_VIDEO_TYPE as bt, type SavedPaymentMethod as bu, type ScheduledReport as bv, type Screen as bw, type ScreenAnalytics as bx, type ScreenCategory as by, type ScreenHealth as bz, type AdminFinance as c, type TicketPriority as c0, type TicketStatus as c1, type TimelineBar as c2, type TimelineScreen as c3, type TodayCollection as c4, type TrafficType as c5, VIDEO_PHOTO_TYPE as c6, type WalletTransactionStatus as c7, type WithdrawalRequest as c8, type WithdrawalStatus as c9, buildReportQuery as ca, footfallRange as cb, isOpen as cc, isReportQueryable as cd, monthlyPrice as ce, orientResolution as cf, orientationLabel as cg, parseResolution as ch, parseResolutionAspectRatio as ci, quotationMatchesOrder as cj, quotationNumber as ck, screenOrientationOf as cl, type AdminOverview as d, type AdminRefund as e, type AdminRevenue as f, type AdminSettlement as g, type AdminSettlementFilters as h, type AdminTaxLedger as i, type AdminWallet as j, type AdminWithdrawalRequest as k, type AdvertiserAnalytics as l, type AdvertiserBillingInfo as m, type AdvertiserDocumentType as n, type AdvertiserKycStatus as o, type AdvertiserPreviewItem as p, type AdvertiserScreenPreview as q, type WalletTransaction as r, type WalletTransactionType as s, type AssignmentTeam as t, type AudienceTag as u, type CampaignLocation as v, type CampaignProofRequest as w, type CampaignScreenStat as x, type CampaignTrend as y, type CreateOrderResult as z };
+export { type DeviceHealthReport as $, ADVERTISER_DRAFT_FIELDS as A, type BillingFilters as B, COUPONS_FLAG as C, type CampaignScreenStat as D, type CampaignTrend as E, type Coupon as F, type CouponDiscountType as G, type CouponEffectiveStatus as H, type CouponOffer as I, type CouponRedemption as J, type CouponScreen as K, type CouponStatus as L, type CouponSummary as M, type CouponVisibility as N, type CoverPhoto as O, type CreateOrderResult as P, type CreateTopUpOrderResult as Q, type Creative as R, type ScreenOrientation as S, type CreativeStatus as T, type CreditRejectedCreativeResult as U, DEFAULT_REPORT_FILTERS as V, type Wallet as W, DISCOVERY_PHOTO_TYPES as X, DISPLAY_TYPES as Y, type DailyCollection as Z, type DeviceActivation as _, ASSIGNMENT_TEAMS as a, type Playlist as a$, type DeviceLogHistory as a0, type DeviceLogMapEntry as a1, type DiscoveryScreen as a2, type DiscoveryScreenPhoto as a3, type DisplaySettings as a4, type DisplayType as a5, EDITABLE_SCREEN_STATUSES as a6, FACINGS as a7, type Facing as a8, type FeatureFlag as a9, type MyScreenHealth as aA, type MyScreenSummary as aB, type Notification as aC, type NotificationCategory as aD, type NotificationPreferences as aE, type NotificationPriority as aF, type NotificationStatus as aG, type NotificationTemplate as aH, OPEN_QUOTATION_STATUSES as aI, PHOTO_TYPES as aJ, type PartnerAd as aK, type PartnerAdStatus as aL, type PartnerAdWithContext as aM, type PartnerAnalytics as aN, type Wallet$1 as aO, type WalletTransaction$1 as aP, type WalletTransactionType$1 as aQ, type PayCampaignFromWalletResult as aR, type Payment as aS, type PaymentStatus as aT, type PendingAdvertiserRow as aU, type PendingCreative as aV, type PendingScreenPartnerRow as aW, type PlayStats as aX, type PlaybackHistoryRow as aY, type PlaybackLogEntry as aZ, type PlaybackSummary as a_, type FeeConfig as aa, type FleetHealthSummary as ab, type GeographicRow as ac, type HealthAlertConfig as ad, type HeartbeatHistoryRow as ae, type HeatmapDayStat as af, INSTALLATION_ENVIRONMENTS as ag, INSTALLATION_PHOTO_TYPES as ah, INTERNET_TYPES as ai, type IfscLookup as aj, type Invoice as ak, type InvoiceDetail as al, KB_CATEGORIES as am, type KbArticle as an, type KbCategory as ao, type KycDocument as ap, type KycDraft as aq, type KycDraftField as ar, type KycDraftValue as as, type KycDraftValues as at, LOCATION_CATEGORIES as au, type LiveScreen as av, type LocationCategory as aw, type MonitoringTimeline as ax, type MyReferral as ay, type MyReferrer as az, AUDIENCE_TAGS as b, type ScreenLiveCampaign as b$, type PlaylistItem as b0, type PlaysBreakdown as b1, type PlaysBreakdownRow as b2, type PlaysGroupBy as b3, type PlaysHeatmap as b4, type PlaysSummary as b5, type PlaysTimeseries as b6, type PreviewDeviceLiveness as b7, type PreviewPlaylist as b8, type ProofOfPlay as b9, type ReportFrequency as bA, type ReportGranularity as bB, type ReportRange as bC, type ReportSeries as bD, type ReservationAds as bE, type RevenueBreakdown as bF, type RevenueBreakdownRow as bG, type RevenueGranularity as bH, type RevenueGroupBy as bI, type RevenueSummary as bJ, type RevenueTimeseries as bK, type RevenueTotals as bL, SCREEN_ORIENTATIONS as bM, SCREEN_PARTNER_DRAFT_FIELDS as bN, SCREEN_SIZE_PRESETS as bO, SETTLEMENT_CADENCES as bP, SETTLEMENT_MODES as bQ, SIZE_BUCKETS as bR, SURROUNDING_VIDEO_TYPE as bS, type SavedPaymentMethod as bT, type ScheduledReport as bU, type Screen as bV, type ScreenAnalytics as bW, type ScreenCategory as bX, type ScreenHealth as bY, type ScreenListItem as bZ, type ScreenListingDetails as b_, type ProofOfPlayEntry as ba, type ProofRequest as bb, type ProofRequestPhoto as bc, type ProofRequestSource as bd, type ProofRequestStatus as be, type ProofRequestSummary as bf, type Quotation as bg, type QuotationAction as bh, type QuotationDetail as bi, type QuotationEvent as bj, type QuotationOrderSnapshot as bk, type QuotationStatus as bl, REFERRAL_CODE_MIN_LENGTH as bm, REPORT_FORMATS as bn, REPORT_FREQUENCIES as bo, REPORT_RANGES as bp, REVENUE_MODELS as bq, type ReferralCheck as br, type ReferredPerson as bs, type Refund as bt, type RefundMethod as bu, type RefundStatus as bv, type RefundTrend as bw, type ReportFilterOptions as bx, type ReportFilters as by, type ReportFormat as bz, type AdOwner as c, screenOrientationOf as c$, type ScreenLocation as c0, type ScreenMapCampaign as c1, type ScreenMapPoint as c2, type ScreenMapState as c3, type ScreenOwnerDetails as c4, type ScreenPartnerDocumentType as c5, type ScreenPartnerKycStatus as c6, type ScreenPhoto as c7, type ScreenVerificationStatus as c8, type SettlementCadence as c9, type WalletTransactionStatus as cA, type WithdrawalRequest as cB, type WithdrawalStatus as cC, advertiserDraftKeys as cD, buildReportQuery as cE, couponShareLink as cF, couponShareText as cG, describeAudience as cH, describeDiscount as cI, describeOffer as cJ, draftSignature as cK, footfallRange as cL, hasValue as cM, isFlagEnabled as cN, isFlagOn as cO, isOpen as cP, isReportQueryable as cQ, monthlyPrice as cR, orientResolution as cS, orientationLabel as cT, parseResolution as cU, parseResolutionAspectRatio as cV, pickDraftValues as cW, quotationMatchesOrder as cX, quotationNumber as cY, referralLink as cZ, referralShareText as c_, type SettlementMode as ca, type SlaConfig as cb, type StorageProvider as cc, type SyncResult as cd, TAX_LEDGER_ENTRY_TYPES as ce, TERMINAL_TICKET_STATUSES as cf, TICKET_CATEGORIES as cg, TICKET_PRIORITIES as ch, TICKET_STATUSES as ci, TRAFFIC_TYPES as cj, type TaxLedgerEntry as ck, type TaxLedgerEntryType as cl, type TaxLedgerFilters as cm, type TaxLedgerTotals as cn, type Ticket as co, type TicketCategory as cp, type TicketDetail as cq, type TicketMessage as cr, type TicketPriority as cs, type TicketStatus as ct, type TimelineBar as cu, type TimelineScreen as cv, type TodayCollection as cw, type TrafficType as cx, type UnlocatedScreen as cy, VIDEO_PHOTO_TYPE as cz, type AdminFinance as d, screenPartnerDraftKeys as d0, type AdminOverview as e, type AdminRefund as f, type AdminRevenue as g, type AdminSettlement as h, type AdminSettlementFilters as i, type AdminTaxLedger as j, type AdminWallet as k, type AdminWithdrawalRequest as l, type AdvertiserAnalytics as m, type AdvertiserBillingInfo as n, type AdvertiserDocumentType as o, type AdvertiserKycStatus as p, type AdvertiserPreviewItem as q, type AdvertiserScreenPreview as r, type WalletTransaction as s, type WalletTransactionType as t, type AllowedAdvertiser as u, type AssignmentTeam as v, type AudienceTag as w, type CampaignAnalytics as x, type CampaignLocation as y, type CampaignProofRequest as z };

@@ -1,4 +1,4 @@
-import { ApiClientError } from './chunk-IVTLVE2M.js';
+import { ApiClientError } from './chunk-V2V5PEJF.js';
 import { QueryClient, MutationCache } from '@tanstack/react-query';
 
 function resolveMessage(value, args) {

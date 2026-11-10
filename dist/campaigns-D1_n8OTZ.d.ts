@@ -4,6 +4,9 @@ interface PriceLineItem {
     listedDailyRate: number;
     days: number;
     screenPrice: number;
+    /** Screen-owner coupon lines only: the listed price before the discount (CASTADI's fee is charged on this). */
+    originalListedAmount?: number;
+    couponDiscount?: number;
     platformCharge: number;
     taxAmount: number;
     totalAmount: number;
@@ -11,6 +14,11 @@ interface PriceLineItem {
 interface PriceBreakdown {
     days: number;
     lineItems: PriceLineItem[];
+    /** Listed price of every screen before any coupon. Equals subtotal when no coupon applies. */
+    listedSubtotal?: number;
+    couponDiscount?: number;
+    couponCode?: string;
+    /** Price after the coupon discount (what the screens cost). */
     subtotal: number;
     platformCharge: number;
     taxAmount: number;
@@ -106,6 +114,8 @@ interface QuoteInput {
     frequencyLevel: FrequencyLevel;
     customShares?: number;
     adDuration?: number;
+    /** A screen-owner coupon code; the server prices it (or rejects with 422 and the reason). */
+    couponCode?: string;
 }
 interface DeliveryConfig {
     levelShares: {

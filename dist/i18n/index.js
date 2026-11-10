@@ -342,7 +342,25 @@ var en_default = {
       submitForVerification: "Submit for verification",
       listTotal: "List Price",
       revisedQuotation: "Revised Quotation Amount",
-      viewMore: "{count, plural, one {View # more} other {View # more}}"
+      viewMore: "{count, plural, one {View # more} other {View # more}}",
+      couponTitle: "Offers & Coupons",
+      couponPlaceholder: "Enter coupon code",
+      couponApply: "Apply",
+      couponChecking: "Checking\u2026",
+      couponRemove: "Remove coupon",
+      couponApplied: "you save {amount}",
+      couponHint: "The coupon only works on that owner's screens. Our fee is charged on the original listed price.",
+      couponFailed: "Could not check this coupon. Please try again.",
+      couponRemoved: "That coupon no longer applies, so it was removed.",
+      listedPrice: "Listed price",
+      couponDiscount: "Coupon {code}",
+      discountedPrice: "Price after coupon",
+      offersTitle: "Offers for you",
+      offerPublic: "Public offer",
+      offerPrivate: "Just for you",
+      offerFrom: "From {owner}",
+      offerMin: "min. {amount}",
+      offerUntil: "until {date}"
     },
     launched: {
       paid: {
@@ -434,7 +452,10 @@ var en_default = {
       plays: "Est. plays",
       view: "View screen",
       select: "Select",
-      selected: "Selected"
+      selected: "Selected",
+      offersAvailable: "{count, plural, one {# coupon available} other {# coupons available}}",
+      offersUpTo: "up to {discount}",
+      offersCount: "{count, plural, one {# coupon} other {# coupons}}"
     },
     filters: {
       button: "Filters",
@@ -992,7 +1013,129 @@ var en_default = {
     stripTitle: "Cabs & autos near here",
     stripHint: "Shown as groups by city instead of one by one.",
     stripSeeAll: "See all cabs & autos",
-    stripBook: "Choose"
+    stripBook: "Choose",
+    vehicleCab: "Cab",
+    vehicleAuto: "Auto",
+    typeCabCount: "{count, plural, one {# cab} other {# cabs}}",
+    typeAutoCount: "{count, plural, one {# auto} other {# autos}}"
+  },
+  coupons: {
+    preview: {
+      title: "What this looks like",
+      example: "Example booking",
+      listed: "Listed price",
+      discount: "Discount",
+      note: "CASTADI's usual fee and commission are still worked out on the listed price. The discount comes out of your share, so it is limited to what you would receive after CASTADI's commission.",
+      clientPays: "Client pays for the screen"
+    },
+    form: {
+      createTitle: "New coupon",
+      editTitle: "Edit {code}",
+      description: "Create a coupon for your existing advertisers.",
+      progressAria: "Coupon steps",
+      progress: "Step {current} of {total}",
+      steps: {
+        "0": "The offer",
+        "1": "Screens & code",
+        "2": "Who can use it",
+        "3": "Rules"
+      },
+      back: "Back",
+      cancel: "Cancel",
+      continue: "Continue",
+      create: "Create coupon",
+      save: "Save changes",
+      saving: "Saving\u2026",
+      updated: "Coupon updated",
+      saveFailed: "Could not save the coupon. Please try again.",
+      createdTitle: "Coupon created"
+    },
+    offer: {
+      name: "Offer name",
+      nameHint: "Advertisers who can use this coupon see this name.",
+      namePlaceholder: "e.g. Sharma Motors deal",
+      typeLabel: "How much does your client save?",
+      fixed: "\u20B9 off",
+      fixedHint: "A fixed amount per screen booking",
+      percent: "% off",
+      percentHint: "A share of the listed price",
+      valueFixed: "Discount per screen booking",
+      valuePercent: "Discount percentage",
+      suggested: "Suggested names",
+      ideas: {
+        welcome: "Welcome offer: {offer}",
+        regulars: "{name}'s regular clients",
+        city: "{city} special",
+        thanks: "Thank-you offer",
+        newClient: "New client deal",
+        festive: "Festive offer"
+      }
+    },
+    screens: {
+      title: "Which of your screens?",
+      none: "You have no active screens yet.",
+      all: "All my screens",
+      count: "{count} of {total} selected",
+      search: "Search screens",
+      codeTitle: "Coupon code",
+      ownCode: "I'll choose my own code",
+      codeLabel: "Your code",
+      codeHint: "4\u201340 letters, numbers, - or _. Not case-sensitive.",
+      autoHint: "We'll create a short code for you. You can copy it on the next screen.",
+      lockedHint: "The code cannot change once issued.",
+      suggestedCodes: "Available codes. Tap to use"
+    },
+    rules: {
+      validity: "How long is it valid?",
+      validityOptions: {
+        "30": "30 days",
+        "90": "90 days",
+        NONE: "No expiry",
+        CUSTOM: "Pick dates"
+      },
+      starts: "Starts",
+      expires: "Expires",
+      limitUses: "Limit total uses",
+      totalUses: "Total uses",
+      totalUsesHint: "The coupon stops working after this many bookings.",
+      perAdvertiser: "Uses per advertiser",
+      perAdvertiserHint: "How many times one advertiser can use it.",
+      minBooking: "Minimum booking value (optional)",
+      minBookingHint: "Leave blank for no minimum."
+    },
+    created: {
+      title: "Your coupon is ready",
+      subtitle: "{offer} for your clients. Share the code and they enter it at checkout.",
+      code: "Code",
+      message: "Share message",
+      copied: "{what} copied",
+      copyFailed: "Could not copy. Select and copy it manually.",
+      copyCodeAria: "Copy code {code}",
+      copyMessage: "Copy share message",
+      another: "Create another",
+      done: "Done"
+    },
+    audience: {
+      title: "Who can use this coupon?",
+      private: "Specific advertisers",
+      privateHint: "Only the people you choose. They see it as an offer when they book your screens.",
+      public: "Everyone",
+      publicHint: "A public offer, for example a festive discount.",
+      publicNote: "Every advertiser booking your screens will see this offer and can apply it with one tap. You can switch it off any time.",
+      referredTitle: "Advertisers who joined through you",
+      selected: "{count} selected",
+      search: "Search advertisers",
+      noReferred: "No advertisers have joined through your referral yet. Share your referral link and they will appear here to choose from.",
+      addByContact: "Add by email or mobile",
+      addByContactHint: "For clients who are not on CASTADI yet, or did not join through you.",
+      contactPlaceholder: "client@example.com or 9876543210",
+      contactInvalid: "Enter a valid email or 10-digit mobile number.",
+      add: "Add",
+      addedList: "Advertisers added by email or mobile",
+      remove: "Remove {contact}",
+      referralPrompt: "Want more advertisers to choose from?",
+      referralLink: "Share your referral link"
+    }
   }
 };
 
@@ -1340,7 +1483,25 @@ var hi_default = {
       submitForVerification: "\u092A\u0941\u0937\u094D\u091F\u093F \u0915\u0947 \u0932\u093F\u090F \u092D\u0947\u091C\u0947\u0902",
       listTotal: "\u0938\u0942\u091A\u0940 \u092E\u0942\u0932\u094D\u092F",
       revisedQuotation: "\u0938\u0902\u0936\u094B\u0927\u093F\u0924 \u0915\u094B\u091F\u0947\u0936\u0928 \u0930\u093E\u0936\u093F",
-      viewMore: "{count, plural, one {# \u0914\u0930 \u0926\u0947\u0916\u0947\u0902} other {# \u0914\u0930 \u0926\u0947\u0916\u0947\u0902}}"
+      viewMore: "{count, plural, one {# \u0914\u0930 \u0926\u0947\u0916\u0947\u0902} other {# \u0914\u0930 \u0926\u0947\u0916\u0947\u0902}}",
+      couponTitle: "\u0911\u092B\u093C\u0930 \u0914\u0930 \u0915\u0942\u092A\u0928",
+      couponPlaceholder: "\u0915\u0942\u092A\u0928 \u0915\u094B\u0921 \u0921\u093E\u0932\u0947\u0902",
+      couponApply: "\u0932\u093E\u0917\u0942 \u0915\u0930\u0947\u0902",
+      couponChecking: "\u091C\u093E\u0901\u091A \u0939\u094B \u0930\u0939\u0940 \u0939\u0948\u2026",
+      couponRemove: "\u0915\u0942\u092A\u0928 \u0939\u091F\u093E\u090F\u0901",
+      couponApplied: "\u0906\u092A\u0915\u0940 \u092C\u091A\u0924 {amount}",
+      couponHint: "\u0915\u0942\u092A\u0928 \u0938\u093F\u0930\u094D\u092B \u0909\u0938\u0940 \u092E\u093E\u0932\u093F\u0915 \u0915\u0940 \u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u092A\u0930 \u091A\u0932\u0924\u093E \u0939\u0948\u0964 \u0939\u092E\u093E\u0930\u0940 \u092B\u0940\u0938 \u092E\u0942\u0932 \u0938\u0942\u091A\u0940\u092C\u0926\u094D\u0927 \u0915\u0940\u092E\u0924 \u092A\u0930 \u0932\u0917\u0924\u0940 \u0939\u0948\u0964",
+      couponFailed: "\u0907\u0938 \u0915\u0942\u092A\u0928 \u0915\u0940 \u091C\u093E\u0901\u091A \u0928\u0939\u0940\u0902 \u0939\u094B \u0938\u0915\u0940\u0964 \u0915\u0943\u092A\u092F\u093E \u092B\u093F\u0930 \u0915\u094B\u0936\u093F\u0936 \u0915\u0930\u0947\u0902\u0964",
+      couponRemoved: "\u092F\u0939 \u0915\u0942\u092A\u0928 \u0905\u092C \u0932\u093E\u0917\u0942 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0907\u0938\u0932\u093F\u090F \u0939\u091F\u093E \u0926\u093F\u092F\u093E \u0917\u092F\u093E\u0964",
+      listedPrice: "\u0938\u0942\u091A\u0940\u092C\u0926\u094D\u0927 \u0915\u0940\u092E\u0924",
+      couponDiscount: "\u0915\u0942\u092A\u0928 {code}",
+      discountedPrice: "\u0915\u0942\u092A\u0928 \u0915\u0947 \u092C\u093E\u0926 \u0915\u0940\u092E\u0924",
+      offersTitle: "\u0906\u092A\u0915\u0947 \u0932\u093F\u090F \u0911\u092B\u093C\u0930",
+      offerPublic: "\u0938\u093E\u0930\u094D\u0935\u091C\u0928\u093F\u0915 \u0911\u092B\u093C\u0930",
+      offerPrivate: "\u0938\u093F\u0930\u094D\u092B\u093C \u0906\u092A\u0915\u0947 \u0932\u093F\u090F",
+      offerFrom: "{owner} \u0915\u0940 \u0913\u0930 \u0938\u0947",
+      offerMin: "\u0928\u094D\u092F\u0942\u0928\u0924\u092E {amount}",
+      offerUntil: "{date} \u0924\u0915"
     },
     launched: {
       paid: {
@@ -1432,7 +1593,10 @@ var hi_default = {
       plays: "\u0905\u0928\u0941\u092E\u093E\u0928\u093F\u0924 \u092C\u093E\u0930",
       view: "\u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u0926\u0947\u0916\u0947\u0902",
       select: "\u091A\u0941\u0928\u0947\u0902",
-      selected: "\u091A\u0941\u0928\u0940 \u0917\u0908"
+      selected: "\u091A\u0941\u0928\u0940 \u0917\u0908",
+      offersAvailable: "{count, plural, one {# \u0915\u0942\u092A\u0928 \u0909\u092A\u0932\u092C\u094D\u0927} other {# \u0915\u0942\u092A\u0928 \u0909\u092A\u0932\u092C\u094D\u0927}}",
+      offersUpTo: "{discount} \u0924\u0915",
+      offersCount: "{count, plural, one {# \u0915\u0942\u092A\u0928} other {# \u0915\u0942\u092A\u0928}}"
     },
     filters: {
       button: "\u092B\u093C\u093F\u0932\u094D\u091F\u0930",
@@ -1990,7 +2154,129 @@ var hi_default = {
     stripTitle: "\u092F\u0939\u093E\u0901 \u0915\u0947 \u0915\u0948\u092C \u0914\u0930 \u0911\u091F\u094B",
     stripHint: "\u090F\u0915-\u090F\u0915 \u0915\u0930\u0915\u0947 \u0928\u0939\u0940\u0902, \u0936\u0939\u0930 \u0915\u0947 \u0938\u092E\u0942\u0939 \u092E\u0947\u0902 \u0926\u093F\u0916\u093E\u090F \u0917\u090F \u0939\u0948\u0902\u0964",
     stripSeeAll: "\u0938\u092D\u0940 \u0915\u0948\u092C \u0914\u0930 \u0911\u091F\u094B \u0926\u0947\u0916\u0947\u0902",
-    stripBook: "\u091A\u0941\u0928\u0947\u0902"
+    stripBook: "\u091A\u0941\u0928\u0947\u0902",
+    vehicleCab: "\u0915\u0948\u092C",
+    vehicleAuto: "\u0911\u091F\u094B",
+    typeCabCount: "{count, plural, one {# \u0915\u0948\u092C} other {# \u0915\u0948\u092C}}",
+    typeAutoCount: "{count, plural, one {# \u0911\u091F\u094B} other {# \u0911\u091F\u094B}}"
+  },
+  coupons: {
+    preview: {
+      title: "\u092F\u0939 \u0910\u0938\u093E \u0926\u093F\u0916\u0947\u0917\u093E",
+      example: "\u0909\u0926\u093E\u0939\u0930\u0923 \u092C\u0941\u0915\u093F\u0902\u0917",
+      listed: "\u0938\u0942\u091A\u0940\u092C\u0926\u094D\u0927 \u0915\u0940\u092E\u0924",
+      discount: "\u091B\u0942\u091F",
+      note: "CASTADI \u0915\u0940 \u0938\u093E\u092E\u093E\u0928\u094D\u092F \u092B\u0940\u0938 \u0914\u0930 \u0915\u092E\u0940\u0936\u0928 \u0905\u092C \u092D\u0940 \u0938\u0942\u091A\u0940\u092C\u0926\u094D\u0927 \u0915\u0940\u092E\u0924 \u092A\u0930 \u0939\u0940 \u0932\u0917\u0924\u0947 \u0939\u0948\u0902\u0964 \u091B\u0942\u091F \u0906\u092A\u0915\u0947 \u0939\u093F\u0938\u094D\u0938\u0947 \u0938\u0947 \u0915\u091F\u0924\u0940 \u0939\u0948, \u0907\u0938\u0932\u093F\u090F \u0935\u0939 CASTADI \u0915\u0947 \u0915\u092E\u0940\u0936\u0928 \u0915\u0947 \u092C\u093E\u0926 \u0906\u092A\u0915\u094B \u092E\u093F\u0932\u0928\u0947 \u0935\u093E\u0932\u0940 \u0930\u0915\u092E \u0924\u0915 \u0939\u0940 \u0938\u0940\u092E\u093F\u0924 \u0939\u0948\u0964",
+      clientPays: "\u0915\u094D\u0932\u093E\u0907\u0902\u091F \u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u0915\u0947 \u0932\u093F\u090F \u0926\u0947\u0917\u093E"
+    },
+    form: {
+      createTitle: "\u0928\u092F\u093E \u0915\u0942\u092A\u0928",
+      editTitle: "{code} \u092C\u0926\u0932\u0947\u0902",
+      description: "\u0905\u092A\u0928\u0947 \u092E\u094C\u091C\u0942\u0926\u093E \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E\u0913\u0902 \u0915\u0947 \u0932\u093F\u090F \u0915\u0942\u092A\u0928 \u092C\u0928\u093E\u090F\u0901\u0964",
+      progressAria: "\u0915\u0942\u092A\u0928 \u0915\u0947 \u091A\u0930\u0923",
+      progress: "\u091A\u0930\u0923 {current} / {total}",
+      steps: {
+        "0": "\u0911\u092B\u093C\u0930",
+        "1": "\u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u0914\u0930 \u0915\u094B\u0921",
+        "2": "\u0915\u094C\u0928 \u0907\u0938\u094D\u0924\u0947\u092E\u093E\u0932 \u0915\u0930 \u0938\u0915\u0924\u093E \u0939\u0948",
+        "3": "\u0928\u093F\u092F\u092E"
+      },
+      back: "\u0935\u093E\u092A\u0938",
+      cancel: "\u0930\u0926\u094D\u0926 \u0915\u0930\u0947\u0902",
+      continue: "\u0906\u0917\u0947 \u092C\u0922\u093C\u0947\u0902",
+      create: "\u0915\u0942\u092A\u0928 \u092C\u0928\u093E\u090F\u0901",
+      save: "\u092C\u0926\u0932\u093E\u0935 \u0938\u0939\u0947\u091C\u0947\u0902",
+      saving: "\u0938\u0939\u0947\u091C\u093E \u091C\u093E \u0930\u0939\u093E \u0939\u0948\u2026",
+      updated: "\u0915\u0942\u092A\u0928 \u0905\u092A\u0921\u0947\u091F \u0939\u094B \u0917\u092F\u093E",
+      saveFailed: "\u0915\u0942\u092A\u0928 \u0938\u0939\u0947\u091C\u093E \u0928\u0939\u0940\u0902 \u091C\u093E \u0938\u0915\u093E\u0964 \u0915\u0943\u092A\u092F\u093E \u092B\u093F\u0930 \u0915\u094B\u0936\u093F\u0936 \u0915\u0930\u0947\u0902\u0964",
+      createdTitle: "\u0915\u0942\u092A\u0928 \u092C\u0928 \u0917\u092F\u093E"
+    },
+    offer: {
+      name: "\u0911\u092B\u093C\u0930 \u0915\u093E \u0928\u093E\u092E",
+      nameHint: "\u091C\u094B \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E \u092F\u0939 \u0915\u0942\u092A\u0928 \u0907\u0938\u094D\u0924\u0947\u092E\u093E\u0932 \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902, \u0909\u0928\u094D\u0939\u0947\u0902 \u092F\u0939 \u0928\u093E\u092E \u0926\u093F\u0916\u0947\u0917\u093E\u0964",
+      namePlaceholder: "\u091C\u0948\u0938\u0947 \u0936\u0930\u094D\u092E\u093E \u092E\u094B\u091F\u0930\u094D\u0938 \u0921\u0940\u0932",
+      typeLabel: "\u0906\u092A\u0915\u0947 \u0915\u094D\u0932\u093E\u0907\u0902\u091F \u0915\u094B \u0915\u093F\u0924\u0928\u0940 \u092C\u091A\u0924 \u0939\u094B\u0917\u0940?",
+      fixed: "\u20B9 \u091B\u0942\u091F",
+      fixedHint: "\u0939\u0930 \u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u092C\u0941\u0915\u093F\u0902\u0917 \u092A\u0930 \u0924\u092F \u0930\u0915\u092E",
+      percent: "% \u091B\u0942\u091F",
+      percentHint: "\u0938\u0942\u091A\u0940\u092C\u0926\u094D\u0927 \u0915\u0940\u092E\u0924 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E",
+      valueFixed: "\u0939\u0930 \u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u092C\u0941\u0915\u093F\u0902\u0917 \u092A\u0930 \u091B\u0942\u091F",
+      valuePercent: "\u091B\u0942\u091F \u092A\u094D\u0930\u0924\u093F\u0936\u0924",
+      suggested: "\u0938\u0941\u091D\u093E\u090F \u0917\u090F \u0928\u093E\u092E",
+      ideas: {
+        welcome: "\u0935\u0947\u0932\u0915\u092E \u0911\u092B\u093C\u0930: {offer}",
+        regulars: "{name} \u0915\u0947 \u0928\u093F\u092F\u092E\u093F\u0924 \u0915\u094D\u0932\u093E\u0907\u0902\u091F",
+        city: "{city} \u0938\u094D\u092A\u0947\u0936\u0932",
+        thanks: "\u0927\u0928\u094D\u092F\u0935\u093E\u0926 \u0911\u092B\u093C\u0930",
+        newClient: "\u0928\u090F \u0915\u094D\u0932\u093E\u0907\u0902\u091F \u0915\u0947 \u0932\u093F\u090F \u0921\u0940\u0932",
+        festive: "\u0924\u094D\u092F\u094B\u0939\u093E\u0930 \u0911\u092B\u093C\u0930"
+      }
+    },
+    screens: {
+      title: "\u0906\u092A\u0915\u0940 \u0915\u094C\u0928-\u0938\u0940 \u0938\u094D\u0915\u094D\u0930\u0940\u0928?",
+      none: "\u0905\u092D\u0940 \u0906\u092A\u0915\u0940 \u0915\u094B\u0908 \u0938\u0915\u094D\u0930\u093F\u092F \u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u0928\u0939\u0940\u0902 \u0939\u0948\u0964",
+      all: "\u092E\u0947\u0930\u0940 \u0938\u092D\u0940 \u0938\u094D\u0915\u094D\u0930\u0940\u0928",
+      count: "{total} \u092E\u0947\u0902 \u0938\u0947 {count} \u091A\u0941\u0928\u0940 \u0917\u0908\u0902",
+      search: "\u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u0916\u094B\u091C\u0947\u0902",
+      codeTitle: "\u0915\u0942\u092A\u0928 \u0915\u094B\u0921",
+      ownCode: "\u092E\u0948\u0902 \u0905\u092A\u0928\u093E \u0915\u094B\u0921 \u0916\u0941\u0926 \u091A\u0941\u0928\u0942\u0901\u0917\u093E",
+      codeLabel: "\u0906\u092A\u0915\u093E \u0915\u094B\u0921",
+      codeHint: "4\u201340 \u0905\u0915\u094D\u0937\u0930, \u0905\u0902\u0915, - \u092F\u093E _\u0964 \u0905\u0915\u094D\u0937\u0930\u094B\u0902 \u0915\u093E \u0915\u0947\u0938 \u092E\u093E\u092F\u0928\u0947 \u0928\u0939\u0940\u0902 \u0930\u0916\u0924\u093E\u0964",
+      autoHint: "\u0939\u092E \u0906\u092A\u0915\u0947 \u0932\u093F\u090F \u091B\u094B\u091F\u093E \u0915\u094B\u0921 \u092C\u0928\u093E \u0926\u0947\u0902\u0917\u0947\u0964 \u0905\u0917\u0932\u0940 \u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u092A\u0930 \u0906\u092A \u0909\u0938\u0947 \u0915\u0949\u092A\u0940 \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902\u0964",
+      lockedHint: "\u0915\u094B\u0921 \u091C\u093E\u0930\u0940 \u0939\u094B\u0928\u0947 \u0915\u0947 \u092C\u093E\u0926 \u092C\u0926\u0932\u093E \u0928\u0939\u0940\u0902 \u091C\u093E \u0938\u0915\u0924\u093E\u0964",
+      suggestedCodes: "\u0909\u092A\u0932\u092C\u094D\u0927 \u0915\u094B\u0921\u0964 \u091A\u0941\u0928\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u091F\u0948\u092A \u0915\u0930\u0947\u0902"
+    },
+    rules: {
+      validity: "\u092F\u0939 \u0915\u093F\u0924\u0928\u0947 \u0938\u092E\u092F \u0924\u0915 \u092E\u093E\u0928\u094D\u092F \u0930\u0939\u0947?",
+      validityOptions: {
+        "30": "30 \u0926\u093F\u0928",
+        "90": "90 \u0926\u093F\u0928",
+        NONE: "\u0915\u094B\u0908 \u0938\u092E\u093E\u092A\u094D\u0924\u093F \u0928\u0939\u0940\u0902",
+        CUSTOM: "\u0924\u093E\u0930\u0940\u0916\u0947\u0902 \u091A\u0941\u0928\u0947\u0902"
+      },
+      starts: "\u0936\u0941\u0930\u0942",
+      expires: "\u0938\u092E\u093E\u092A\u094D\u0924",
+      limitUses: "\u0915\u0941\u0932 \u0909\u092A\u092F\u094B\u0917 \u0938\u0940\u092E\u093F\u0924 \u0915\u0930\u0947\u0902",
+      totalUses: "\u0915\u0941\u0932 \u0909\u092A\u092F\u094B\u0917",
+      totalUsesHint: "\u0907\u0924\u0928\u0940 \u092C\u0941\u0915\u093F\u0902\u0917 \u0915\u0947 \u092C\u093E\u0926 \u0915\u0942\u092A\u0928 \u0915\u093E\u092E \u0915\u0930\u0928\u093E \u092C\u0902\u0926 \u0915\u0930 \u0926\u0947\u0917\u093E\u0964",
+      perAdvertiser: "\u0939\u0930 \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E \u0915\u0947 \u0909\u092A\u092F\u094B\u0917",
+      perAdvertiserHint: "\u090F\u0915 \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E \u0907\u0938\u0947 \u0915\u093F\u0924\u0928\u0940 \u092C\u093E\u0930 \u0907\u0938\u094D\u0924\u0947\u092E\u093E\u0932 \u0915\u0930 \u0938\u0915\u0924\u093E \u0939\u0948\u0964",
+      minBooking: "\u0928\u094D\u092F\u0942\u0928\u0924\u092E \u092C\u0941\u0915\u093F\u0902\u0917 \u092E\u0942\u0932\u094D\u092F (\u0935\u0948\u0915\u0932\u094D\u092A\u093F\u0915)",
+      minBookingHint: "\u0928\u094D\u092F\u0942\u0928\u0924\u092E \u0928 \u091A\u093E\u0939\u093F\u090F \u0924\u094B \u0916\u093E\u0932\u0940 \u091B\u094B\u0921\u093C\u0947\u0902\u0964"
+    },
+    created: {
+      title: "\u0906\u092A\u0915\u093E \u0915\u0942\u092A\u0928 \u0924\u0948\u092F\u093E\u0930 \u0939\u0948",
+      subtitle: "\u0906\u092A\u0915\u0947 \u0915\u094D\u0932\u093E\u0907\u0902\u091F \u0915\u0947 \u0932\u093F\u090F {offer}\u0964 \u0915\u094B\u0921 \u0938\u093E\u091D\u093E \u0915\u0930\u0947\u0902, \u0935\u0947 \u091A\u0947\u0915\u0906\u0909\u091F \u092A\u0930 \u0909\u0938\u0947 \u0921\u093E\u0932\u0947\u0902\u0917\u0947\u0964",
+      code: "\u0915\u094B\u0921",
+      message: "\u0938\u093E\u091D\u093E \u0915\u0930\u0928\u0947 \u0915\u093E \u0938\u0902\u0926\u0947\u0936",
+      copied: "{what} \u0915\u0949\u092A\u0940 \u0939\u094B \u0917\u092F\u093E",
+      copyFailed: "\u0915\u0949\u092A\u0940 \u0928\u0939\u0940\u0902 \u0939\u094B \u0938\u0915\u093E\u0964 \u0909\u0938\u0947 \u091A\u0941\u0928\u0915\u0930 \u0916\u0941\u0926 \u0915\u0949\u092A\u0940 \u0915\u0930\u0947\u0902\u0964",
+      copyCodeAria: "\u0915\u094B\u0921 {code} \u0915\u0949\u092A\u0940 \u0915\u0930\u0947\u0902",
+      copyMessage: "\u0938\u093E\u091D\u093E \u0938\u0902\u0926\u0947\u0936 \u0915\u0949\u092A\u0940 \u0915\u0930\u0947\u0902",
+      another: "\u090F\u0915 \u0914\u0930 \u092C\u0928\u093E\u090F\u0901",
+      done: "\u0939\u094B \u0917\u092F\u093E"
+    },
+    audience: {
+      title: "\u092F\u0939 \u0915\u0942\u092A\u0928 \u0915\u094C\u0928 \u0907\u0938\u094D\u0924\u0947\u092E\u093E\u0932 \u0915\u0930 \u0938\u0915\u0924\u093E \u0939\u0948?",
+      private: "\u091A\u0941\u0928\u0947 \u0939\u0941\u090F \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E",
+      privateHint: "\u0938\u093F\u0930\u094D\u092B\u093C \u0935\u0939\u0940 \u0932\u094B\u0917 \u091C\u093F\u0928\u094D\u0939\u0947\u0902 \u0906\u092A \u091A\u0941\u0928\u0947\u0902\u0964 \u0906\u092A\u0915\u0940 \u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u092C\u0941\u0915 \u0915\u0930\u0924\u0947 \u0938\u092E\u092F \u0909\u0928\u094D\u0939\u0947\u0902 \u092F\u0939 \u0911\u092B\u093C\u0930 \u0926\u093F\u0916\u0947\u0917\u093E\u0964",
+      public: "\u0938\u092D\u0940",
+      publicHint: "\u0938\u093E\u0930\u094D\u0935\u091C\u0928\u093F\u0915 \u0911\u092B\u093C\u0930, \u091C\u0948\u0938\u0947 \u0924\u094D\u092F\u094B\u0939\u093E\u0930 \u0915\u0940 \u091B\u0942\u091F\u0964",
+      publicNote: "\u0906\u092A\u0915\u0940 \u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u092C\u0941\u0915 \u0915\u0930\u0928\u0947 \u0935\u093E\u0932\u0947 \u0939\u0930 \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E \u0915\u094B \u092F\u0939 \u0911\u092B\u093C\u0930 \u0926\u093F\u0916\u0947\u0917\u093E \u0914\u0930 \u0935\u0939 \u090F\u0915 \u091F\u0948\u092A \u092E\u0947\u0902 \u0932\u0917\u093E \u0938\u0915\u0947\u0917\u093E\u0964 \u0906\u092A \u0907\u0938\u0947 \u0915\u092D\u0940 \u092D\u0940 \u092C\u0902\u0926 \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902\u0964",
+      referredTitle: "\u0906\u092A\u0915\u0947 \u091C\u093C\u0930\u093F\u090F \u091C\u0941\u0921\u093C\u0947 \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E",
+      selected: "{count} \u091A\u0941\u0928\u0947 \u0917\u090F",
+      search: "\u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E \u0916\u094B\u091C\u0947\u0902",
+      noReferred: "\u0905\u092D\u0940 \u0924\u0915 \u0906\u092A\u0915\u0947 \u0930\u0947\u092B\u093C\u0930\u0932 \u0938\u0947 \u0915\u094B\u0908 \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E \u0928\u0939\u0940\u0902 \u091C\u0941\u0921\u093C\u093E \u0939\u0948\u0964 \u0905\u092A\u0928\u093E \u0930\u0947\u092B\u093C\u0930\u0932 \u0932\u093F\u0902\u0915 \u0938\u093E\u091D\u093E \u0915\u0930\u0947\u0902, \u0935\u0947 \u092F\u0939\u093E\u0901 \u091A\u0941\u0928\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u0926\u093F\u0916\u0947\u0902\u0917\u0947\u0964",
+      addByContact: "\u0908\u092E\u0947\u0932 \u092F\u093E \u092E\u094B\u092C\u093E\u0907\u0932 \u0938\u0947 \u091C\u094B\u0921\u093C\u0947\u0902",
+      addByContactHint: "\u0909\u0928 \u0915\u094D\u0932\u093E\u0907\u0902\u091F \u0915\u0947 \u0932\u093F\u090F \u091C\u094B \u0905\u092D\u0940 CASTADI \u092A\u0930 \u0928\u0939\u0940\u0902 \u0939\u0948\u0902, \u092F\u093E \u0906\u092A\u0915\u0947 \u091C\u093C\u0930\u093F\u090F \u0928\u0939\u0940\u0902 \u091C\u0941\u0921\u093C\u0947\u0964",
+      contactPlaceholder: "client@example.com \u092F\u093E 9876543210",
+      contactInvalid: "\u0938\u0939\u0940 \u0908\u092E\u0947\u0932 \u092F\u093E 10 \u0905\u0902\u0915\u094B\u0902 \u0915\u093E \u092E\u094B\u092C\u093E\u0907\u0932 \u0928\u0902\u092C\u0930 \u0921\u093E\u0932\u0947\u0902\u0964",
+      add: "\u091C\u094B\u0921\u093C\u0947\u0902",
+      addedList: "\u0908\u092E\u0947\u0932 \u092F\u093E \u092E\u094B\u092C\u093E\u0907\u0932 \u0938\u0947 \u091C\u094B\u0921\u093C\u0947 \u0917\u090F \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E",
+      remove: "{contact} \u0939\u091F\u093E\u090F\u0901",
+      referralPrompt: "\u091A\u0941\u0928\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u0914\u0930 \u0935\u093F\u091C\u094D\u091E\u093E\u092A\u0928\u0926\u093E\u0924\u093E \u091A\u093E\u0939\u093F\u090F?",
+      referralLink: "\u0905\u092A\u0928\u093E \u0930\u0947\u092B\u093C\u0930\u0932 \u0932\u093F\u0902\u0915 \u0938\u093E\u091D\u093E \u0915\u0930\u0947\u0902"
+    }
   }
 };
 

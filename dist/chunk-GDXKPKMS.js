@@ -17,4 +17,13 @@ function buildReportQuery(filters, extra = {}) {
 }
 var isReportQueryable = (f) => f.range !== "custom" || !!f.from && !!f.to;
 
-export { DEFAULT_REPORT_FILTERS, REPORT_RANGES, buildReportQuery, isReportQueryable };
+// src/types/referrals.ts
+function referralLink(code, origin) {
+  return `${origin}/register?ref=${encodeURIComponent(code)}`;
+}
+function referralShareText(code, origin) {
+  return `Join me on CASTADI to book digital screens. Sign up with my referral code ${code}: ${referralLink(code, origin)}`;
+}
+var REFERRAL_CODE_MIN_LENGTH = 4;
+
+export { DEFAULT_REPORT_FILTERS, REFERRAL_CODE_MIN_LENGTH, REPORT_RANGES, buildReportQuery, isReportQueryable, referralLink, referralShareText };

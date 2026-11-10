@@ -1,5 +1,7 @@
-import { buildReportQuery, isReportQueryable } from '../chunk-WRV2ZKUS.js';
-import { useHasSession, apiGet, getAccessToken, session, apiPost, apiPatch, ApiClientError, apiDelete, apiGetPaginated, apiUpload, apiPut, useSession, apiRequest } from '../chunk-IVTLVE2M.js';
+import { IFSC_PATTERN } from '../chunk-KX3EQL42.js';
+import { buildReportQuery, REFERRAL_CODE_MIN_LENGTH, isReportQueryable } from '../chunk-GDXKPKMS.js';
+import { useHasSession, apiGet, getAccessToken, session, apiPost, apiPatch, ApiClientError, apiDelete, apiGetPaginated, apiUpload, apiPut, useSession, apiRequest } from '../chunk-V2V5PEJF.js';
+import '../chunk-HK7CF55G.js';
 import { useQuery, useQueryClient, useMutation, useInfiniteQuery, keepPreviousData, useQueries } from '@tanstack/react-query';
 
 function useAdvertiserAnalyticsQuery() {
@@ -785,6 +787,141 @@ function useCheckoutMutation() {
     }
   });
 }
+function useMyCouponsQuery(page = 1, enabled = true) {
+  const hasToken = useHasSession();
+  return useQuery({
+    queryKey: ["coupons", "mine", "list", page],
+    queryFn: () => apiGetPaginated(`/coupons/mine?page=${page}&limit=20`, getAccessToken()),
+    enabled: hasToken && enabled,
+    placeholderData: keepPreviousData
+  });
+}
+function useMyCouponSummaryQuery(enabled = true) {
+  const hasToken = useHasSession();
+  return useQuery({
+    queryKey: ["coupons", "mine", "summary"],
+    queryFn: () => apiGet("/coupons/mine/summary", getAccessToken()),
+    enabled: hasToken && enabled
+  });
+}
+function useMyCouponRedemptionsQuery(couponId) {
+  const hasToken = useHasSession();
+  return useQuery({
+    queryKey: ["coupons", "mine", "redemptions", couponId],
+    queryFn: () => apiGetPaginated(`/coupons/mine/${couponId}/redemptions?limit=50`, getAccessToken()),
+    enabled: hasToken && !!couponId
+  });
+}
+function useCouponAdvertisersQuery(couponId) {
+  const hasToken = useHasSession();
+  return useQuery({
+    queryKey: ["coupons", "mine", "advertisers", couponId],
+    queryFn: () => apiGet(`/coupons/mine/${couponId}/advertisers`, getAccessToken()),
+    enabled: hasToken && !!couponId
+  });
+}
+function useSetMyCouponStatusMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, status }) => apiPost(`/coupons/mine/${id}/status`, { status }, getAccessToken()),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["coupons"] })
+  });
+}
+function useCouponOffersQuery(screenIds, enabled = true) {
+  const hasToken = useHasSession();
+  const key = [...screenIds].sort().join(",");
+  return useQuery({
+    queryKey: ["coupons", "offers", key],
+    queryFn: () => apiGet(`/coupons/offers?screenIds=${key}`, getAccessToken()),
+    enabled: hasToken && enabled && screenIds.length > 0,
+    staleTime: 6e4
+  });
+}
+var OFFER_CHUNK = 40;
+function useCouponOffersByScreen(screenIds, enabled) {
+  const hasToken = useHasSession();
+  const chunks = [];
+  for (let i = 0; i < screenIds.length; i += OFFER_CHUNK) chunks.push(screenIds.slice(i, i + OFFER_CHUNK));
+  const results = useQueries({
+    queries: chunks.map((chunk) => {
+      const key = [...chunk].sort().join(",");
+      return {
+        queryKey: ["coupons", "offers", key],
+        queryFn: () => apiGet(`/coupons/offers?screenIds=${key}`, getAccessToken()),
+        enabled: hasToken && enabled,
+        staleTime: 6e4,
+        retry: false
+      };
+    })
+  });
+  const byScreen = /* @__PURE__ */ new Map();
+  for (const result of results) {
+    for (const offer of result.data ?? []) {
+      for (const screenId of offer.screenIds) byScreen.set(screenId, [...byScreen.get(screenId) ?? [], offer]);
+    }
+  }
+  return byScreen;
+}
+function useValidateCouponMutation() {
+  return useMutation({
+    mutationFn: ({ input, couponCode }) => apiPost("/pricing/estimate", { ...input, couponCode }, getAccessToken())
+  });
+}
+function useFeatureFlagsQuery() {
+  const signedIn = useHasSession();
+  return useQuery({
+    queryKey: ["feature-flags", signedIn],
+    queryFn: () => apiGet("/feature-flags", getAccessToken()),
+    staleTime: 5 * 6e4
+  });
+}
+var checkReferralCode = (code) => apiGet(`/referrals/check?code=${encodeURIComponent(code.trim())}`);
+function useReferralCheckQuery(code) {
+  const trimmed = code.trim();
+  return useQuery({
+    queryKey: ["referrals", "check", trimmed.toUpperCase()],
+    queryFn: () => checkReferralCode(trimmed),
+    enabled: trimmed.length >= REFERRAL_CODE_MIN_LENGTH,
+    staleTime: 5 * 6e4,
+    retry: false
+  });
+}
+function useMyReferralQuery() {
+  const hasToken = useHasSession();
+  return useQuery({
+    queryKey: ["referrals", "mine"],
+    queryFn: () => apiGet("/referrals/mine", getAccessToken()),
+    enabled: hasToken
+  });
+}
+function useReferredPeopleQuery(role, page = 1, limit = 20) {
+  const hasToken = useHasSession();
+  return useQuery({
+    queryKey: ["referrals", "people", role, page, limit],
+    queryFn: () => {
+      const query = new URLSearchParams({ page: String(page), limit: String(limit) });
+      if (role) query.set("role", role);
+      return apiGetPaginated(`/referrals/mine/people?${query.toString()}`, getAccessToken());
+    },
+    enabled: hasToken,
+    placeholderData: keepPreviousData
+  });
+}
+function useMyReferrerQuery(enabled = true) {
+  const hasToken = useHasSession();
+  return useQuery({
+    queryKey: ["referrals", "me"],
+    queryFn: () => apiGet("/referrals/me", getAccessToken()),
+    enabled: hasToken && enabled
+  });
+}
+function useApplyReferralMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (code) => apiPost("/referrals/apply", { code: code.trim() }, getAccessToken()),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["referrals"] })
+  });
+}
 function buildQuery(params) {
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
@@ -873,6 +1010,15 @@ function useApplyMediaMutation() {
       queryClient.invalidateQueries({ queryKey: ["creatives", "mine"] });
       queryClient.invalidateQueries({ queryKey: ["media"] });
     }
+  });
+}
+function useScreenMapQuery(enabled = true) {
+  const hasAccessToken = useHasSession();
+  return useQuery({
+    queryKey: ["creatives", "screen-map"],
+    queryFn: () => apiGet("/creatives/screen-map", getAccessToken()),
+    enabled: hasAccessToken && enabled,
+    refetchInterval: 6e4
   });
 }
 function buildQuery2(params) {
@@ -1237,6 +1383,17 @@ var useApproveAdvertiserMutation = () => useReviewMutation("advertisers", "appro
 var useRejectAdvertiserMutation = () => useReviewMutation("advertisers", "reject");
 var useApproveScreenPartnerMutation = () => useReviewMutation("screen-partners", "approve");
 var useRejectScreenPartnerMutation = () => useReviewMutation("screen-partners", "reject");
+var saveKycDraftRequest = (draft) => apiRequest("/kyc/draft/me", { method: "PUT", body: draft, accessToken: getAccessToken(), silent: true });
+function useIfscLookupQuery(code) {
+  const hasAccessToken = useHasSession();
+  return useQuery({
+    queryKey: ["kyc", "ifsc", code],
+    queryFn: () => apiRequest(`/kyc/ifsc/${code}`, { accessToken: getAccessToken(), silent: true }),
+    enabled: hasAccessToken && !!code && IFSC_PATTERN.test(code),
+    staleTime: Infinity,
+    retry: false
+  });
+}
 var NOTIFICATIONS_UNREAD_COUNT_KEY = ["notifications", "unread-count"];
 var NOTIFICATIONS_LIST_KEY = ["notifications", "list"];
 var NOTIFICATIONS_PREFERENCES_KEY = ["notifications", "preferences"];
@@ -2401,4 +2558,4 @@ function toSearchFilters(f, text) {
   };
 }
 
-export { EMPTY_FILTERS, NOTIFICATIONS_LIST_KEY, NOTIFICATIONS_PREFERENCES_KEY, NOTIFICATIONS_UNREAD_COUNT_KEY, activeFilterCount, campaignReportPath, compareAppVersions, getSessionLimit, invoicePdfPath, logoutOnServer, placeKey, planToRequest, planTotal, playsExportPath, proofOfPlayExportPath, quotationPdfPath, registerPushToken, revenueExportPath, toSearchFilters, unregisterPushToken, useAcceptQuotationMutation, useActivateScreenMutation, useAddTicketMessageMutation, useAdminBookingFunnelQuery, useAdminFinanceQuery, useAdminGeographicQuery, useAdminOverviewQuery, useAdminRefundTrendQuery, useAdminRevenueQuery, useAdminScreensListQuery, useAdminSettlementDetailQuery, useAdminSettlementsQuery, useAdminTaxLedgerQuery, useAdminTicketsQuery, useAdminWalletsQuery, useAdvertiserAnalyticsQuery, useAdvertiserScreenPreviewQuery, useWalletQuery2 as useAdvertiserWalletQuery, useAppConfigQuery, useApplyMediaMutation, useApproveAdvertiserMutation, useApproveCreativeMutation, useApprovePaymentMutation, useApproveRefundMutation, useApproveScreenMutation, useApproveScreenPartnerMutation, useApproveSelfReservationMutation, useApproveWithdrawalMutation, useAssignTicketMutation, useBulkRegisterCabsMutation, useCabLocationsQuery, useCabPicksQuery, useCampaignAnalyticsQuery, useCampaignBookingsQuery, useCampaignCreativesQuery, useCampaignPlaybackQuery, useCampaignProofRequestsQuery, useCampaignQuery, useCampaignQuotationQuery, useCampaignQuoteQuery, useCampaignTrendQuery, useCancelBookingMutation, useCancelCampaignMutation, useCancelSelfReservationMutation, useCancelWithdrawalMutation, useCategoriesQuery, useChangeEmailMutation, useChangeMobileNumberMutation, useChangePasswordMutation, useCheckAvailabilityMutation, useCheckAvailabilityQuery, useCheckoutMutation, useClaimActivationMutation, useCloseTicketMutation, useCreateBookingMutation, useCreateCampaignMutation, useCreateKbArticleMutation, useCreateOrderMutation, useCreateRefundRequestMutation, useCreateScheduledReportMutation, useCreateScreenGroupMutation, useCreateTicketMutation, useCreateTopUpOrderMutation, useCreateWithdrawalMutation, useCreditRejectedCreativeToWalletMutation, useDailyCollectionsQuery, useDeactivateScreenMutation, useDeleteCampaignBannerMutation, useDeleteKbArticleMutation, useDeletePartnerAdMutation, useDeleteSavedPaymentMethodMutation, useDeleteScheduledReportMutation, useDeleteScreenGroupMutation, useDeleteScreenMutation, useDeleteScreenPhotoMutation, useDeliveryConfigQuery, useDeviceActivationsQuery, useDeviceHealthQuery, useDeviceLocationsQuery, useDevicePreviewQuery, useDisassociateBookingMutation, useDisplaySettingsQuery, useDuplicateCampaignMutation, useFeeConfigQuery, useFleetHealthSummaryQuery, useGoogleCompleteMutation, useGoogleLoginMutation, useHealthAlertConfigQuery, useHeartbeatHistoryQuery, useHeartbeatMapQuery, useInvalidateNotifications, useInvoiceDetailQuery, useKbArticleQuery, useKbArticlesQuery, useKycDocumentsQuery, useLiveScreensQuery, useLoginActivityQuery, useLoginMutation, useLoginSummaryQuery, useLogout, useMarkAllNotificationsReadMutation, useMarkNotificationReadMutation, useMeQuery, useMonitoringTimelineQuery, useMyBookingsQuery, useMyCampaignsListQuery, useMyCampaignsQuery, useMyCreativesQuery, useMyDeviceHealthQuery, useMyDeviceLocationsQuery, useMyDocumentsQuery, useMyInvoicesQuery, useMyKycQuery, useMyLiveScreensTimelineQuery, useMyMonitoringTimelineQuery, useMyPartnerAdsInfiniteQuery, useMyPartnerAdsQuery, useMyPartnerBookingsListQuery, useMyPartnerBookingsQuery, useMyPaymentsQuery, useMyPlaybackLogsQuery, useMyProofRequestsQuery, useMyQuotationQuery, useMyQuotationsQuery, useMyRefundsQuery, useMyScreenQuery, useMyScreensListQuery, useMyTicketsInfiniteQuery, useMyTicketsQuery, useMyWithdrawalsQuery, useNotificationPreferencesQuery, useNotificationsInfiniteQuery, useNotificationsQuery, usePartnerAnalyticsQuery, usePartnerStatsQuery, useWalletQuery as usePartnerWalletQuery, usePayCampaignFromWalletMutation, usePayQuotationMutation, usePaymentDetailQuery, usePaymentStatusQuery, usePaymentsConfigQuery, usePendingAdvertisersQuery, usePendingCreativesQuery, usePendingPaymentsQuery, usePendingRefundsQuery, usePendingScreenPartnersQuery, usePendingScreensQuery, usePendingSelfReservationsQuery, usePendingWithdrawalsQuery, usePhotosQuery, usePlacesQuery, usePlaybackHistoryQuery, usePlaybackMapQuery, usePlaysBreakdownQuery, usePlaysHeatmapQuery, usePlaysSummaryQuery, usePlaysTimeseriesQuery, usePriceEstimateQuery, useProofOfPlayQuery, useProofRequestSummaryQuery, useQuickRegisterScreenMutation, useRaisePaymentRequestMutation, useRecordPayoutMutation, useRegisterMutation, useRegisterPushTokenMutation, useRegisterScreenMutation, useRejectAdvertiserMutation, useRejectCreativeMutation, useRejectPaymentMutation, useRejectRefundMutation, useRejectScreenMutation, useRejectScreenPartnerMutation, useRejectSelfReservationMutation, useRejectWithdrawalMutation, useRemoveCampaignDocumentMutation, useRemoveCreativeMutation, useReopenTicketMutation, useReportFilterOptionsQuery, useRequestProofMutation, useRequestSelfReservationMutation, useReservationAdsQuery, useResetPasswordMutation, useResolveSessionLimitMutation, useResolveTicketMutation, useRevenueBreakdownQuery, useRevenueSummaryQuery, useRevenueTimeseriesQuery, useRevokeDeviceMutation, useRevokeOtherSessionsMutation, useRevokeSessionMutation, useSavedPaymentMethodsQuery, useSavedScreensQuery, useScheduledReportsQuery, useScreenAnalyticsQuery, useScreenAvailabilityQuery, useScreenBookingTimelineQuery, useScreenGroupQuery, useScreenGroupsQuery, useScreenLiveCampaignsQuery, useScreenQuery, useScreenSelfReservationsQuery, useScreenTimelineQuery, useSearchScreensQuery, useSendEmailLinkMutation, useSendEmailOtpMutation, useSendMobileOtpMutation, useSessionsQuery, useSetSettlementCadenceMutation, useSlaConfigsQuery, useSubmitKycMutation, useSubmitProofMutation, useSubmitQuotationMutation, useSubmitScreenMutation, useSubmitTicketFeedbackMutation, useTicketDetailQuery, useTodayCollectionQuery, useToggleSavedScreenMutation, useTrustSessionMutation, useUnreadCountQuery, useUnregisterPushTokenMutation, useUpdateAdvertiserBankDetailsMutation, useUpdateBankDetailsMutation, useUpdateCampaignBudgetMutation, useUpdateCampaignMutation, useUpdateFeeConfigMutation, useUpdateHealthAlertConfigMutation, useUpdateKbArticleMutation, useUpdateNotificationPreferencesMutation, useUpdatePaymentsConfigMutation, useUpdateProfileMutation, useUpdateScreenGroupMutation, useUpdateScreenMutation, useUpdateScreenPricingConfigMutation, useUpdateScreenSyncConfigMutation, useUpdateSelfReservationMutation, useUpdateSlaConfigMutation, useUpdateTicketStatusMutation, useUploadCampaignBannerMutation, useUploadCampaignDocumentMutation, useUploadCreativeMutation, useUploadDocumentMutation, useUploadPartnerAdMutation, useUploadPhotoMutation, useVerifyEmailMutation, useVerifyEmailOtpMutation, useVerifyMobileOtpMutation, useVerifyOtpMutation, useVerifyPaymentMutation, useVerifyTopUpMutation, useWalletQuery, withCount, withFixed, withoutCab, without as withoutPlace };
+export { EMPTY_FILTERS, NOTIFICATIONS_LIST_KEY, NOTIFICATIONS_PREFERENCES_KEY, NOTIFICATIONS_UNREAD_COUNT_KEY, activeFilterCount, campaignReportPath, checkReferralCode, compareAppVersions, getSessionLimit, invoicePdfPath, logoutOnServer, placeKey, planToRequest, planTotal, playsExportPath, proofOfPlayExportPath, quotationPdfPath, registerPushToken, revenueExportPath, saveKycDraftRequest, toSearchFilters, unregisterPushToken, useAcceptQuotationMutation, useActivateScreenMutation, useAddTicketMessageMutation, useAdminBookingFunnelQuery, useAdminFinanceQuery, useAdminGeographicQuery, useAdminOverviewQuery, useAdminRefundTrendQuery, useAdminRevenueQuery, useAdminScreensListQuery, useAdminSettlementDetailQuery, useAdminSettlementsQuery, useAdminTaxLedgerQuery, useAdminTicketsQuery, useAdminWalletsQuery, useAdvertiserAnalyticsQuery, useAdvertiserScreenPreviewQuery, useWalletQuery2 as useAdvertiserWalletQuery, useAppConfigQuery, useApplyMediaMutation, useApplyReferralMutation, useApproveAdvertiserMutation, useApproveCreativeMutation, useApprovePaymentMutation, useApproveRefundMutation, useApproveScreenMutation, useApproveScreenPartnerMutation, useApproveSelfReservationMutation, useApproveWithdrawalMutation, useAssignTicketMutation, useBulkRegisterCabsMutation, useCabLocationsQuery, useCabPicksQuery, useCampaignAnalyticsQuery, useCampaignBookingsQuery, useCampaignCreativesQuery, useCampaignPlaybackQuery, useCampaignProofRequestsQuery, useCampaignQuery, useCampaignQuotationQuery, useCampaignQuoteQuery, useCampaignTrendQuery, useCancelBookingMutation, useCancelCampaignMutation, useCancelSelfReservationMutation, useCancelWithdrawalMutation, useCategoriesQuery, useChangeEmailMutation, useChangeMobileNumberMutation, useChangePasswordMutation, useCheckAvailabilityMutation, useCheckAvailabilityQuery, useCheckoutMutation, useClaimActivationMutation, useCloseTicketMutation, useCouponAdvertisersQuery, useCouponOffersByScreen, useCouponOffersQuery, useCreateBookingMutation, useCreateCampaignMutation, useCreateKbArticleMutation, useCreateOrderMutation, useCreateRefundRequestMutation, useCreateScheduledReportMutation, useCreateScreenGroupMutation, useCreateTicketMutation, useCreateTopUpOrderMutation, useCreateWithdrawalMutation, useCreditRejectedCreativeToWalletMutation, useDailyCollectionsQuery, useDeactivateScreenMutation, useDeleteCampaignBannerMutation, useDeleteKbArticleMutation, useDeletePartnerAdMutation, useDeleteSavedPaymentMethodMutation, useDeleteScheduledReportMutation, useDeleteScreenGroupMutation, useDeleteScreenMutation, useDeleteScreenPhotoMutation, useDeliveryConfigQuery, useDeviceActivationsQuery, useDeviceHealthQuery, useDeviceLocationsQuery, useDevicePreviewQuery, useDisassociateBookingMutation, useDisplaySettingsQuery, useDuplicateCampaignMutation, useFeatureFlagsQuery, useFeeConfigQuery, useFleetHealthSummaryQuery, useGoogleCompleteMutation, useGoogleLoginMutation, useHealthAlertConfigQuery, useHeartbeatHistoryQuery, useHeartbeatMapQuery, useIfscLookupQuery, useInvalidateNotifications, useInvoiceDetailQuery, useKbArticleQuery, useKbArticlesQuery, useKycDocumentsQuery, useLiveScreensQuery, useLoginActivityQuery, useLoginMutation, useLoginSummaryQuery, useLogout, useMarkAllNotificationsReadMutation, useMarkNotificationReadMutation, useMeQuery, useMonitoringTimelineQuery, useMyBookingsQuery, useMyCampaignsListQuery, useMyCampaignsQuery, useMyCouponRedemptionsQuery, useMyCouponSummaryQuery, useMyCouponsQuery, useMyCreativesQuery, useMyDeviceHealthQuery, useMyDeviceLocationsQuery, useMyDocumentsQuery, useMyInvoicesQuery, useMyKycQuery, useMyLiveScreensTimelineQuery, useMyMonitoringTimelineQuery, useMyPartnerAdsInfiniteQuery, useMyPartnerAdsQuery, useMyPartnerBookingsListQuery, useMyPartnerBookingsQuery, useMyPaymentsQuery, useMyPlaybackLogsQuery, useMyProofRequestsQuery, useMyQuotationQuery, useMyQuotationsQuery, useMyReferralQuery, useMyReferrerQuery, useMyRefundsQuery, useMyScreenQuery, useMyScreensListQuery, useMyTicketsInfiniteQuery, useMyTicketsQuery, useMyWithdrawalsQuery, useNotificationPreferencesQuery, useNotificationsInfiniteQuery, useNotificationsQuery, usePartnerAnalyticsQuery, usePartnerStatsQuery, useWalletQuery as usePartnerWalletQuery, usePayCampaignFromWalletMutation, usePayQuotationMutation, usePaymentDetailQuery, usePaymentStatusQuery, usePaymentsConfigQuery, usePendingAdvertisersQuery, usePendingCreativesQuery, usePendingPaymentsQuery, usePendingRefundsQuery, usePendingScreenPartnersQuery, usePendingScreensQuery, usePendingSelfReservationsQuery, usePendingWithdrawalsQuery, usePhotosQuery, usePlacesQuery, usePlaybackHistoryQuery, usePlaybackMapQuery, usePlaysBreakdownQuery, usePlaysHeatmapQuery, usePlaysSummaryQuery, usePlaysTimeseriesQuery, usePriceEstimateQuery, useProofOfPlayQuery, useProofRequestSummaryQuery, useQuickRegisterScreenMutation, useRaisePaymentRequestMutation, useRecordPayoutMutation, useReferralCheckQuery, useReferredPeopleQuery, useRegisterMutation, useRegisterPushTokenMutation, useRegisterScreenMutation, useRejectAdvertiserMutation, useRejectCreativeMutation, useRejectPaymentMutation, useRejectRefundMutation, useRejectScreenMutation, useRejectScreenPartnerMutation, useRejectSelfReservationMutation, useRejectWithdrawalMutation, useRemoveCampaignDocumentMutation, useRemoveCreativeMutation, useReopenTicketMutation, useReportFilterOptionsQuery, useRequestProofMutation, useRequestSelfReservationMutation, useReservationAdsQuery, useResetPasswordMutation, useResolveSessionLimitMutation, useResolveTicketMutation, useRevenueBreakdownQuery, useRevenueSummaryQuery, useRevenueTimeseriesQuery, useRevokeDeviceMutation, useRevokeOtherSessionsMutation, useRevokeSessionMutation, useSavedPaymentMethodsQuery, useSavedScreensQuery, useScheduledReportsQuery, useScreenAnalyticsQuery, useScreenAvailabilityQuery, useScreenBookingTimelineQuery, useScreenGroupQuery, useScreenGroupsQuery, useScreenLiveCampaignsQuery, useScreenMapQuery, useScreenQuery, useScreenSelfReservationsQuery, useScreenTimelineQuery, useSearchScreensQuery, useSendEmailLinkMutation, useSendEmailOtpMutation, useSendMobileOtpMutation, useSessionsQuery, useSetMyCouponStatusMutation, useSetSettlementCadenceMutation, useSlaConfigsQuery, useSubmitKycMutation, useSubmitProofMutation, useSubmitQuotationMutation, useSubmitScreenMutation, useSubmitTicketFeedbackMutation, useTicketDetailQuery, useTodayCollectionQuery, useToggleSavedScreenMutation, useTrustSessionMutation, useUnreadCountQuery, useUnregisterPushTokenMutation, useUpdateAdvertiserBankDetailsMutation, useUpdateBankDetailsMutation, useUpdateCampaignBudgetMutation, useUpdateCampaignMutation, useUpdateFeeConfigMutation, useUpdateHealthAlertConfigMutation, useUpdateKbArticleMutation, useUpdateNotificationPreferencesMutation, useUpdatePaymentsConfigMutation, useUpdateProfileMutation, useUpdateScreenGroupMutation, useUpdateScreenMutation, useUpdateScreenPricingConfigMutation, useUpdateScreenSyncConfigMutation, useUpdateSelfReservationMutation, useUpdateSlaConfigMutation, useUpdateTicketStatusMutation, useUploadCampaignBannerMutation, useUploadCampaignDocumentMutation, useUploadCreativeMutation, useUploadDocumentMutation, useUploadPartnerAdMutation, useUploadPhotoMutation, useValidateCouponMutation, useVerifyEmailMutation, useVerifyEmailOtpMutation, useVerifyMobileOtpMutation, useVerifyOtpMutation, useVerifyPaymentMutation, useVerifyTopUpMutation, useWalletQuery, withCount, withFixed, withoutCab, without as withoutPlace };

@@ -29,6 +29,7 @@ declare function apiRequest<T>(path: string, options?: {
     method?: Method;
     body?: unknown;
     accessToken?: string | null;
+    silent?: boolean;
 }): Promise<T>;
 declare const apiGet: <T>(path: string, accessToken?: string | null) => Promise<T>;
 declare const apiPost: <T>(path: string, body?: unknown, accessToken?: string | null) => Promise<T>;
