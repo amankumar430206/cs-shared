@@ -107,6 +107,8 @@ export function useCheckoutMutation() {
       startDate: string;
       endDate: string;
       paymentMethod: PaymentMethod;
+      /** A screen-owner coupon the server already accepted on the quote; it is re-checked and priced again here. */
+      couponCode?: string;
     }) => apiPost<CheckoutResult>(`/checkout/campaigns/${campaignId}`, body, getAccessToken()),
     onSuccess: (_data, { campaignId }) => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });

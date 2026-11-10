@@ -527,6 +527,8 @@ declare function useCheckoutMutation(): _tanstack_react_query.UseMutationResult<
     startDate: string;
     endDate: string;
     paymentMethod: PaymentMethod;
+    /** A screen-owner coupon the server already accepted on the quote; it is re-checked and priced again here. */
+    couponCode?: string;
 }, unknown>;
 
 declare function useMyCouponsQuery(page?: number, enabled?: boolean): _tanstack_react_query.UseQueryResult<{
