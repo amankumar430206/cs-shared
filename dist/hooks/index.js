@@ -3,6 +3,7 @@ import { buildReportQuery, REFERRAL_CODE_MIN_LENGTH, isReportQueryable } from '.
 import { useHasSession, apiGet, getAccessToken, session, apiPost, apiPatch, ApiClientError, apiDelete, apiGetPaginated, apiUpload, apiPut, useSession, apiRequest } from '../chunk-V2V5PEJF.js';
 import '../chunk-HK7CF55G.js';
 import { useQuery, useQueryClient, useMutation, useInfiniteQuery, keepPreviousData, useQueries } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 function useAdvertiserAnalyticsQuery() {
   const hasAccessToken = useHasSession();
@@ -854,13 +855,16 @@ function useCouponOffersByScreen(screenIds, enabled) {
       };
     })
   });
-  const byScreen = /* @__PURE__ */ new Map();
-  for (const result of results) {
-    for (const offer of result.data ?? []) {
-      for (const screenId of offer.screenIds) byScreen.set(screenId, [...byScreen.get(screenId) ?? [], offer]);
+  const settledAt = results.map((r, i) => `${chunks[i][0]}+${chunks[i].length}:${r.dataUpdatedAt}`).join(",");
+  return useMemo(() => {
+    const byScreen = /* @__PURE__ */ new Map();
+    for (const result of results) {
+      for (const offer of result.data ?? []) {
+        for (const screenId of offer.screenIds) byScreen.set(screenId, [...byScreen.get(screenId) ?? [], offer]);
+      }
     }
-  }
-  return byScreen;
+    return byScreen;
+  }, [settledAt]);
 }
 function useValidateCouponMutation() {
   return useMutation({

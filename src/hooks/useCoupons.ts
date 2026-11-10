@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { keepPreviousData, useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiGetPaginated, apiPost } from "../api/client";
 import { getAccessToken, useHasSession } from "../api/session";
@@ -78,6 +79,8 @@ const OFFER_CHUNK = 40;
  * Offers for every screen on a results page, as screenId -> offers. Screens are
  * looked up in batches of 40 so a long list never makes an oversized request.
  * Only advertisers are shown offers, so other roles pass enabled = false.
+ * The map (and the arrays in it) only changes when a lookup returns, so memoized cards that receive
+ * `map.get(id)` do not re-render on every parent render. (Differs from cs-web, which rebuilds it per render.)
  */
 export function useCouponOffersByScreen(screenIds: string[], enabled: boolean) {
   const hasToken = useHasSession();
@@ -97,13 +100,17 @@ export function useCouponOffersByScreen(screenIds: string[], enabled: boolean) {
     }),
   });
 
-  const byScreen = new Map<string, CouponOffer[]>();
-  for (const result of results) {
-    for (const offer of result.data ?? []) {
-      for (const screenId of offer.screenIds) byScreen.set(screenId, [...(byScreen.get(screenId) ?? []), offer]);
+  const settledAt = results.map((r, i) => `${chunks[i][0]}+${chunks[i].length}:${r.dataUpdatedAt}`).join(",");
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- rebuilt only when a lookup returns, not on every render
+  return useMemo(() => {
+    const byScreen = new Map<string, CouponOffer[]>();
+    for (const result of results) {
+      for (const offer of result.data ?? []) {
+        for (const screenId of offer.screenIds) byScreen.set(screenId, [...(byScreen.get(screenId) ?? []), offer]);
+      }
     }
-  }
-  return byScreen;
+    return byScreen;
+  }, [settledAt]);
 }
 
 /** Checks a code against the current cart by pricing it; resolves with the discounted quote or rejects with the reason (422). */

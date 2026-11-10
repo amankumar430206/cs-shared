@@ -552,6 +552,8 @@ declare function useCouponOffersQuery(screenIds: string[], enabled?: boolean): _
  * Offers for every screen on a results page, as screenId -> offers. Screens are
  * looked up in batches of 40 so a long list never makes an oversized request.
  * Only advertisers are shown offers, so other roles pass enabled = false.
+ * The map (and the arrays in it) only changes when a lookup returns, so memoized cards that receive
+ * `map.get(id)` do not re-render on every parent render. (Differs from cs-web, which rebuilds it per render.)
  */
 declare function useCouponOffersByScreen(screenIds: string[], enabled: boolean): Map<string, CouponOffer[]>;
 /** Checks a code against the current cart by pricing it; resolves with the discounted quote or rejects with the reason (422). */
