@@ -87,6 +87,132 @@ function formatTargetAudience(campaign) {
   return parts.length > 0 ? parts.join(", ") : null;
 }
 
+// src/types/indianIds.ts
+var D = [
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
+  [2, 3, 4, 0, 1, 7, 8, 9, 5, 6],
+  [3, 4, 0, 1, 2, 8, 9, 5, 6, 7],
+  [4, 0, 1, 2, 3, 9, 5, 6, 7, 8],
+  [5, 9, 8, 7, 6, 0, 4, 3, 2, 1],
+  [6, 5, 9, 8, 7, 1, 0, 4, 3, 2],
+  [7, 6, 5, 9, 8, 2, 1, 0, 4, 3],
+  [8, 7, 6, 5, 9, 3, 2, 1, 0, 4],
+  [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+];
+var P = [
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 5, 7, 6, 2, 8, 3, 0, 9, 4],
+  [5, 8, 0, 3, 7, 9, 6, 1, 4, 2],
+  [8, 9, 1, 6, 0, 4, 3, 5, 2, 7],
+  [9, 4, 5, 3, 1, 2, 6, 8, 7, 0],
+  [4, 2, 8, 6, 5, 7, 3, 9, 0, 1],
+  [2, 7, 9, 3, 8, 0, 6, 4, 1, 5],
+  [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]
+];
+var AADHAAR_SHAPE = /^[2-9][0-9]{11}$/;
+function isValidAadhaar(value) {
+  if (!AADHAAR_SHAPE.test(value)) return false;
+  let c = 0;
+  [...value].reverse().forEach((ch, i) => {
+    c = D[c][P[i % 8][Number(ch)]];
+  });
+  return c === 0;
+}
+var PAN_HOLDER_TYPES = {
+  P: "Individual",
+  C: "Company",
+  H: "Hindu Undivided Family",
+  F: "Firm / LLP",
+  A: "Association of Persons",
+  T: "Trust",
+  B: "Body of Individuals",
+  L: "Local authority",
+  J: "Artificial juridical person",
+  G: "Government"
+};
+var PAN_SHAPE = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+var isValidPan = (value) => PAN_SHAPE.test(value) && value[3] in PAN_HOLDER_TYPES;
+var PAN_TYPES_BY_STRUCTURE = {
+  INDIVIDUAL: ["P"],
+  PROPRIETOR: ["P"],
+  COMPANY: ["C", "F", "A", "B", "G", "J", "L", "T"]
+};
+function panFitsLegalStructure(pan, structure) {
+  const allowed = structure ? PAN_TYPES_BY_STRUCTURE[structure] : void 0;
+  if (!allowed || !isValidPan(pan)) return null;
+  return allowed.includes(pan[3]);
+}
+var isCompanyPan = (pan) => isValidPan(pan) && pan[3] !== "P" && pan[3] !== "H";
+var GSTIN_SHAPE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+var GSTIN_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+function gstinCheckChar(first14) {
+  let sum = 0;
+  [...first14].forEach((ch, i) => {
+    const product = GSTIN_CHARS.indexOf(ch) * (i % 2 === 0 ? 1 : 2);
+    sum += Math.floor(product / 36) + product % 36;
+  });
+  return GSTIN_CHARS[(36 - sum % 36) % 36];
+}
+var isValidGstin = (value) => GSTIN_SHAPE.test(value) && value[14] === gstinCheckChar(value.slice(0, 14));
+var gstinPan = (gstin) => gstin.slice(2, 12);
+var GST_STATES = {
+  "01": ["Jammu and Kashmir", "J&K"],
+  "02": ["Himachal Pradesh"],
+  "03": ["Punjab"],
+  "04": ["Chandigarh"],
+  "05": ["Uttarakhand", "Uttaranchal"],
+  "06": ["Haryana"],
+  "07": ["Delhi", "NCT of Delhi", "New Delhi"],
+  "08": ["Rajasthan"],
+  "09": ["Uttar Pradesh", "UP"],
+  "10": ["Bihar"],
+  "11": ["Sikkim"],
+  "12": ["Arunachal Pradesh"],
+  "13": ["Nagaland"],
+  "14": ["Manipur"],
+  "15": ["Mizoram"],
+  "16": ["Tripura"],
+  "17": ["Meghalaya"],
+  "18": ["Assam"],
+  "19": ["West Bengal"],
+  "20": ["Jharkhand"],
+  "21": ["Odisha", "Orissa"],
+  "22": ["Chhattisgarh"],
+  "23": ["Madhya Pradesh", "MP"],
+  "24": ["Gujarat"],
+  "25": ["Daman and Diu", "Dadra and Nagar Haveli and Daman and Diu"],
+  "26": ["Dadra and Nagar Haveli", "Daman and Diu", "Dadra and Nagar Haveli and Daman and Diu"],
+  "27": ["Maharashtra"],
+  "28": ["Andhra Pradesh"],
+  "29": ["Karnataka"],
+  "30": ["Goa"],
+  "31": ["Lakshadweep"],
+  "32": ["Kerala"],
+  "33": ["Tamil Nadu"],
+  "34": ["Puducherry", "Pondicherry"],
+  "35": ["Andaman and Nicobar Islands", "Andaman and Nicobar"],
+  "36": ["Telangana"],
+  "37": ["Andhra Pradesh"],
+  "38": ["Ladakh"]
+};
+var stateKey = (name) => String(name ?? "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z]/g, "");
+var CODES_BY_STATE = /* @__PURE__ */ new Map();
+Object.entries(GST_STATES).forEach(([code, names]) => {
+  names.forEach((name) => {
+    const key = stateKey(name);
+    CODES_BY_STATE.set(key, [...CODES_BY_STATE.get(key) ?? [], code]);
+  });
+});
+function gstinMatchesState(gstin, stateName) {
+  const codes = CODES_BY_STATE.get(stateKey(stateName));
+  if (!codes || !GSTIN_SHAPE.test(gstin)) return null;
+  return codes.includes(gstin.slice(0, 2));
+}
+function gstinStateName(gstin) {
+  return GST_STATES[gstin.slice(0, 2)]?.[0];
+}
+
 // src/types/screens.ts
 var EDITABLE_SCREEN_STATUSES = ["PENDING", "REJECTED", "ACTIVE", "UNDER_REVIEW"];
 var REVENUE_MODELS = [
@@ -189,4 +315,4 @@ var TICKET_STATUSES = [
 var ASSIGNMENT_TEAMS = ["SUPPORT", "FINANCE", "TECHNICAL", "OPERATIONS", "ENGINEERING", "MANAGEMENT"];
 var TERMINAL_TICKET_STATUSES = ["RESOLVED", "CLOSED"];
 
-export { AD_DURATION_MAX_SECONDS, AD_DURATION_MIN_SECONDS, ASSIGNMENT_TEAMS, COMMON_CITY_SUGGESTIONS, DISCOVERY_PHOTO_TYPES, EDITABLE_SCREEN_STATUSES, INSTALLATION_ENVIRONMENTS, INSTALLATION_PHOTO_TYPES, INTERNET_TYPES, MAX_CAMPAIGN_BANNERS, OBJECTIVES, PHOTO_TYPES, PRIMARY_OBJECTIVES, REVENUE_MODELS, SCREEN_ORIENTATIONS, SCREEN_SIZE_PRESETS, SURROUNDING_VIDEO_TYPE, TARGET_AGE_MAX, TARGET_AGE_MIN, TARGET_AUDIENCE_SEGMENTS, TERMINAL_TICKET_STATUSES, TICKET_CATEGORIES, TICKET_PRIORITIES, TICKET_STATUSES, VIDEO_PHOTO_TYPE, formatDateRange, formatTargetAudience, getTodayIST, isCampaignEnded, isCampaignReservable, orientResolution, orientationLabel, parseResolution, screenOrientationOf };
+export { AD_DURATION_MAX_SECONDS, AD_DURATION_MIN_SECONDS, ASSIGNMENT_TEAMS, COMMON_CITY_SUGGESTIONS, DISCOVERY_PHOTO_TYPES, EDITABLE_SCREEN_STATUSES, INSTALLATION_ENVIRONMENTS, INSTALLATION_PHOTO_TYPES, INTERNET_TYPES, MAX_CAMPAIGN_BANNERS, OBJECTIVES, PAN_HOLDER_TYPES, PHOTO_TYPES, PRIMARY_OBJECTIVES, REVENUE_MODELS, SCREEN_ORIENTATIONS, SCREEN_SIZE_PRESETS, SURROUNDING_VIDEO_TYPE, TARGET_AGE_MAX, TARGET_AGE_MIN, TARGET_AUDIENCE_SEGMENTS, TERMINAL_TICKET_STATUSES, TICKET_CATEGORIES, TICKET_PRIORITIES, TICKET_STATUSES, VIDEO_PHOTO_TYPE, formatDateRange, formatTargetAudience, getTodayIST, gstinMatchesState, gstinPan, gstinStateName, isCampaignEnded, isCampaignReservable, isCompanyPan, isValidAadhaar, isValidGstin, isValidPan, orientResolution, orientationLabel, panFitsLegalStructure, parseResolution, screenOrientationOf };

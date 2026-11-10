@@ -1,7 +1,7 @@
 import { PASSWORD_PATTERN, PINCODE_PATTERN, CIN_PATTERN, PAN_PATTERN, GST_PATTERN, UDYAM_PATTERN, IFSC_PATTERN, AADHAAR_PATTERN } from '../chunk-KX3EQL42.js';
 export { AADHAAR_PATTERN, ADVERTISER_BUSINESS_CATEGORIES, BUDGET_RANGES, BUSINESS_TYPES, CIN_PATTERN, GST_PATTERN, IFSC_PATTERN, LEGAL_STRUCTURES, MOBILE_PATTERN, PAN_PATTERN, PASSWORD_PATTERN, PINCODE_PATTERN, UDYAM_PATTERN, googleOnboardingSchema, onboardingSchema } from '../chunk-KX3EQL42.js';
-import { TARGET_AUDIENCE_SEGMENTS, PRIMARY_OBJECTIVES, AD_DURATION_MIN_SECONDS, AD_DURATION_MAX_SECONDS, INSTALLATION_ENVIRONMENTS, INTERNET_TYPES, SCREEN_ORIENTATIONS, TICKET_PRIORITIES, TICKET_CATEGORIES } from '../chunk-446QGL3B.js';
-export { AD_DURATION_MAX_SECONDS, AD_DURATION_MIN_SECONDS } from '../chunk-446QGL3B.js';
+import { TARGET_AUDIENCE_SEGMENTS, PRIMARY_OBJECTIVES, AD_DURATION_MIN_SECONDS, AD_DURATION_MAX_SECONDS, isValidPan, isCompanyPan, isValidAadhaar, panFitsLegalStructure, INSTALLATION_ENVIRONMENTS, INTERNET_TYPES, SCREEN_ORIENTATIONS, TICKET_PRIORITIES, TICKET_CATEGORIES, isValidGstin, gstinPan } from '../chunk-22XQ7W3A.js';
+export { AD_DURATION_MAX_SECONDS, AD_DURATION_MIN_SECONDS } from '../chunk-22XQ7W3A.js';
 import '../chunk-HK7CF55G.js';
 import { z } from 'zod';
 
@@ -67,11 +67,23 @@ var campaignFormSchema = z.object({
   message: "Age range end must be on or after the start.",
   path: ["targetAgeMax"]
 });
+var PAN_HOLDER_MESSAGE = "Enter a valid PAN number. The 4th letter should be P, C, H, F, A, T, B, L, J or G.";
+var PAN_STRUCTURE_MESSAGE = "This PAN type doesn't match your legal structure. Use a personal PAN (4th letter P) for Individual or Proprietor, and a company PAN for Company.";
+var GST_CHECK_MESSAGE = "This GST number doesn't look right. Check each character.";
+var GST_PAN_MESSAGE = "The PAN inside this GST number doesn't match the PAN you entered.";
+function checkGstin(gstNumber, panNumber, ctx) {
+  if (!gstNumber || !GST_PATTERN.test(gstNumber)) return;
+  if (!isValidGstin(gstNumber)) {
+    ctx.addIssue({ code: "custom", path: ["gstNumber"], message: GST_CHECK_MESSAGE });
+  } else if (panNumber && PAN_PATTERN.test(panNumber) && gstinPan(gstNumber) !== panNumber) {
+    ctx.addIssue({ code: "custom", path: ["gstNumber"], message: GST_PAN_MESSAGE });
+  }
+}
 var requiredConsent = (message) => z.boolean().refine((v) => v === true, { message });
 var advertiserKycSchema = z.object({
   businessAddress: z.string().min(5, "Enter your business address"),
   gstNumber: z.string().optional().refine((v) => !v || GST_PATTERN.test(v), "Enter a valid GST number, or leave it blank"),
-  panNumber: z.string().optional().refine((v) => !v || PAN_PATTERN.test(v), "Enter a valid PAN number, or leave it blank"),
+  panNumber: z.string().optional().refine((v) => !v || PAN_PATTERN.test(v), "Enter a valid PAN number, or leave it blank").refine((v) => !v || !PAN_PATTERN.test(v) || isValidPan(v), PAN_HOLDER_MESSAGE),
   businessCategory: z.string().min(1, "Select a business category"),
   cin: z.string().optional().refine((v) => !v || CIN_PATTERN.test(v), "Enter a valid 21-character CIN, or leave it blank"),
   billingState: z.string().min(2, "Enter your billing state"),
@@ -83,10 +95,15 @@ var advertiserKycSchema = z.object({
   acceptTerms: requiredConsent("You must accept the Terms & Conditions to continue."),
   acceptCopyrightDeclaration: requiredConsent("You must accept the copyright declaration to continue."),
   acceptAdvertisingPolicy: requiredConsent("You must accept the advertising policy to continue.")
+}).superRefine((data, ctx) => {
+  checkGstin(data.gstNumber, data.panNumber, ctx);
+  if (data.cin && CIN_PATTERN.test(data.cin) && data.panNumber && isValidPan(data.panNumber) && !isCompanyPan(data.panNumber)) {
+    ctx.addIssue({ code: "custom", path: ["panNumber"], message: "A company's CIN needs a company PAN, not a personal one." });
+  }
 });
 var screenPartnerKycSchema = z.object({
-  aadhaarNumber: z.string().regex(AADHAAR_PATTERN, "Enter a valid 12-digit Aadhaar number"),
-  panNumber: z.string().regex(PAN_PATTERN, "Enter a valid PAN number"),
+  aadhaarNumber: z.string().regex(AADHAAR_PATTERN, "Enter a valid 12-digit Aadhaar number").refine((v) => !AADHAAR_PATTERN.test(v) || isValidAadhaar(v), "This Aadhaar number doesn't look right. Check each digit."),
+  panNumber: z.string().regex(PAN_PATTERN, "Enter a valid PAN number").refine((v) => !PAN_PATTERN.test(v) || isValidPan(v), PAN_HOLDER_MESSAGE),
   bankAccountNumber: z.string().min(1, "Enter your bank account number"),
   bankIfsc: z.string().regex(IFSC_PATTERN, "Enter a valid IFSC code"),
   bankAccountName: z.string().min(1, "Enter the bank account holder name"),
@@ -100,6 +117,10 @@ var screenPartnerKycSchema = z.object({
   acceptDigitalAgreement: requiredConsent("You must accept the Digital Agreement to continue."),
   acceptRevenueSharingAgreement: requiredConsent("You must accept the Revenue Sharing Agreement to continue.")
 }).superRefine((data, ctx) => {
+  checkGstin(data.gstNumber, data.panNumber, ctx);
+  if (panFitsLegalStructure(data.panNumber, data.legalStructure) === false) {
+    ctx.addIssue({ code: "custom", path: ["panNumber"], message: PAN_STRUCTURE_MESSAGE });
+  }
   if (data.legalStructure === "COMPANY") {
     if (!data.cin || !CIN_PATTERN.test(data.cin)) {
       ctx.addIssue({ code: "custom", path: ["cin"], message: "Enter a valid 21-character CIN \u2014 required for a Company." });
