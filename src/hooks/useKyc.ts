@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiPatch, apiPost, apiRequest, apiUpload } from "../api/client";
 import { IFSC_PATTERN } from "../schemas/onboarding";
-import type { IfscLookup, KycDocument, PendingAdvertiserRow, PendingScreenPartnerRow } from "../types/kyc";
+import type { BankStatus, IfscLookup, KycDocument, PendingAdvertiserRow, PendingScreenPartnerRow } from "../types/kyc";
 import type { KycDraftValues } from "../types/kycDraft";
 import { getAccessToken, session, useHasSession, useSession } from "../api/session";
 
@@ -79,13 +79,16 @@ interface BankDetailsInput {
   upiId?: string;
 }
 
+// A partner's edit puts the bank back to PENDING verification, so the KYC status and the
+// withdrawal gate (which reads /auth/me) both refetch.
 export function useUpdateBankDetailsMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (input: BankDetailsInput) =>
-      apiPatch<BankDetailsInput>("/kyc/screen-partners/me/bank-details", input, getAccessToken()),
+      apiPatch<BankDetailsInput & { bankStatus?: BankStatus }>("/kyc/screen-partners/me/bank-details", input, getAccessToken()),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
+      queryClient.invalidateQueries({ queryKey: ["kyc", "me"] });
     },
   });
 }
@@ -146,6 +149,25 @@ export const useApproveAdvertiserMutation = () => useReviewMutation("advertisers
 export const useRejectAdvertiserMutation = () => useReviewMutation("advertisers", "reject");
 export const useApproveScreenPartnerMutation = () => useReviewMutation("screen-partners", "approve");
 export const useRejectScreenPartnerMutation = () => useReviewMutation("screen-partners", "reject");
+
+// Admin decision on a partner's bank details (POST /kyc/screen-partners/:id/bank/verify|reject). Separate from the
+// overall KYC approval; only a VERIFIED bank unlocks payouts. Refetches the admin user detail, the payout
+// worklists and the partner's own status.
+function useBankReviewMutation(decision: "verify" | "reject") {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ partnerId, reason }: { partnerId: string; reason?: string }) =>
+      apiPost<{ bankStatus: BankStatus }>(`/kyc/screen-partners/${partnerId}/bank/${decision}`, reason ? { reason } : undefined, getAccessToken()),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+      queryClient.invalidateQueries({ queryKey: ["revenue"] });
+      queryClient.invalidateQueries({ queryKey: ["kyc"] });
+    },
+  });
+}
+
+export const useVerifyPartnerBankMutation = () => useBankReviewMutation("verify");
+export const useRejectPartnerBankMutation = () => useBankReviewMutation("reject");
 
 // Autosave of the half-filled form (PUT /kyc/draft/me). Not a mutation: nothing in the
 // cache depends on it, it fires in the background, and it must neither toast nor retry

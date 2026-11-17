@@ -68,20 +68,33 @@ export const advertiserKycSchema = z
   });
 export type AdvertiserKycFormValues = z.infer<typeof advertiserKycSchema>;
 
-// Mirrors cs-api's kyc.validators.js submitScreenPartnerKycSchema.
+// Mirrors cs-api's kyc.validators.js submitScreenPartnerKycSchema. Every ID and the bank block are optional here:
+// the "at least 2 of Aadhaar / PAN / Driving Licence (number or upload)" rule needs the uploaded documents too, so
+// the form checks it with evaluateIdentityProofs (types/kycIdentity.ts), and the server enforces it on submit.
+const DRIVING_LICENSE_PATTERN = /^[A-Z0-9][A-Z0-9 /-]{7,18}[A-Z0-9]$/;
+
 export const screenPartnerKycSchema = z
   .object({
     aadhaarNumber: z
       .string()
-      .regex(AADHAAR_PATTERN, "Enter a valid 12-digit Aadhaar number")
-      .refine((v) => !AADHAAR_PATTERN.test(v) || isValidAadhaar(v), "This Aadhaar number doesn't look right. Check each digit."),
+      .optional()
+      .refine((v) => !v || AADHAAR_PATTERN.test(v), "Enter a valid 12-digit Aadhaar number, or leave it blank")
+      .refine((v) => !v || !AADHAAR_PATTERN.test(v) || isValidAadhaar(v), "This Aadhaar number doesn't look right. Check each digit."),
     panNumber: z
       .string()
-      .regex(PAN_PATTERN, "Enter a valid PAN number")
-      .refine((v) => !PAN_PATTERN.test(v) || isValidPan(v), PAN_HOLDER_MESSAGE),
-    bankAccountNumber: z.string().min(1, "Enter your bank account number"),
-    bankIfsc: z.string().regex(IFSC_PATTERN, "Enter a valid IFSC code"),
-    bankAccountName: z.string().min(1, "Enter the bank account holder name"),
+      .optional()
+      .refine((v) => !v || PAN_PATTERN.test(v), "Enter a valid PAN number, or leave it blank")
+      .refine((v) => !v || !PAN_PATTERN.test(v) || isValidPan(v), PAN_HOLDER_MESSAGE),
+    drivingLicenseNumber: z
+      .string()
+      .optional()
+      .refine((v) => !v || DRIVING_LICENSE_PATTERN.test(v.toUpperCase()), "Enter a valid driving licence number, or leave it blank"),
+    bankAccountNumber: z.string().optional(),
+    bankIfsc: z
+      .string()
+      .optional()
+      .refine((v) => !v || IFSC_PATTERN.test(v), "Enter a valid IFSC code"),
+    bankAccountName: z.string().optional(),
     upiId: z.string().optional(),
     businessName: z.string().optional(),
     legalStructure: z.string().optional(),
@@ -100,8 +113,15 @@ export const screenPartnerKycSchema = z
   })
   .superRefine((data, ctx) => {
     checkGstin(data.gstNumber, data.panNumber, ctx);
-    if (panFitsLegalStructure(data.panNumber, data.legalStructure) === false) {
+    if (data.panNumber && panFitsLegalStructure(data.panNumber, data.legalStructure) === false) {
       ctx.addIssue({ code: "custom", path: ["panNumber"], message: PAN_STRUCTURE_MESSAGE });
+    }
+    // Bank details are all-or-none: a half-filled block can never be verified or paid to.
+    const bank = [data.bankAccountNumber, data.bankIfsc, data.bankAccountName];
+    if (bank.some(Boolean)) {
+      if (!data.bankAccountNumber) ctx.addIssue({ code: "custom", path: ["bankAccountNumber"], message: "Enter your bank account number" });
+      if (!data.bankIfsc) ctx.addIssue({ code: "custom", path: ["bankIfsc"], message: "Enter a valid IFSC code" });
+      if (!data.bankAccountName) ctx.addIssue({ code: "custom", path: ["bankAccountName"], message: "Enter the bank account holder name" });
     }
     if (data.legalStructure === "COMPANY") {
       if (!data.cin || !CIN_PATTERN.test(data.cin)) {

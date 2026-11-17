@@ -39,6 +39,9 @@ export interface CurrentUser {
     bank_ifsc: string | null;
     bank_account_name: string | null;
     upi_id: string | null;
+    /** Set by an admin when the bank details are verified; payouts need it (null = not verified). */
+    bank_verified_at?: string | null;
+    bank_rejection_reason?: string | null;
   };
 }
 

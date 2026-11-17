@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { advertiserKycSchema, screenPartnerKycSchema } from "../src/schemas";
+import { evaluateIdentityProofs } from "../src/types/kycIdentity";
 
 const messages = (schema: typeof screenPartnerKycSchema | typeof advertiserKycSchema, input: object) => {
   const result = schema.safeParse(input);
@@ -60,5 +61,43 @@ describe("advertiser KYC offline checks", () => {
     expect(only({ panNumber: "RAMPH1234F", cin: "U12345MH2020PTC123456" }, "panNumber")).toEqual([
       "panNumber: A company's CIN needs a company PAN, not a personal one.",
     ]);
+  });
+});
+
+describe("partner KYC: optional IDs and bank, 2-of-3 identity rule", () => {
+  const consents = { acceptTerms: true, acceptDigitalAgreement: true, acceptRevenueSharingAgreement: true };
+
+  it("accepts a form with no IDs and no bank (the 2-of-3 rule is checked separately)", () => {
+    expect(messages(screenPartnerKycSchema, consents)).toEqual([]);
+  });
+  it("keeps format checks on any ID that is given", () => {
+    expect(messages(screenPartnerKycSchema, { ...consents, aadhaarNumber: "123" })).toHaveLength(1);
+    expect(messages(screenPartnerKycSchema, { ...consents, drivingLicenseNumber: "x" })).toHaveLength(1);
+    expect(messages(screenPartnerKycSchema, { ...consents, drivingLicenseNumber: "ka0120110012345" })).toEqual([]);
+  });
+  it("makes bank details all-or-none", () => {
+    expect(messages(screenPartnerKycSchema, { ...consents, bankIfsc: "HDFC0001234" })).toEqual([
+      "bankAccountNumber: Enter your bank account number",
+      "bankAccountName: Enter the bank account holder name",
+    ]);
+    expect(
+      messages(screenPartnerKycSchema, { ...consents, bankAccountNumber: "00011122233", bankIfsc: "HDFC0001234", bankAccountName: "Ramesh" })
+    ).toEqual([]);
+  });
+});
+
+describe("evaluateIdentityProofs", () => {
+  it("needs two of Aadhaar / PAN / Driving Licence, by number or document", () => {
+    expect(evaluateIdentityProofs({}, [])).toMatchObject({ satisfied: false, needed: 2, provided: [] });
+    expect(evaluateIdentityProofs({ panNumber: "ABCPE1234F" }, [])).toMatchObject({ satisfied: false, needed: 1 });
+    expect(evaluateIdentityProofs({ panNumber: "ABCPE1234F" }, [{ documentType: "DRIVING_LICENSE" }])).toMatchObject({
+      satisfied: true,
+      provided: ["PAN", "DRIVING_LICENSE"],
+    });
+    expect(evaluateIdentityProofs({}, [{ documentType: "AADHAAR_CARD" }, { documentType: "PAN_CARD" }]).satisfied).toBe(true);
+  });
+  it("ignores blank numbers, other documents and rejected documents", () => {
+    expect(evaluateIdentityProofs({ aadhaarNumber: "  " }, [{ documentType: "ADDRESS_PROOF" }]).provided).toEqual([]);
+    expect(evaluateIdentityProofs({}, [{ documentType: "PAN_CARD", reviewStatus: "REJECTED" }]).provided).toEqual([]);
   });
 });

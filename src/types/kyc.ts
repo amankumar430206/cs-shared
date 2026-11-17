@@ -22,12 +22,41 @@ export interface AdvertiserKycStatus {
   reviewedAt: string | null;
 }
 
+/**
+ * Partner bank KYC. MISSING = nothing on file, PENDING = awaiting an admin, REJECTED = sent back (see
+ * rejectionReason), VERIFIED = payouts allowed. Money cannot leave a wallet unless VERIFIED; the portal itself
+ * is usable in every state. Editing the details moves a VERIFIED bank back to PENDING.
+ */
+export type BankVerificationState = "MISSING" | "PENDING" | "REJECTED" | "VERIFIED";
+
+export interface BankStatus {
+  status: BankVerificationState;
+  verifiedAt: string | null;
+  rejectionReason: string | null;
+}
+
+/** Same rule as cs-api's bankVerification.js, from the /auth/me screenPartner row. */
+export function bankStatusOf(
+  partner?: {
+    bank_account_number: string | null;
+    bank_ifsc: string | null;
+    bank_account_name: string | null;
+    bank_verified_at?: string | null;
+    bank_rejection_reason?: string | null;
+  } | null
+): BankVerificationState {
+  if (!partner?.bank_account_number || !partner.bank_ifsc || !partner.bank_account_name) return "MISSING";
+  if (partner.bank_verified_at) return "VERIFIED";
+  return partner.bank_rejection_reason ? "REJECTED" : "PENDING";
+}
+
 export interface ScreenPartnerKycStatus {
   draft?: KycDraft | null;
   kycStatus: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED";
   rejectionReason: string | null;
   submittedAt: string | null;
   reviewedAt: string | null;
+  bankStatus: BankStatus;
 }
 
 export interface PendingAdvertiserRow {
@@ -77,7 +106,12 @@ export interface PendingScreenPartnerRow {
 }
 
 export type AdvertiserDocumentType = "BUSINESS_REGISTRATION_CERTIFICATE";
-export type ScreenPartnerDocumentType = "SELF_PHOTOGRAPH" | "ADDRESS_PROOF";
+export type ScreenPartnerDocumentType =
+  | "AADHAAR_CARD"
+  | "PAN_CARD"
+  | "DRIVING_LICENSE"
+  | "SELF_PHOTOGRAPH"
+  | "ADDRESS_PROOF";
 
 export interface KycDocument {
   id: string;
@@ -85,4 +119,7 @@ export interface KycDocument {
   originalFilename: string;
   uploadedAt: string;
   downloadUrl: string;
+  /** PENDING = not reviewed yet, VERIFIED, REJECTED = action required (reviewNote says why). */
+  reviewStatus?: "PENDING" | "VERIFIED" | "REJECTED";
+  reviewNote?: string | null;
 }

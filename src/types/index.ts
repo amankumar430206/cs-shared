@@ -14,6 +14,7 @@ export * from "./geo";
 export * from "./imageVariants";
 export * from "./knowledgeBase";
 export * from "./kyc";
+export * from "./kycIdentity";
 export * from "./money";
 export * from "./notifications";
 export * from "./orientation";
