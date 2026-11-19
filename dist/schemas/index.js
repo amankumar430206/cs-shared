@@ -101,12 +101,14 @@ var advertiserKycSchema = z.object({
     ctx.addIssue({ code: "custom", path: ["panNumber"], message: "A company's CIN needs a company PAN, not a personal one." });
   }
 });
+var DRIVING_LICENSE_PATTERN = /^[A-Z0-9][A-Z0-9 /-]{7,18}[A-Z0-9]$/;
 var screenPartnerKycSchema = z.object({
-  aadhaarNumber: z.string().regex(AADHAAR_PATTERN, "Enter a valid 12-digit Aadhaar number").refine((v) => !AADHAAR_PATTERN.test(v) || isValidAadhaar(v), "This Aadhaar number doesn't look right. Check each digit."),
-  panNumber: z.string().regex(PAN_PATTERN, "Enter a valid PAN number").refine((v) => !PAN_PATTERN.test(v) || isValidPan(v), PAN_HOLDER_MESSAGE),
-  bankAccountNumber: z.string().min(1, "Enter your bank account number"),
-  bankIfsc: z.string().regex(IFSC_PATTERN, "Enter a valid IFSC code"),
-  bankAccountName: z.string().min(1, "Enter the bank account holder name"),
+  aadhaarNumber: z.string().optional().refine((v) => !v || AADHAAR_PATTERN.test(v), "Enter a valid 12-digit Aadhaar number, or leave it blank").refine((v) => !v || !AADHAAR_PATTERN.test(v) || isValidAadhaar(v), "This Aadhaar number doesn't look right. Check each digit."),
+  panNumber: z.string().optional().refine((v) => !v || PAN_PATTERN.test(v), "Enter a valid PAN number, or leave it blank").refine((v) => !v || !PAN_PATTERN.test(v) || isValidPan(v), PAN_HOLDER_MESSAGE),
+  drivingLicenseNumber: z.string().optional().refine((v) => !v || DRIVING_LICENSE_PATTERN.test(v.toUpperCase()), "Enter a valid driving licence number, or leave it blank"),
+  bankAccountNumber: z.string().optional(),
+  bankIfsc: z.string().optional().refine((v) => !v || IFSC_PATTERN.test(v), "Enter a valid IFSC code"),
+  bankAccountName: z.string().optional(),
   upiId: z.string().optional(),
   businessName: z.string().optional(),
   legalStructure: z.string().optional(),
@@ -118,8 +120,14 @@ var screenPartnerKycSchema = z.object({
   acceptRevenueSharingAgreement: requiredConsent("You must accept the Revenue Sharing Agreement to continue.")
 }).superRefine((data, ctx) => {
   checkGstin(data.gstNumber, data.panNumber, ctx);
-  if (panFitsLegalStructure(data.panNumber, data.legalStructure) === false) {
+  if (data.panNumber && panFitsLegalStructure(data.panNumber, data.legalStructure) === false) {
     ctx.addIssue({ code: "custom", path: ["panNumber"], message: PAN_STRUCTURE_MESSAGE });
+  }
+  const bank = [data.bankAccountNumber, data.bankIfsc, data.bankAccountName];
+  if (bank.some(Boolean)) {
+    if (!data.bankAccountNumber) ctx.addIssue({ code: "custom", path: ["bankAccountNumber"], message: "Enter your bank account number" });
+    if (!data.bankIfsc) ctx.addIssue({ code: "custom", path: ["bankIfsc"], message: "Enter a valid IFSC code" });
+    if (!data.bankAccountName) ctx.addIssue({ code: "custom", path: ["bankAccountName"], message: "Enter the bank account holder name" });
   }
   if (data.legalStructure === "COMPANY") {
     if (!data.cin || !CIN_PATTERN.test(data.cin)) {

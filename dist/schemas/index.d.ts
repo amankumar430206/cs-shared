@@ -95,11 +95,12 @@ declare const advertiserKycSchema: z.ZodObject<{
 }, z.core.$strip>;
 type AdvertiserKycFormValues = z.infer<typeof advertiserKycSchema>;
 declare const screenPartnerKycSchema: z.ZodObject<{
-    aadhaarNumber: z.ZodString;
-    panNumber: z.ZodString;
-    bankAccountNumber: z.ZodString;
-    bankIfsc: z.ZodString;
-    bankAccountName: z.ZodString;
+    aadhaarNumber: z.ZodOptional<z.ZodString>;
+    panNumber: z.ZodOptional<z.ZodString>;
+    drivingLicenseNumber: z.ZodOptional<z.ZodString>;
+    bankAccountNumber: z.ZodOptional<z.ZodString>;
+    bankIfsc: z.ZodOptional<z.ZodString>;
+    bankAccountName: z.ZodOptional<z.ZodString>;
     upiId: z.ZodOptional<z.ZodString>;
     businessName: z.ZodOptional<z.ZodString>;
     legalStructure: z.ZodOptional<z.ZodString>;

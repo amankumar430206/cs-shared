@@ -201,6 +201,36 @@ var KB_CATEGORIES = [
   { value: "FAQ", label: "FAQ" }
 ];
 
+// src/types/kyc.ts
+function bankStatusOf(partner) {
+  if (!partner?.bank_account_number || !partner.bank_ifsc || !partner.bank_account_name) return "MISSING";
+  if (partner.bank_verified_at) return "VERIFIED";
+  return partner.bank_rejection_reason ? "REJECTED" : "PENDING";
+}
+
+// src/types/kycIdentity.ts
+var MIN_IDENTITY_PROOFS = 2;
+var IDENTITY_PROOFS = [
+  { key: "AADHAAR", label: "Aadhaar", numberField: "aadhaarNumber", documentType: "AADHAAR_CARD" },
+  { key: "PAN", label: "PAN", numberField: "panNumber", documentType: "PAN_CARD" },
+  { key: "DRIVING_LICENSE", label: "Driving Licence", numberField: "drivingLicenseNumber", documentType: "DRIVING_LICENSE" }
+];
+function evaluateIdentityProofs(values, documents) {
+  const usable = new Set(documents.filter((d) => d.reviewStatus !== "REJECTED").map((d) => d.documentType));
+  const provided = [];
+  const missing = [];
+  for (const proof of IDENTITY_PROOFS) {
+    if (values[proof.numberField]?.trim() || usable.has(proof.documentType)) provided.push(proof.key);
+    else missing.push(proof.key);
+  }
+  return {
+    provided,
+    missing,
+    needed: Math.max(0, MIN_IDENTITY_PROOFS - provided.length),
+    satisfied: provided.length >= MIN_IDENTITY_PROOFS
+  };
+}
+
 // src/types/money.ts
 function formatRupees(amount, { decimals = false } = {}) {
   return `\u20B9${amount.toLocaleString("en-IN", { minimumFractionDigits: decimals ? 2 : 0, maximumFractionDigits: decimals ? 2 : 0 })}`;
@@ -445,4 +475,4 @@ function bestNameMatch(name, candidates) {
   return best;
 }
 
-export { ADVERTISER_DRAFT_FIELDS, AD_FORMATS, AD_MAX_FILE_MB, AD_MAX_VIDEO_SECONDS, AUDIENCE_TAGS, COUPONS_FLAG, DISPLAY_TYPES, FACINGS, KB_CATEGORIES, LOCATION_CATEGORIES, MAX_CUSTOM_SHARES, OPEN_QUOTATION_STATUSES, REPORT_FORMATS, REPORT_FREQUENCIES, SCREEN_PARTNER_DRAFT_FIELDS, SETTLEMENT_CADENCES, SETTLEMENT_MODES, SIZE_BUCKETS, TAX_LEDGER_ENTRY_TYPES, TRAFFIC_TYPES, adChecks, advertiserDraftKeys, aspectLabel, bestNameMatch, compareNames, compatibilityOf, computeFit, computePeriodDelta, couponShareLink, couponShareText, describeAudience, describeDiscount, describeOffer, draftSignature, effectiveShares, footfallRange, formatDateRange2 as formatBookingDateRange, formatCompactIndian, formatFileSize, formatRupees, formatShortDate, getMediaShape, hasValue, isFlagEnabled, isFlagOn, isOpen, isVideo, listCities, listStates, liveWindowStatus, minPlaysPerDay, monthlyPrice, operatingSecondsPerDay, parseResolutionAspectRatio, pickDraftValues, previewSrc, quotationMatchesOrder, quotationNumber, resolvePincode, screenDimensions, screenPartnerDraftKeys, shapeKey, shapeLabel, thumbSrc, totalMinPlaysPerDay };
+export { ADVERTISER_DRAFT_FIELDS, AD_FORMATS, AD_MAX_FILE_MB, AD_MAX_VIDEO_SECONDS, AUDIENCE_TAGS, COUPONS_FLAG, DISPLAY_TYPES, FACINGS, IDENTITY_PROOFS, KB_CATEGORIES, LOCATION_CATEGORIES, MAX_CUSTOM_SHARES, MIN_IDENTITY_PROOFS, OPEN_QUOTATION_STATUSES, REPORT_FORMATS, REPORT_FREQUENCIES, SCREEN_PARTNER_DRAFT_FIELDS, SETTLEMENT_CADENCES, SETTLEMENT_MODES, SIZE_BUCKETS, TAX_LEDGER_ENTRY_TYPES, TRAFFIC_TYPES, adChecks, advertiserDraftKeys, aspectLabel, bankStatusOf, bestNameMatch, compareNames, compatibilityOf, computeFit, computePeriodDelta, couponShareLink, couponShareText, describeAudience, describeDiscount, describeOffer, draftSignature, effectiveShares, evaluateIdentityProofs, footfallRange, formatDateRange2 as formatBookingDateRange, formatCompactIndian, formatFileSize, formatRupees, formatShortDate, getMediaShape, hasValue, isFlagEnabled, isFlagOn, isOpen, isVideo, listCities, listStates, liveWindowStatus, minPlaysPerDay, monthlyPrice, operatingSecondsPerDay, parseResolutionAspectRatio, pickDraftValues, previewSrc, quotationMatchesOrder, quotationNumber, resolvePincode, screenDimensions, screenPartnerDraftKeys, shapeKey, shapeLabel, thumbSrc, totalMinPlaysPerDay };
