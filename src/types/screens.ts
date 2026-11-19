@@ -94,6 +94,8 @@ export interface Screen extends ScreenListingDetails {
   /** Set only alongside UNDER_REVIEW, and only when that status came from an ACTIVE screen's material edit (never a first-time submission) — field-level before/after for what the partner just changed, keyed by the same field names as the update payload. */
   pendingReviewChanges: Partial<Record<keyof Screen, { before: unknown; after: unknown }>> | null;
   rejectionReason: string | null;
+  /** New photos/videos on this live screen waiting for an admin. Only filled by the admin list; 0 elsewhere. */
+  pendingMediaCount: number;
   submittedAt: string | null;
   reviewedAt: string | null;
   // Partner-controlled visibility, independent of verificationStatus — an
@@ -195,7 +197,12 @@ export interface ScreenPhoto {
   /** Small WebP copies (see types/imageVariants.ts); null/absent for videos and older images. */
   thumbUrl?: string | null;
   previewUrl?: string | null;
+  /** APPROVED = what advertisers see. PENDING / REJECTED = a new upload on a live screen, awaiting or failing admin review. */
+  reviewStatus: ScreenPhotoReviewStatus;
+  reviewReason?: string | null;
 }
+
+export type ScreenPhotoReviewStatus = "APPROVED" | "PENDING" | "REJECTED";
 
 // Mirrors cs-api/src/modules/screens/screens.validators.js REVENUE_MODELS —
 // keep in sync if that list changes.
